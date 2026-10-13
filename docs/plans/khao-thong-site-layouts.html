@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>*{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Khao Thong Site Layouts</title>
+<style>
+  :root{
+    --paper:#f6f5ef; --panel:#fbfaf5; --ink:#1c1c17; --ink2:#4c4c42; --muted:#87867a; --rule:#e2e1d6;
+    --chip:#ffffff;
+    --home:#c9772e; --water:#2d8fbf; --walk:#3f9756; --drive:#a07b4e; --view:#b5432a;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#131309; --panel:#1c1c13; --ink:#eceadd; --ink2:#c4c2b3; --muted:#8b8a7d; --rule:#2c2b21;
+    --chip:#22221a;
+    --home:#e0954a; --water:#5bb6de; --walk:#63bd7a; --drive:#c2a074; --view:#e37a5f;
+  }}
+  :root[data-theme="dark"]{
+    --paper:#131309; --panel:#1c1c13; --ink:#eceadd; --ink2:#c4c2b3; --muted:#8b8a7d; --rule:#2c2b21;
+    --chip:#22221a;
+    --home:#e0954a; --water:#5bb6de; --walk:#63bd7a; --drive:#c2a074; --view:#e37a5f;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;margin:0}
+  .wrap{max-width:900px;margin:0 auto;padding:36px 20px 90px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--water);margin:0 0 8px}
+  h1{font-family:var(--serif);font-weight:600;font-size:27px;margin:0 0 6px}
+  p{margin:0 0 12px} .lead{color:var(--ink2)}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:12px 16px;margin:16px 0 26px;font-size:13px}
+  .legend .it{display:flex;align-items:center;gap:7px}
+  .sw{width:22px;height:12px;border-radius:3px;flex:0 0 auto}
+  figure{margin:0 0 30px;background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:16px 16px 12px}
+  figure h2{font-family:var(--serif);font-size:20px;margin:0 0 2px}
+  figure .tag{font-family:var(--mono);font-size:11px;color:var(--water);text-transform:uppercase;letter-spacing:.08em}
+  svg{width:100%;height:auto;display:block;margin:8px 0}
+  figcaption{font-size:13.5px;color:var(--ink2);line-height:1.55;border-top:1px solid var(--rule);padding-top:10px;margin-top:4px}
+  .note{background:var(--panel);border-left:3px solid var(--water);border-radius:0 8px 8px 0;padding:12px 15px;font-size:13.5px;color:var(--ink2);margin:8px 0}
+  .lblbox rect{rx:4}
+  text{font-family:var(--sans)}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Concept masterplan · schematic — not to scale</p>
+  <h1>Khao Thong — Site Layout Options</h1>
+  <p class="lead">Three arrangements for the ~23-rai parcel (deeds 54240 + 50861), each with the main home, a source pond, a waterfall descending the slope, two retaining ponds, and separated walking / driving paths. All are oriented to the real site: <b>west access road</b>, <b>sea view to the south (downhill)</b>, high ground (~70 m) to the north, road/low ground (~14 m) to the south. Water always flows <b>downhill</b> — from the home's pond toward the view.</p>
+
+  <div class="legend" aria-hidden="true">
+    <div class="it"><span class="sw" style="background:var(--home)"></span>Main home / building</div>
+    <div class="it"><span class="sw" style="background:var(--water)"></span>Pond / waterfall (water)</div>
+    <div class="it"><span class="sw" style="background:var(--walk);height:0;border-top:3px dashed var(--walk)"></span>Walking path</div>
+    <div class="it"><span class="sw" style="background:var(--drive)"></span>Driving path</div>
+    <div class="it"><span class="sw" style="background:var(--view)"></span>View direction (south)</div>
+  </div>
+
+  <!-- ============ OPTION A ============ -->
+  <figure>
+    <span class="tag">Option A</span>
+    <h2>Central Cascade Spine</h2>
+    <svg viewBox="0 0 640 440" role="img" aria-label="Site plan option A: main home high on the ridge, a straight central waterfall dropping the fall-line through two retaining ponds, driveway switchbacking up the west side, walking path along the water.">
+      <!-- parcel -->
+      <polygon points="70,80 410,60 585,150 560,315 150,350 70,225" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5"/>
+      <text x="430" y="52" font-size="11" fill="currentColor" opacity="0.6">≈70 m — back / high (north)</text>
+      <text x="150" y="372" font-size="11" fill="currentColor" opacity="0.6">≈14 m — road / low (south)</text>
+      <!-- view arrow (south) -->
+      <line x1="325" y1="360" x2="325" y2="415" stroke="var(--view)" stroke-width="2.5" marker-end="url(#va)"/>
+      <text x="335" y="405" font-size="12" fill="var(--view)" font-weight="600">SEA VIEW ↓</text>
+      <!-- west access -->
+      <text x="18" y="230" font-size="11" fill="var(--drive)" font-weight="600" transform="rotate(-90 18,230)">WEST ACCESS ROAD</text>
+      <!-- driving path: from west edge switchback up to home -->
+      <polyline points="70,215 180,205 250,170 330,150" fill="none" stroke="var(--drive)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+      <!-- walking path along water -->
+      <polyline points="360,140 350,215 345,290 348,330" fill="none" stroke="var(--walk)" stroke-width="2.5" stroke-dasharray="7 6" stroke-linecap="round"/>
+      <!-- waterfall down the spine -->
+      <polyline points="325,150 322,205 326,285 330,330" fill="none" stroke="var(--water)" stroke-width="4" stroke-linecap="round" marker-end="url(#wf)"/>
+      <!-- home -->
+      <rect x="270" y="98" width="110" height="46" rx="6" fill="var(--home)" fill-opacity="0.85" stroke="var(--home)"/>
+      <text x="325" y="126" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">MAIN HOME</text>
+      <!-- ponds -->
+      <ellipse cx="322" cy="158" rx="34" ry="14" fill="var(--water)" fill-opacity="0.55" stroke="var(--water)"/>
+      <ellipse cx="322" cy="240" rx="26" ry="12" fill="var(--water)" fill-opacity="0.45" stroke="var(--water)"/>
+      <ellipse cx="330" cy="325" rx="30" ry="13" fill="var(--water)" fill-opacity="0.45" stroke="var(--water)"/>
+      <!-- label boxes -->
+      <g class="lblbox" font-size="11" font-weight="600">
+        <rect x="378" y="150" width="118" height="19" rx="4" fill="var(--water)" fill-opacity="0.16" stroke="var(--water)"/><text x="384" y="163" fill="currentColor">Source pond (infinity)</text>
+        <rect x="360" y="232" width="120" height="19" rx="4" fill="var(--water)" fill-opacity="0.16" stroke="var(--water)"/><text x="366" y="245" fill="currentColor">Retaining pond 1 ~35 m</text>
+        <rect x="372" y="318" width="120" height="19" rx="4" fill="var(--water)" fill-opacity="0.16" stroke="var(--water)"/><text x="378" y="331" fill="currentColor">Retaining pond 2 ~22 m</text>
+        <rect x="150" y="188" width="86" height="19" rx="4" fill="var(--drive)" fill-opacity="0.16" stroke="var(--drive)"/><text x="156" y="201" fill="currentColor">Driveway</text>
+        <rect x="382" y="270" width="92" height="19" rx="4" fill="var(--walk)" fill-opacity="0.16" stroke="var(--walk)"/><text x="388" y="283" fill="currentColor">Walking path</text>
+      </g>
+      <defs>
+        <marker id="va" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto"><polygon points="0,0 9,0 4.5,9" fill="var(--view)"/></marker>
+        <marker id="wf" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto"><polygon points="0,0 9,0 4.5,9" fill="var(--water)"/></marker>
+      </defs>
+    </svg>
+    <figcaption><b>Simplest to build & plumb.</b> Home crowns the ridge for the widest panorama; its infinity pond spills straight down the natural fall-line as a single dramatic cascade, caught by two retaining ponds on the way down. Driveway switchbacks up the west side and stays clear of the water; the walking path shadows the cascade so you can stroll pond-to-pond. The straight run is the cheapest to line and pump. Downside: the drive and the water share the same slope, so the front-of-house sequence is less private.</figcaption>
+  </figure>
+
+  <!-- ============ OPTION B ============ -->
+  <figure>
+    <span class="tag">Option B</span>
+    <h2>Diagonal Gully · Terraced Loop</h2>
+    <svg viewBox="0 0 640 440" role="img" aria-label="Site plan option B: home offset to the high east corner, waterfall following a diagonal natural gully with staggered retaining ponds, a loop driveway entering and leaving on the west, terraced walking paths.">
+      <polygon points="70,80 410,60 585,150 560,315 150,350 70,225" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5"/>
+      <text x="430" y="52" font-size="11" fill="currentColor" opacity="0.6">≈70 m — back / high (north)</text>
+      <text x="150" y="372" font-size="11" fill="currentColor" opacity="0.6">≈14 m — road / low (south)</text>
+      <line x1="300" y1="360" x2="300" y2="415" stroke="var(--view)" stroke-width="2.5" marker-end="url(#va2)"/>
+      <text x="310" y="405" font-size="12" fill="var(--view)" font-weight="600">SEA VIEW ↓</text>
+      <text x="18" y="230" font-size="11" fill="var(--drive)" font-weight="600" transform="rotate(-90 18,230)">WEST ACCESS ROAD</text>
+      <!-- loop driveway: in on west, sweep across, out lower -->
+      <path d="M70,210 C 180,185 300,150 420,135 C 470,175 455,250 360,300 C 250,340 140,335 90,320" fill="none" stroke="var(--drive)" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+      <!-- diagonal waterfall NE->SW -->
+      <polyline points="440,150 380,215 300,270 240,315" fill="none" stroke="var(--water)" stroke-width="4" stroke-linecap="round" marker-end="url(#wf2)"/>
+      <!-- terraced walking paths -->
+      <polyline points="150,175 300,170 450,175" fill="none" stroke="var(--walk)" stroke-width="2.5" stroke-dasharray="7 6"/>
+      <polyline points="150,255 300,250 430,255" fill="none" stroke="var(--walk)" stroke-width="2.5" stroke-dasharray="7 6"/>
+      <!-- home high east -->
+      <rect x="400" y="100" width="108" height="46" rx="6" fill="var(--home)" fill-opacity="0.85" stroke="var(--home)"/>
+      <text x="454" y="128" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">MAIN HOME</text>
+      <!-- ponds along diagonal -->
+      <ellipse cx="440" cy="160" rx="30" ry="13" fill="var(--water)" fill-opacity="0.55" stroke="var(--water)"/>
+      <ellipse cx="340" cy="245" rx="26" ry="12" fill="var(--water)" fill-opacity="0.45" stroke="var(--water)"/>
+      <ellipse cx="238" cy="318" rx="28" ry="12" fill="var(--water)" fill-opacity="0.45" stroke="var(--water)"/>
+      <g class="lblbox" font-size="11" font-weight="600">
+        <rect x="470" y="152" width="120" height="19" rx="4" fill="var(--water)" fill-opacity="0.16" stroke="var(--water)"/><text x="476" y="165" fill="currentColor">Source pond (infinity)</text>
+        <rect x="368" y="238" width="120" height="19" rx="4" fill="var(--water)" fill-opacity="0.16" stroke="var(--water)"/><text x="374" y="251" fill="currentColor">Retaining pond 1 ~38 m</text>
+        <rect x="100" y="310" width="120" height="19" rx="4" fill="var(--water)" fill-opacity="0.16" stroke="var(--water)"/><text x="106" y="323" fill="currentColor">Retaining pond 2 ~20 m</text>
+        <rect x="150" y="120" width="120" height="19" rx="4" fill="var(--drive)" fill-opacity="0.16" stroke="var(--drive)"/><text x="156" y="133" fill="currentColor">Loop drive (in → out)</text>
+        <rect x="150" y="228" width="90" height="19" rx="4" fill="var(--walk)" fill-opacity="0.16" stroke="var(--walk)"/><text x="156" y="241" fill="currentColor">Terrace walks</text>
+      </g>
+      <defs>
+        <marker id="va2" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto"><polygon points="0,0 9,0 4.5,9" fill="var(--view)"/></marker>
+        <marker id="wf2" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto"><polygon points="0,0 9,0 4.5,9" fill="var(--water)"/></marker>
+      </defs>
+    </svg>
+    <figcaption><b>Follows the land, best arrival sequence.</b> The home sits in the high east corner facing a wide south-west view fan; the waterfall runs a diagonal that hugs the natural gully (far less earthwork than a straight cut), stepping through staggered ponds. A one-way loop drive enters and leaves on the west so cars never reverse, and the walking paths become the terrace retaining lines — paths and structural walls do double duty. Most elegant, slightly more path length to build.</figcaption>
+  </figure>
+
+  <!-- ============ OPTION C ============ -->
+  <figure>
+    <span class="tag">Option C</span>
+    <h2>Split Estate · Villa High + Guest Low</h2>
+    <svg viewBox="0 0 640 440" role="img" aria-label="Site plan option C: main villa high, a separate guest pavilion low near the road, the waterfall linking them as one water corridor through two retaining ponds, a driveway spur to each.">
+      <polygon points="70,80 410,60 585,150 560,315 150,350 70,225" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5"/>
+      <text x="430" y="52" font-size="11" fill="currentColor" opacity="0.6">≈70 m — back / high (north)</text>
+      <text x="150" y="372" font-size="11" fill="currentColor" opacity="0.6">≈14 m — road / low (south)</text>
+      <line x1="325" y1="360" x2="325" y2="415" stroke="var(--view)" stroke-width="2.5" marker-end="url(#va3)"/>
+      <text x="335" y="405" font-size="12" fill="var(--view)" font-weight="600">SEA VIEW ↓</text>
+      <text x="18" y="230" font-size="11" fill="var(--drive)" font-weight="600" transform="rotate(-90 18,230)">WEST ACCESS ROAD</text>
+      <!-- drive with spurs to both -->
+      <polyline points="70,215 200,205 300,160 340,132" fill="none" stroke="var(--drive)" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+      <polyline points="200,205 260,270 330,310" fill="none" stroke="var(--drive)" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+      <!-- water corridor linking villa -> guest -->
+      <polyline points="325,150 320,210 322,270 330,308" fill="none" stroke="var(--water)" stroke-width="4" stroke-linecap="round" marker-end="url(#wf3)"/>
+      <!-- walking path linking both -->
+      <polyline points="360,140 356,215 352,285 345,315" fill="none" stroke="var(--walk)" stroke-width="2.5" stroke-dasharray="7 6"/>
+      <!-- main villa high -->
+      <rect x="270" y="98" width="110" height="44" rx="6" fill="var(--home)" fill-opacity="0.85" stroke="var(--home)"/>
+      <text x="325" y="125" font-size="12.5" fill="#fff" text-anchor="middle" font-weight="700">MAIN VILLA</text>
+      <!-- guest pavilion low -->
+      <rect x="300" y="316" width="96" height="34" rx="6" fill="var(--home)" fill-opacity="0.6" stroke="var(--home)"/>
+      <text x="348" y="337" font-size="11.5" fill="currentColor" text-anchor="middle" font-weight="700">GUEST PAVILION</text>
+      <!-- ponds -->
+      <ellipse cx="322" cy="156" rx="32" ry="13" fill="var(--water)" fill-opacity="0.55" stroke="var(--water)"/>
+      <ellipse cx="320" cy="240" rx="24" ry="11" fill="var(--water)" fill-opacity="0.45" stroke="var(--water)"/>
+      <ellipse cx="330" cy="300" rx="26" ry="11" fill="var(--water)" fill-opacity="0.45" stroke="var(--water)"/>
+      <g class="lblbox" font-size="11" font-weight="600">
+        <rect x="378" y="148" width="118" height="19" rx="4" fill="var(--water)" fill-opacity="0.16" stroke="var(--water)"/><text x="384" y="161" fill="currentColor">Source pond (infinity)</text>
+        <rect x="352" y="232" width="120" height="19" rx="4" fill="var(--water)" fill-opacity="0.16" stroke="var(--water)"/><text x="358" y="245" fill="currentColor">Retaining pond 1 ~35 m</text>
+        <rect x="368" y="292" width="130" height="19" rx="4" fill="var(--water)" fill-opacity="0.16" stroke="var(--water)"/><text x="374" y="305" fill="currentColor">Retaining pond 2 (guest) ~22 m</text>
+        <rect x="120" y="188" width="118" height="19" rx="4" fill="var(--drive)" fill-opacity="0.16" stroke="var(--drive)"/><text x="126" y="201" fill="currentColor">Drive — spur to each</text>
+      </g>
+      <defs>
+        <marker id="va3" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto"><polygon points="0,0 9,0 4.5,9" fill="var(--view)"/></marker>
+        <marker id="wf3" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto"><polygon points="0,0 9,0 4.5,9" fill="var(--water)"/></marker>
+      </defs>
+    </svg>
+    <figcaption><b>Two buildings, rental optionality.</b> The main villa keeps the high ridge and the best view; a separate guest pavilion sits low near the road (the old "purple box"), and the waterfall becomes the spine that visually ties them — source pond up top, retaining pond mid-slope, final pond at the guest pavilion. The drive spurs to each so guests and owners don't cross. This is the layout to pick if you might rent the guest villa or house family separately — at the cost of a second build and longer services.</figcaption>
+  </figure>
+
+  <div class="note">⚙ <b>Engineering reality, all three:</b> the "waterfall" is a <b>recirculating feature</b> — the two retaining ponds store water and a pump returns it to the source pond; they also double as <b>stormwater catchment</b> for runoff coming down a 23% slope (genuinely useful, not just decorative). Exact pad elevations, pond sizes, and the drive gradient get fixed once the <b>1 m topo survey</b> is in — these are concept arrangements to react to, not construction drawings. North = high/back, south = downhill toward the sea view; every plan keeps the home on the view ridge and lets water fall toward the water.</div>
+</div>
+
+</body>
+</html>

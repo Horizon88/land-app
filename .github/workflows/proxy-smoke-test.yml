@@ -1,0 +1,58 @@
+name: Proxy smoke test
+
+# Manually-triggered: verifies the HTTPS_PROXY_RESI secret authenticates,
+# returns a residential exit IP, and gets past the bot walls on the hard
+# targets we care about (Sahibinden / LandWatch / LED / Realtor.com).
+#
+# Run from the Actions tab → "Proxy smoke test" → Run workflow.
+# Posts a summary to the workflow run's job output.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 1. Verify exit IP
+        env:
+          PROXY: ${{ secrets.HTTPS_PROXY_RESI }}
+        run: |
+          if [ -z "$PROXY" ]; then echo "::error::HTTPS_PROXY_RESI secret not set"; exit 1; fi
+          echo "Proxy exit IP:"
+          curl -sk -m 20 -x "$PROXY" https://ipv4.icanhazip.com
+
+      - name: 2. Smoke-test the hard targets
+        env:
+          HTTPS_PROXY_RESI: ${{ secrets.HTTPS_PROXY_RESI }}
+          SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
+        run: |
+          python3 -c "
+          import sys; sys.path.insert(0,'scripts')
+          from fetch import fetch
+          targets = [
+              ('LED court auctions',    'https://www.led.go.th/asset/searchAsset.php'),
+              ('LED newbid',            'https://asset.led.go.th/newbid/'),
+              ('Sahibinden Erzurum',    'https://www.sahibinden.com/arsa-satilik?address_city=Erzurum'),
+              ('Hurriyet Emlak',        'https://www.hurriyetemlak.com/erzurum-satilik/arsa'),
+              ('Zingat',                'https://www.zingat.com/satilik-arsa-erzurum'),
+              ('LandWatch Aspen',       'https://www.landwatch.com/Colorado_land_for_sale?city=Aspen'),
+              ('Realtor.com Aspen',     'https://www.realtor.com/realestateandhomes-search/Aspen_CO/type-land'),
+              ('Emlakjet (TR Next.js)', 'https://www.emlakjet.com/satilik-arsa/erzurum/'),
+              ('BAM Thailand NPA',      'https://www.bam.co.th/en/asset-for-sale'),
+          ]
+          for label, url in targets:
+              body, src = fetch(url, timeout=45)
+              status = 'PASS' if src not in ('failed','direct') or len(body) > 10000 else 'fail'
+              print(f'  {status:>4}  {src:<22} {len(body):>9} b  {label}')
+          "

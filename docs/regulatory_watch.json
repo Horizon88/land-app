@@ -1,0 +1,258 @@
+{
+  "_about": "Regulatory items being tracked because they could move the value of listings in their jurisdiction. Updated by scripts/watch_regulatory.py on the weekly cron; the UI surfaces 'last_checked' and 'status' on the home screen via the 📜 chip.",
+  "items": [
+    {
+      "id": "nz-conservation-amendment-2025",
+      "name": "Conservation Amendment Bill",
+      "jurisdiction": "New Zealand",
+      "issuer": "54th Parliament — Environment Select Committee",
+      "doc_id": "54SCENV_SCF_BD7D0F89-D8CB-42F7-9C5F-08DEABEDA048",
+      "type": "select committee submission",
+      "url": "https://www3.parliament.nz/en/pb/sc/make-a-submission/document/54SCENV_SCF_BD7D0F89-D8CB-42F7-9C5F-08DEABEDA048/conservation-amendment-bill",
+      "why_watching": "Amendments to NZ Conservation Act 1987 can shift DOC land boundaries, conservation concession rules, and what private parcels adjacent to public conservation land can do. Material for NZ rural / coastal listings.",
+      "affects": [
+        "New Zealand"
+      ],
+      "deadline": null,
+      "added": "2026-06-17",
+      "last_attempted": "2026-06-30T04:11:16.428404Z",
+      "last_status": "ok",
+      "last_status_note": "first clean snapshot",
+      "last_snapshot_sha": "686d929b38b9c726f6d74325dfb5e733906e4f98a40bc78360ea0a1c95cd6f0d",
+      "known_article_ids": [],
+      "last_source": "direct"
+    },
+    {
+      "id": "ca-foreign-buyer-ban",
+      "name": "Prohibition on the Purchase of Residential Property by Non-Canadians Act",
+      "jurisdiction": "Canada",
+      "issuer": "Government of Canada",
+      "type": "federal act (sunsetting)",
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/P-25.2/index.html",
+      "why_watching": "Currently blocks non-Canadians from buying residential property in CMAs. Scheduled to expire 1 Jan 2027 unless extended. Sunset would re-open Canadian residential land to foreign buyers, likely pushing prices up. Watch for extension announcements.",
+      "affects": [
+        "British Columbia",
+        "Canada"
+      ],
+      "deadline": "2027-01-01",
+      "deadline_label": "scheduled sunset",
+      "added": "2026-06-18",
+      "last_attempted": "2026-06-30T04:11:17.027336Z",
+      "last_status": "ok",
+      "last_status_note": "unchanged",
+      "last_snapshot_sha": "a8f4924887007ebb9e0618274a11467ed4f78c00d81ea6a7d1b2b6d5cc130266",
+      "known_article_ids": [],
+      "last_source": "direct"
+    },
+    {
+      "id": "bc-spec-vacancy-tax",
+      "name": "BC Speculation and Vacancy Tax",
+      "jurisdiction": "British Columbia",
+      "issuer": "Government of BC — Ministry of Finance",
+      "type": "provincial tax regime",
+      "url": "https://www2.gov.bc.ca/gov/content/taxes/speculation-vacancy-tax",
+      "why_watching": "0.5%-2% annual tax on residential property in designated areas. Designated areas have expanded twice (2024 + 2025) and the program keeps growing. Affects rental viability of BC vacation properties and the math on holding undeveloped BC land in a regulated area.",
+      "affects": [
+        "British Columbia"
+      ],
+      "deadline": null,
+      "added": "2026-06-18",
+      "last_attempted": "2026-06-30T04:11:17.782324Z",
+      "last_status": "ok",
+      "last_status_note": "unchanged",
+      "last_snapshot_sha": "db8a20799c76fe30fb31c8e003a11f9b275d44b3905c3853fbc7093aef22c87c",
+      "known_article_ids": [],
+      "last_source": "direct"
+    },
+    {
+      "id": "bc-short-term-rental-act",
+      "name": "BC Short-Term Rental Accommodations Act (Bill 35)",
+      "jurisdiction": "British Columbia",
+      "issuer": "Government of BC — Ministry of Housing",
+      "type": "provincial act",
+      "url": "https://www2.gov.bc.ca/gov/content/housing-tenancy/short-term-rentals",
+      "why_watching": "Restricts short-term rentals to principal residence + one secondary suite in many BC communities. Materially affects the rental yield of any BC vacation property — a key part of why some Whistler / Tofino / Okanagan listings are priced where they are.",
+      "affects": [
+        "British Columbia"
+      ],
+      "deadline": null,
+      "added": "2026-06-18",
+      "last_attempted": "2026-06-30T04:11:18.647991Z",
+      "last_status": "ok",
+      "last_status_note": "unchanged",
+      "last_snapshot_sha": "a05f9dd2c07c9e535635c04a1298ee1f79efb4cd9ec6fdbf40a361cb57d57984",
+      "known_article_ids": [],
+      "last_source": "direct"
+    },
+    {
+      "id": "nz-oia-residential",
+      "name": "Overseas Investment Act (residential land rules)",
+      "jurisdiction": "New Zealand",
+      "issuer": "Land Information NZ (LINZ) — Overseas Investment Office",
+      "type": "national investment regime",
+      "url": "https://www.linz.govt.nz/overseas-investment",
+      "why_watching": "Post-2018 amendments effectively block most non-resident foreign buyers from acquiring NZ residential land. Current government has signalled willingness to reopen for high-value buyers — any softening would re-price NZ coastal land upward.",
+      "affects": [
+        "New Zealand"
+      ],
+      "deadline": null,
+      "added": "2026-06-18",
+      "last_attempted": "2026-06-30T04:11:22.724263Z",
+      "last_status": "ok",
+      "last_status_note": "unchanged",
+      "last_snapshot_sha": "ddbdca66609cfe66233b54302b550c39f9bf7f4fdf475db71cd78a8fe0a9bf3b",
+      "known_article_ids": [],
+      "last_source": "direct"
+    },
+    {
+      "id": "nz-rma-reform",
+      "name": "Resource Management Act reform",
+      "jurisdiction": "New Zealand",
+      "issuer": "Ministry for the Environment",
+      "type": "framework legislation reform",
+      "url": "https://environment.govt.nz/what-government-is-doing/areas-of-work/rma/",
+      "why_watching": "RMA is being replaced. New planning regime will redraw what's buildable on coastal NZ land, hazard-zone setbacks, and sea-level-rise rules. Direct impact on NZ coastal listings.",
+      "affects": [
+        "New Zealand"
+      ],
+      "deadline": null,
+      "added": "2026-06-18",
+      "last_attempted": "2026-06-30T04:11:26.024550Z",
+      "last_status": "ok",
+      "last_status_note": "unchanged",
+      "last_snapshot_sha": "e10978dc6901ed3bc44604e396a312758df33712a0567479c328f493225ec40c",
+      "known_article_ids": [],
+      "last_source": "direct"
+    },
+    {
+      "id": "ca-underused-housing-tax",
+      "name": "Underused Housing Tax (1% annual)",
+      "jurisdiction": "Canada",
+      "issuer": "Canada Revenue Agency",
+      "type": "federal tax",
+      "url": "https://www.canada.ca/en/services/taxes/underused-housing-tax.html",
+      "why_watching": "1% annual tax on vacant/underused residential property owned by non-resident non-Canadians (and some Canadians). Stacks with BC's spec/vacancy tax. Filing obligations + audit risk affect non-resident landlords directly.",
+      "affects": [
+        "British Columbia",
+        "Canada"
+      ],
+      "deadline": null,
+      "added": "2026-06-18",
+      "last_attempted": "2026-06-30T04:11:27.405429Z",
+      "last_status": "blocked",
+      "last_status_note": "exhausted direct/wayback/proxy/scraperapi — set HTTPS_PROXY_RESI or SCRAPER_API_KEY to escalate",
+      "last_snapshot_sha": null,
+      "known_article_ids": []
+    },
+    {
+      "id": "jp-akiya-vacant-house",
+      "name": "Vacant Houses Special Measures Act (空家対策特別措置法)",
+      "jurisdiction": "Japan",
+      "issuer": "Ministry of Land, Infrastructure, Transport and Tourism (MLIT)",
+      "type": "national vacancy regime",
+      "url": "https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000035.html",
+      "why_watching": "Japan's framework for designating dangerous/derelict vacant houses. Once designated 'specified vacant house', the property loses the 6× residential property-tax reduction and the municipality can force demolition. Materially affects yields + carrying costs for the abandoned-ski-resort and akiya inventory.",
+      "affects": [
+        "Japan"
+      ],
+      "deadline": null,
+      "added": "2026-06-18",
+      "last_attempted": "2026-06-30T04:11:28.562697Z",
+      "last_status": "ok",
+      "last_status_note": "unchanged",
+      "last_snapshot_sha": "254ac4ede870ba7cc83c02be38bf44c6b82eb2d83dc545eea89d63816f66b5be",
+      "known_article_ids": [],
+      "last_source": "direct"
+    },
+    {
+      "id": "th-nominee-crackdown-2026",
+      "name": "Thai nominee crackdown — DBD + court enforcement",
+      "jurisdiction": "Thailand",
+      "issuer": "Department of Business Development (DBD) + Department of Special Investigation (DSI)",
+      "type": "enforcement campaign + pending court orders",
+      "url": "https://search.bangkokpost.com/search/result?q=nominee+property+court&category=news",
+      "why_watching": "DBD has flagged 11,426 companies on Koh Phangan + Koh Samui (~68% of all firms there) and identified 7,000+ businesses suspected of using Thai nationals as nominee shareholders to bypass the 49% foreign-ownership cap. Real estate is the primary target. If courts order unwinding within 6-12 months, ~2,400-3,000 nominee-suspect villas in Phuket and same number in Samui will hit the market. Affects every landed villa + Thai-company-held land listing — especially in Phuket west coast, Samui north/east, Phangan, Pattaya, Hua Hin.",
+      "affects": [
+        "Thailand"
+      ],
+      "deadline": null,
+      "deadline_label": "court ruling pending",
+      "added": "2026-06-22",
+      "extra_sources": [
+        "https://search.bangkokpost.com/search/result?q=nominee+property+court&category=news",
+        "https://www.thephuketnews.com/search.php?searchword=nominee",
+        "https://www.bangkokpost.com/thailand/general/3273906/100-eateries-targeted-in-antiproxy-blitz"
+      ],
+      "last_attempted": "2026-06-30T04:11:30.022564Z",
+      "last_status": "changed",
+      "last_status_note": "10 new article(s) in extra-source feeds: 3278802, 3278649, 3278574, 3278785, 3278659 ...",
+      "last_snapshot_sha": "ee98bd8fd6c3e7532a41f70ee13eaaee6a52dffd9de03a035943ccc8766c780d",
+      "known_article_ids": [
+        "3273906",
+        "3273916",
+        "3274061",
+        "3274101",
+        "3274234",
+        "3274270",
+        "3274440",
+        "3274565",
+        "3274634",
+        "3274640",
+        "3277045",
+        "3277155",
+        "3277225",
+        "3277484",
+        "3277595",
+        "3277620",
+        "3277675",
+        "3277700",
+        "3277790",
+        "3277844",
+        "3277910",
+        "3278095",
+        "3278100",
+        "3278125",
+        "3278170",
+        "3278195",
+        "3278494",
+        "3278504",
+        "3278524",
+        "3278559",
+        "3278574",
+        "3278614",
+        "3278649",
+        "3278659",
+        "3278785",
+        "3278802"
+      ],
+      "last_source": "direct"
+    },
+    {
+      "id": "tr-forest-law-amendments-2025",
+      "name": "Forest Law 6831 — recent amendments + 2/B reclassification regime",
+      "jurisdiction": "Turkey",
+      "issuer": "T.C. Tarım ve Orman Bakanlığı (Ministry of Agriculture and Forestry) + OGM",
+      "type": "framework law + ongoing amendment package",
+      "url": "https://www.ogm.gov.tr/",
+      "why_watching": "Turkey's Forest Law 6831 governs what can be built on or near forest land — material for mountain land everywhere east of the Bosphorus. 2024-2026 amendment package broadens permitted activities on forest land (mining, tourism, energy) and the long-running '2/B' regime allows reclassification of former-forest land for sale. Affects every TR mountain / east-Anatolia land listing — both the legal status of the parcel itself and what neighbours can do that changes the view-shed.",
+      "affects": [
+        "Turkey"
+      ],
+      "deadline": null,
+      "deadline_label": "amendment package live",
+      "added": "2026-06-22",
+      "extra_sources": [
+        "https://www.resmigazete.gov.tr/",
+        "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.6831.pdf",
+        "https://www.hurriyetdailynews.com/economy",
+        "https://en.wikipedia.org/wiki/Forestry_in_Turkey"
+      ],
+      "last_attempted": "2026-06-30T04:11:36.923484Z",
+      "last_status": "ok",
+      "last_status_note": "unchanged",
+      "last_snapshot_sha": "a4c4ba93182715057e0d5d01ad396124c15af8fd348eb0c47083c82dc6517b15",
+      "known_article_ids": [],
+      "last_source": "direct"
+    }
+  ]
+}

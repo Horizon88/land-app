@@ -1,0 +1,5 @@
+{
+ "schema": "prefs_v1",
+ "note": "App-wide defaults committed to the repo so they survive every device and browser.",
+ "hidden_countries": ["French Polynesia"]
+}

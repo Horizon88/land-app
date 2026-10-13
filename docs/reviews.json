@@ -1,0 +1,78 @@
+{
+ "schema": "reviews_v1",
+ "note": "Claude photo reviews of finalists: url -> {thumb: up|down|meh, verdict, date}",
+ "reviews": {
+  "https://www.willhaben.at/iad/immobilien/d/haus-kaufen/salzburg/zell-am-see/panoramalage-am-mitterberg-zweitwohnsitz-mit-blick-auf-see-gletscher-1468166917/": {
+   "code": "AT-Y0SNJM",
+   "thumb": "up",
+   "verdict": "Balcony looks straight down the Zeller See to the Kitzsteinhorn glacier — top-tier view, and second-home use is allowed. Pin is approximate: confirm the exact Mitterberg address.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/grundstuecke/salzburg/zell-am-see/traumhaftes-baugrundstueck-in-zell-am-see-mit-1-036-m2-1883153975/": {
+   "code": "AT-K19NAA",
+   "thumb": "meh",
+   "verdict": "Flat valley-floor meadow beside new builds. Mountains behind, but no lake visible in any photo despite the lakeside distance.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/haus-kaufen/salzburg/zell-am-see/zell-am-see-wohnjuwel-direkt-oberhalb-vom-stadtzentrum-grosses-gepflegtes-haus-mit-unverbaubarem-seeblick-zu-verkaufen-1503412944/": {
+   "code": "AT-22DAQF",
+   "thumb": "up",
+   "verdict": "Elevated above Zell am See town with open views over the rooftops to the lake and mountains.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/haus-kaufen/salzburg/zell-am-see/seltene-gelegenheit-zweitwohnsitz-chalet-in-ruhiger-lage-von-zell-am-see-1206217345/": {
+   "code": "AT-44VKB6",
+   "thumb": "meh",
+   "verdict": "Modest older bungalow on a flat residential street with a dated interior; no lake or slope in the photos. The real asset is a rare second-home permit under €1M.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/grundstuecke/salzburg/salzburg-umgebung/vielseitiges-grundstueck-in-panoramalage-bautraegerprojekt-oder-eigenheim-1969456934/": {
+   "code": "AT-4BP7RH",
+   "thumb": "meh",
+   "verdict": "Developer site: the plot carries an old 1970s apartment block on a meadow slope, and the lake isn't visible in the main photo.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/grundstuecke/kaernten/klagenfurt-land/woertherseeblick-zum-top-preis-baugrundstueck-in-poertschach-um-nur-eur-210-m-1245994448/": {
+   "code": "AT-WDG72G",
+   "thumb": "up",
+   "verdict": "Genuine Wörthersee view over the village rooftops to the lake and Pyramidenkogel, from a sloping garden plot — strong value at ~$400k.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/haus-kaufen/tirol/kitzbuehel/tiroler-landhaus-mit-freizeitwohnsitzwidmung-in-traumlage-und-ski-in-ski-out-968902193/": {
+   "code": "AT-73982P",
+   "thumb": "up",
+   "verdict": "Traditional Tiroler Landhaus on an open meadow with wraparound balconies and holiday-home (Freizeitwohnsitz) zoning; likely needs updating.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/haus-kaufen/salzburg/sankt-johann-im-pongau/ein-besonderer-ort-zum-leben-mitten-in-der-wagrainer-bergwelt-1100500122/": {
+   "code": "AT-QATKXF",
+   "thumb": "meh",
+   "verdict": "Polished villa with a manicured garden, but on a residential street — pleasant, not a view property.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/haus-kaufen/tirol/kitzbuehel/exklusive-villa-am-fusse-des-hahnenkamms-1112251177/": {
+   "code": "AT-TDRYZM",
+   "thumb": "up",
+   "verdict": "Trophy: new chalet with full-height glass and a wide valley and mountain panorama at the foot of the Hahnenkamm.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/haus-kaufen/tirol/kufstein/kaiserblick-sonnige-hanglage-pool-pistennaehe-grosszuegige-landhausvilla-in-bestlage-1502714015/": {
+   "code": "AT-BHAMDP",
+   "thumb": "up",
+   "verdict": "Pool terrace facing the Wilder Kaiser — postcard view from a large luxury home.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/haus-kaufen/salzburg/sankt-johann-im-pongau/exklusives-mehrfamilienhaus-mit-pool-und-separaten-wohneinheiten-in-wagrain-1287099459/": {
+   "code": "AT-03JBCA",
+   "thumb": "meh",
+   "verdict": "Multi-unit house with a pool and generic interiors — a rental-building play rather than a special home.",
+   "date": "2026-10-12"
+  },
+  "https://www.willhaben.at/iad/immobilien/d/grundstuecke/salzburg/zell-am-see/schmittenhoehe-baugrund-ski-in-ski-out-an-der-skipiste-der-sonnenalmbahn-619504405/": {
+   "code": "AT-D420XQ",
+   "thumb": "up",
+   "verdict": "Hillside plot on the Schmittenhöhe side with a wide valley view and ski-in/out wording; the old ruin on it needs demolishing.",
+   "date": "2026-10-12"
+  }
+ }
+}

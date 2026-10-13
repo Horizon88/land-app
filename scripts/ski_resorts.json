@@ -1,0 +1,980 @@
+[
+ {
+  "name": "Whistler Blackcomb",
+  "lat": 50.1163,
+  "lon": -122.9574,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Revelstoke Mountain",
+  "lat": 50.9558,
+  "lon": -118.1656,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Big White",
+  "lat": 49.7261,
+  "lon": -118.9381,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Sun Peaks",
+  "lat": 50.8825,
+  "lon": -119.905,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Kicking Horse",
+  "lat": 51.2858,
+  "lon": -117.05,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Fernie Alpine",
+  "lat": 49.4633,
+  "lon": -115.095,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Panorama",
+  "lat": 50.4683,
+  "lon": -116.2197,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Red Mountain",
+  "lat": 49.0989,
+  "lon": -117.8053,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Whitewater",
+  "lat": 49.4256,
+  "lon": -117.1567,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Cypress Mountain",
+  "lat": 49.3947,
+  "lon": -123.2086,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Mt Washington",
+  "lat": 49.7472,
+  "lon": -125.3122,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Shames Mountain",
+  "lat": 54.5917,
+  "lon": -128.9067,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Hudson Bay Mountain",
+  "lat": 54.7997,
+  "lon": -127.2853,
+  "region": "CA-BC"
+ },
+ {
+  "name": "Lake Louise",
+  "lat": 51.4419,
+  "lon": -116.1758,
+  "region": "CA-AB"
+ },
+ {
+  "name": "Mt Tremblant",
+  "lat": 46.2103,
+  "lon": -74.5856,
+  "region": "CA-QC"
+ },
+ {
+  "name": "Blue Mountain",
+  "lat": 44.5036,
+  "lon": -80.3092,
+  "region": "CA-ON"
+ },
+ {
+  "name": "Niseko United",
+  "lat": 42.8642,
+  "lon": 140.6981,
+  "region": "JP-HK"
+ },
+ {
+  "name": "Hakuba",
+  "lat": 36.6928,
+  "lon": 137.8217,
+  "region": "JP-NA"
+ },
+ {
+  "name": "Nozawa Onsen",
+  "lat": 36.9239,
+  "lon": 138.4356,
+  "region": "JP-NA"
+ },
+ {
+  "name": "Furano",
+  "lat": 43.4106,
+  "lon": 142.4231,
+  "region": "JP-HK"
+ },
+ {
+  "name": "Rusutsu",
+  "lat": 42.735,
+  "lon": 140.8786,
+  "region": "JP-HK"
+ },
+ {
+  "name": "Tomamu",
+  "lat": 43.0728,
+  "lon": 142.6786,
+  "region": "JP-HK"
+ },
+ {
+  "name": "Yuzawa Naeba",
+  "lat": 36.8569,
+  "lon": 138.7836,
+  "region": "JP-NG"
+ },
+ {
+  "name": "Otaru Tenguyama",
+  "lat": 43.1844,
+  "lon": 141.0072,
+  "region": "JP-HK"
+ },
+ {
+  "name": "Aspen Snowmass",
+  "lat": 39.2095,
+  "lon": -106.9486,
+  "region": "USA-CO"
+ },
+ {
+  "name": "Vail",
+  "lat": 39.6403,
+  "lon": -106.3742,
+  "region": "USA-CO"
+ },
+ {
+  "name": "Park City",
+  "lat": 40.6514,
+  "lon": -111.5078,
+  "region": "USA-UT"
+ },
+ {
+  "name": "Jackson Hole",
+  "lat": 43.5875,
+  "lon": -110.8281,
+  "region": "USA-WY"
+ },
+ {
+  "name": "Big Sky",
+  "lat": 45.2858,
+  "lon": -111.4011,
+  "region": "USA-MT"
+ },
+ {
+  "name": "Erciyes",
+  "lat": 38.5278,
+  "lon": 35.5594,
+  "region": "TR-Kayseri"
+ },
+ {
+  "name": "Paland\u00f6ken",
+  "lat": 39.8772,
+  "lon": 41.2842,
+  "region": "TR-Erzurum"
+ },
+ {
+  "name": "Sar\u0131kam\u0131\u015f",
+  "lat": 40.3169,
+  "lon": 42.5772,
+  "region": "TR-Kars"
+ },
+ {
+  "name": "Uluda\u011f",
+  "lat": 40.0936,
+  "lon": 29.1361,
+  "region": "TR-Bursa"
+ },
+ {
+  "name": "Kartalkaya",
+  "lat": 40.6311,
+  "lon": 31.7758,
+  "region": "TR-Bolu"
+ },
+ {
+  "name": "Kartepe",
+  "lat": 40.6878,
+  "lon": 30.1989,
+  "region": "TR-Kocaeli"
+ },
+ {
+  "name": "Davraz",
+  "lat": 37.7917,
+  "lon": 30.8333,
+  "region": "TR-Isparta"
+ },
+ {
+  "name": "Sakl\u0131kent (Antalya)",
+  "lat": 36.8333,
+  "lon": 30.35,
+  "region": "TR-Antalya"
+ },
+ {
+  "name": "Ilgaz Y\u0131ld\u0131ztepe",
+  "lat": 41.0825,
+  "lon": 33.7886,
+  "region": "TR-Kastamonu"
+ },
+ {
+  "name": "Hesarek (Bart\u0131n)",
+  "lat": 41.4544,
+  "lon": 32.4322,
+  "region": "TR-Bart\u0131n"
+ },
+ {
+  "name": "Bozda\u011f",
+  "lat": 38.3083,
+  "lon": 28.0867,
+  "region": "TR-\u0130zmir"
+ },
+ {
+  "name": "Yedig\u00f6ller",
+  "lat": 40.5631,
+  "lon": 31.7506,
+  "region": "TR-Bolu"
+ },
+ {
+  "name": "K\u00f6ro\u011flu",
+  "lat": 40.6356,
+  "lon": 31.6086,
+  "region": "TR-Bolu"
+ },
+ {
+  "name": "Karag\u00f6l",
+  "lat": 40.3344,
+  "lon": 41.4925,
+  "region": "TR-Erzurum"
+ },
+ {
+  "name": "Konakl\u0131 (Ni\u011fde)",
+  "lat": 37.9483,
+  "lon": 34.7361,
+  "region": "TR-Ni\u011fde"
+ },
+ {
+  "name": "Bing\u00f6l Yola\u00e7t\u0131",
+  "lat": 39.1583,
+  "lon": 41.275,
+  "region": "TR-Bing\u00f6l"
+ },
+ {
+  "name": "Hakkari Mergab\u00fctan",
+  "lat": 37.6275,
+  "lon": 43.7906,
+  "region": "TR-Hakkari"
+ },
+ {
+  "name": "Ovac\u0131k (Tunceli)",
+  "lat": 39.3789,
+  "lon": 39.2364,
+  "region": "TR-Tunceli"
+ },
+ {
+  "name": "Yaln\u0131z\u00e7am (Ardahan)",
+  "lat": 41.0633,
+  "lon": 42.4961,
+  "region": "TR-Ardahan"
+ },
+ {
+  "name": "Zigana",
+  "lat": 40.6356,
+  "lon": 39.3833,
+  "region": "TR-G\u00fcm\u00fc\u015fhane"
+ },
+ {
+  "name": "Erzincan Ergan",
+  "lat": 39.6722,
+  "lon": 39.3725,
+  "region": "TR-Erzincan"
+ },
+ {
+  "name": "C\u0131b\u0131ltepe (Sar\u0131kam\u0131\u015f)",
+  "lat": 40.3036,
+  "lon": 42.5797,
+  "region": "TR-Kars"
+ },
+ {
+  "name": "Poiana Brasov",
+  "lat": 45.5938,
+  "lon": 25.553,
+  "region": "RO"
+ },
+ {
+  "name": "Predeal",
+  "lat": 45.5039,
+  "lon": 25.5742,
+  "region": "RO"
+ },
+ {
+  "name": "Sinaia",
+  "lat": 45.35,
+  "lon": 25.538,
+  "region": "RO"
+ },
+ {
+  "name": "Busteni",
+  "lat": 45.408,
+  "lon": 25.536,
+  "region": "RO"
+ },
+ {
+  "name": "Azuga",
+  "lat": 45.453,
+  "lon": 25.553,
+  "region": "RO"
+ },
+ {
+  "name": "Ranca",
+  "lat": 45.37,
+  "lon": 23.579,
+  "region": "RO"
+ },
+ {
+  "name": "Vatra Dornei",
+  "lat": 47.35,
+  "lon": 25.358,
+  "region": "RO"
+ },
+ {
+  "name": "Straja",
+  "lat": 45.317,
+  "lon": 23.15,
+  "region": "RO"
+ },
+ {
+  "name": "Parang",
+  "lat": 45.295,
+  "lon": 23.507,
+  "region": "RO"
+ },
+ {
+  "name": "Harghita Madaras",
+  "lat": 46.52,
+  "lon": 25.58,
+  "region": "RO"
+ },
+ {
+  "name": "Borsa Olimpica",
+  "lat": 47.668,
+  "lon": 24.753,
+  "region": "RO"
+ },
+ {
+  "name": "Cavnic",
+  "lat": 47.65,
+  "lon": 23.877,
+  "region": "RO"
+ },
+ {
+  "name": "Arieseni Vartop",
+  "lat": 46.438,
+  "lon": 22.647,
+  "region": "RO"
+ },
+ {
+  "name": "Paltinis",
+  "lat": 45.665,
+  "lon": 23.945,
+  "region": "RO"
+ },
+ {
+  "name": "Balea Lac",
+  "lat": 45.602,
+  "lon": 24.619,
+  "region": "RO"
+ },
+ {
+  "name": "Bran",
+  "lat": 45.52,
+  "lon": 25.368,
+  "region": "RO"
+ },
+ {
+  "name": "Rasnov",
+  "lat": 45.595,
+  "lon": 25.463,
+  "region": "RO"
+ },
+ {
+  "name": "Calimani Gura Haitii",
+  "lat": 47.183,
+  "lon": 25.233,
+  "region": "RO"
+ },
+ {
+  "name": "Kasprowy Wierch",
+  "lat": 49.235,
+  "lon": 19.982,
+  "region": "PL"
+ },
+ {
+  "name": "Zakopane Nosal",
+  "lat": 49.284,
+  "lon": 20.009,
+  "region": "PL"
+ },
+ {
+  "name": "Szczyrk",
+  "lat": 49.718,
+  "lon": 19.029,
+  "region": "PL"
+ },
+ {
+  "name": "Wisla",
+  "lat": 49.642,
+  "lon": 18.868,
+  "region": "PL"
+ },
+ {
+  "name": "Korbielow",
+  "lat": 49.567,
+  "lon": 19.352,
+  "region": "PL"
+ },
+ {
+  "name": "Karpacz",
+  "lat": 50.77,
+  "lon": 15.75,
+  "region": "PL"
+ },
+ {
+  "name": "Szklarska Poreba",
+  "lat": 50.829,
+  "lon": 15.524,
+  "region": "PL"
+ },
+ {
+  "name": "Bialka Tatrzanska",
+  "lat": 49.417,
+  "lon": 20.11,
+  "region": "PL"
+ },
+ {
+  "name": "Krynica-Zdroj",
+  "lat": 49.422,
+  "lon": 20.959,
+  "region": "PL"
+ },
+ {
+  "name": "Ustrzyki Gorne",
+  "lat": 49.07,
+  "lon": 22.663,
+  "region": "PL"
+ },
+ {
+  "name": "Czarna Gora PL",
+  "lat": 49.317,
+  "lon": 20.2,
+  "region": "PL"
+ },
+ {
+  "name": "Valle Nevado",
+  "lat": -33.354,
+  "lon": -70.257,
+  "region": "CL"
+ },
+ {
+  "name": "El Colorado",
+  "lat": -33.348,
+  "lon": -70.287,
+  "region": "CL"
+ },
+ {
+  "name": "Farellones",
+  "lat": -33.354,
+  "lon": -70.302,
+  "region": "CL"
+ },
+ {
+  "name": "La Parva",
+  "lat": -33.332,
+  "lon": -70.292,
+  "region": "CL"
+ },
+ {
+  "name": "Portillo",
+  "lat": -32.838,
+  "lon": -70.124,
+  "region": "CL"
+ },
+ {
+  "name": "Lagunillas",
+  "lat": -33.791,
+  "lon": -70.254,
+  "region": "CL"
+ },
+ {
+  "name": "Nevados de Chillan",
+  "lat": -36.906,
+  "lon": -71.409,
+  "region": "CL"
+ },
+ {
+  "name": "Corralco",
+  "lat": -38.438,
+  "lon": -71.592,
+  "region": "CL"
+ },
+ {
+  "name": "Llaima Las Araucarias",
+  "lat": -38.68,
+  "lon": -71.704,
+  "region": "CL"
+ },
+ {
+  "name": "Villarrica Pucon",
+  "lat": -39.413,
+  "lon": -71.942,
+  "region": "CL"
+ },
+ {
+  "name": "Antillanca",
+  "lat": -40.783,
+  "lon": -72.193,
+  "region": "CL"
+ },
+ {
+  "name": "Osorno Volcano",
+  "lat": -41.1,
+  "lon": -72.522,
+  "region": "CL"
+ },
+ {
+  "name": "El Fraile Coyhaique",
+  "lat": -45.66,
+  "lon": -71.97,
+  "region": "CL"
+ },
+ {
+  "name": "Cerro Mirador",
+  "lat": -53.158,
+  "lon": -70.977,
+  "region": "CL"
+ },
+ {
+  "name": "Serra da Estrela",
+  "lat": 40.3222,
+  "lon": -7.6167,
+  "region": "PT"
+ },
+ {
+  "name": "Niseko Annupuri",
+  "lat": 42.842,
+  "lon": 140.689,
+  "region": "JP"
+ },
+ {
+  "name": "Niseko Hanazono",
+  "lat": 42.8912,
+  "lon": 140.6844,
+  "region": "JP"
+ },
+ {
+  "name": "Niseko Grand Hirafu",
+  "lat": 42.8642,
+  "lon": 140.7025,
+  "region": "JP"
+ },
+ {
+  "name": "Kiroro",
+  "lat": 43.0655,
+  "lon": 140.9394,
+  "region": "JP"
+ },
+ {
+  "name": "Sahoro",
+  "lat": 43.1478,
+  "lon": 142.9814,
+  "region": "JP"
+ },
+ {
+  "name": "Kamui Ski Links",
+  "lat": 43.6839,
+  "lon": 142.5069,
+  "region": "JP"
+ },
+ {
+  "name": "Asahidake",
+  "lat": 43.6631,
+  "lon": 142.8347,
+  "region": "JP"
+ },
+ {
+  "name": "Teine Sapporo",
+  "lat": 43.0783,
+  "lon": 141.2372,
+  "region": "JP"
+ },
+ {
+  "name": "Kokusai Sapporo",
+  "lat": 42.9464,
+  "lon": 141.0781,
+  "region": "JP"
+ },
+ {
+  "name": "Sapporo Bankei",
+  "lat": 43.0342,
+  "lon": 141.2953,
+  "region": "JP"
+ },
+ {
+  "name": "Aomori Spring",
+  "lat": 40.5411,
+  "lon": 140.5686,
+  "region": "JP"
+ },
+ {
+  "name": "Hakkoda",
+  "lat": 40.6478,
+  "lon": 140.8814,
+  "region": "JP"
+ },
+ {
+  "name": "Appi Kogen",
+  "lat": 40.0619,
+  "lon": 140.9917,
+  "region": "JP"
+ },
+ {
+  "name": "Geto Kogen",
+  "lat": 39.4536,
+  "lon": 140.9497,
+  "region": "JP"
+ },
+ {
+  "name": "Amihari Onsen",
+  "lat": 39.6725,
+  "lon": 141.0069,
+  "region": "JP"
+ },
+ {
+  "name": "Zao Onsen",
+  "lat": 38.1583,
+  "lon": 140.3961,
+  "region": "JP"
+ },
+ {
+  "name": "Gassan",
+  "lat": 38.5478,
+  "lon": 140.0281,
+  "region": "JP"
+ },
+ {
+  "name": "Alts Bandai",
+  "lat": 37.6225,
+  "lon": 140.0842,
+  "region": "JP"
+ },
+ {
+  "name": "Grandeco",
+  "lat": 37.6467,
+  "lon": 140.0333,
+  "region": "JP"
+ },
+ {
+  "name": "Adatara",
+  "lat": 37.6194,
+  "lon": 140.3033,
+  "region": "JP"
+ },
+ {
+  "name": "Naeba",
+  "lat": 36.7869,
+  "lon": 138.7856,
+  "region": "JP"
+ },
+ {
+  "name": "Kagura",
+  "lat": 36.8033,
+  "lon": 138.7492,
+  "region": "JP"
+ },
+ {
+  "name": "GALA Yuzawa",
+  "lat": 36.9358,
+  "lon": 138.8003,
+  "region": "JP"
+ },
+ {
+  "name": "Ishiuchi Maruyama",
+  "lat": 36.955,
+  "lon": 138.8333,
+  "region": "JP"
+ },
+ {
+  "name": "Iwappara",
+  "lat": 36.9236,
+  "lon": 138.7942,
+  "region": "JP"
+ },
+ {
+  "name": "Myoko Suginohara",
+  "lat": 36.9319,
+  "lon": 138.1611,
+  "region": "JP"
+ },
+ {
+  "name": "Myoko Akakura",
+  "lat": 36.9422,
+  "lon": 138.1794,
+  "region": "JP"
+ },
+ {
+  "name": "Lotte Arai",
+  "lat": 36.95,
+  "lon": 138.2833,
+  "region": "JP"
+ },
+ {
+  "name": "Seki Onsen",
+  "lat": 36.95,
+  "lon": 138.2,
+  "region": "JP"
+ },
+ {
+  "name": "Madarao Kogen",
+  "lat": 36.7833,
+  "lon": 138.3167,
+  "region": "JP"
+ },
+ {
+  "name": "Tangram Ski Circus",
+  "lat": 36.8,
+  "lon": 138.3167,
+  "region": "JP"
+ },
+ {
+  "name": "Hakuba Happo-one",
+  "lat": 36.6944,
+  "lon": 137.8317,
+  "region": "JP"
+ },
+ {
+  "name": "Hakuba Iwatake",
+  "lat": 36.7011,
+  "lon": 137.8506,
+  "region": "JP"
+ },
+ {
+  "name": "Hakuba Goryu 47",
+  "lat": 36.66,
+  "lon": 137.8442,
+  "region": "JP"
+ },
+ {
+  "name": "Hakuba Norikura",
+  "lat": 36.7808,
+  "lon": 137.7933,
+  "region": "JP"
+ },
+ {
+  "name": "Hakuba Cortina",
+  "lat": 36.8014,
+  "lon": 137.7822,
+  "region": "JP"
+ },
+ {
+  "name": "Hakuba Sanosaka",
+  "lat": 36.5822,
+  "lon": 137.8461,
+  "region": "JP"
+ },
+ {
+  "name": "Hakuba Kashimayari",
+  "lat": 36.6019,
+  "lon": 137.7972,
+  "region": "JP"
+ },
+ {
+  "name": "Shiga Kogen",
+  "lat": 36.715,
+  "lon": 138.4933,
+  "region": "JP"
+ },
+ {
+  "name": "Karuizawa",
+  "lat": 36.3661,
+  "lon": 138.63,
+  "region": "JP"
+ },
+ {
+  "name": "Sugadaira",
+  "lat": 36.5464,
+  "lon": 138.3389,
+  "region": "JP"
+ },
+ {
+  "name": "Norikura Kogen",
+  "lat": 36.13,
+  "lon": 137.65,
+  "region": "JP"
+ },
+ {
+  "name": "Kiso-Fukushima",
+  "lat": 35.8567,
+  "lon": 137.6767,
+  "region": "JP"
+ },
+ {
+  "name": "Ontake 2240",
+  "lat": 35.9061,
+  "lon": 137.4589,
+  "region": "JP"
+ },
+ {
+  "name": "Kusatsu Kokusai",
+  "lat": 36.6297,
+  "lon": 138.585,
+  "region": "JP"
+ },
+ {
+  "name": "Manza Onsen",
+  "lat": 36.5217,
+  "lon": 138.5019,
+  "region": "JP"
+ },
+ {
+  "name": "Tanigawadake Tenjindaira",
+  "lat": 36.8342,
+  "lon": 138.9375,
+  "region": "JP"
+ },
+ {
+  "name": "Marunuma Kogen",
+  "lat": 36.8917,
+  "lon": 139.24,
+  "region": "JP"
+ },
+ {
+  "name": "Nikko Yumoto",
+  "lat": 36.7828,
+  "lon": 139.4111,
+  "region": "JP"
+ },
+ {
+  "name": "Hunter Mountain Shiobara",
+  "lat": 36.9358,
+  "lon": 139.7808,
+  "region": "JP"
+ },
+ {
+  "name": "Fujiten Snow Resort",
+  "lat": 35.4342,
+  "lon": 138.7472,
+  "region": "JP"
+ },
+ {
+  "name": "Yeti",
+  "lat": 35.3392,
+  "lon": 138.7728,
+  "region": "JP"
+ },
+ {
+  "name": "Biwako Valley",
+  "lat": 35.1758,
+  "lon": 135.8967,
+  "region": "JP"
+ },
+ {
+  "name": "Hakodateyama",
+  "lat": 35.3583,
+  "lon": 136.035,
+  "region": "JP"
+ },
+ {
+  "name": "Daisen",
+  "lat": 35.3717,
+  "lon": 133.5578,
+  "region": "JP"
+ },
+ {
+  "name": "Ishizuchi",
+  "lat": 33.7739,
+  "lon": 133.1358,
+  "region": "JP"
+ },
+ {
+  "name": "Kuju",
+  "lat": 33.1033,
+  "lon": 131.2417,
+  "region": "JP"
+ },
+ {
+  "name": "Cerro Catedral",
+  "lat": -41.169,
+  "lon": -71.443,
+  "region": "AR"
+ },
+ {
+  "name": "Chapelco",
+  "lat": -40.2,
+  "lon": -71.303,
+  "region": "AR"
+ },
+ {
+  "name": "Cerro Bayo",
+  "lat": -40.735,
+  "lon": -71.6,
+  "region": "AR"
+ },
+ {
+  "name": "Cerro Perito Moreno (El Bolson)",
+  "lat": -41.87,
+  "lon": -71.53,
+  "region": "AR"
+ },
+ {
+  "name": "La Hoya",
+  "lat": -42.83,
+  "lon": -71.26,
+  "region": "AR"
+ },
+ {
+  "name": "Cerro Castor",
+  "lat": -54.723,
+  "lon": -68.017,
+  "region": "AR"
+ },
+ {
+  "name": "Las Lenas",
+  "lat": -35.155,
+  "lon": -70.08,
+  "region": "AR"
+ },
+ {
+  "name": "Penitentes",
+  "lat": -32.84,
+  "lon": -69.84,
+  "region": "AR"
+ },
+ {
+  "name": "Vallecitos",
+  "lat": -33.09,
+  "lon": -69.35,
+  "region": "AR"
+ },
+ {
+  "name": "Caviahue",
+  "lat": -37.876,
+  "lon": -71.03,
+  "region": "AR"
+ },
+ {
+  "name": "Batea Mahuida",
+  "lat": -38.83,
+  "lon": -71.13,
+  "region": "AR"
+ }
+]

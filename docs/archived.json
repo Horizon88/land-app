@@ -1,0 +1,12 @@
+{
+ "schema": "archived_v1",
+ "note": "Permanently archived listings, keyed by listing URL. Loaded by the app on every visit so archives survive device, browser and storage changes. Add entries from the app's '📋 Copy archive list' button.",
+ "archives": {
+  "https://www.jamesedition.com/real_estate/arue-french-polynesia/arue-constructible-18287890": {
+   "code": "PF-46YQTX",
+   "tags": [],
+   "reason": "archived by owner (kept resurfacing)",
+   "ts": 1790640000000
+  }
+ }
+}

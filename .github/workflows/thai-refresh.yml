@@ -1,0 +1,96 @@
+name: Thai listings refresh
+
+# Re-scrapes the Thai fazwaz/propertyhub listings, re-runs the nominee-structure
+# scan, tracks price/age changes, and commits the updated data back.
+#
+# NOTE ON SCHEDULING: GitHub only fires `schedule:` triggers from the DEFAULT
+# branch (master). This file lives on the feature branch, so the weekly timer
+# will not fire until an identical file also exists on master. Until then, run
+# it on demand: Actions tab → "Thai listings refresh" → Run workflow (pick the
+# feature branch). The job always checks out and pushes the feature branch,
+# wherever it is triggered from.
+
+on:
+  schedule:
+    - cron: "0 3 * * 2"    # Tuesdays 03:00 UTC — off-peak, clear of the other weekly jobs
+  workflow_dispatch: {}
+
+concurrency:
+  group: thai-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # The scrapers/merges hardcode /home/user/land-app (this project's container
+      # path). Symlink it to the checkout so those paths resolve on the runner.
+      - name: Mirror repo at /home/user/land-app
+        run: |
+          sudo mkdir -p /home/user
+          sudo ln -sfn "$GITHUB_WORKSPACE" /home/user/land-app
+
+      # Persist the nominee-scan cache between runs so each week only fetches
+      # NEW listings (ownership/deed structure is stable). A fresh key each run
+      # with a shared prefix keeps the latest cache warm.
+      - name: Restore nominee-scan cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/nominee_scan.json
+          key: nominee-scan-${{ github.run_id }}
+          restore-keys: |
+            nominee-scan-
+
+      - name: Scrape + merge — FazWaz South
+        run: python3 scripts/fazwaz_south_th_scrape.py && python3 scripts/fazwaz_south_th_merge.py
+        continue-on-error: true
+
+      - name: Scrape + merge — FazWaz Central/East
+        run: python3 scripts/fazwaz_central_east_scrape.py && python3 scripts/fazwaz_central_east_merge.py
+        continue-on-error: true
+
+      - name: Scrape + merge — FazWaz deep farang-coast sweep
+        run: python3 scripts/fazwaz_deep_scrape.py && python3 scripts/fazwaz_deep_merge.py
+        continue-on-error: true
+
+      - name: Scrape + merge — PropertyHub
+        run: python3 scripts/propertyhub_th_scrape.py && python3 scripts/propertyhub_th_merge.py
+        continue-on-error: true
+
+      - name: Clean + normalize dataset
+        run: python3 scripts/clean_listings.py
+
+      - name: Nominee-structure scan (incremental) + merge
+        run: |
+          python3 scripts/nominee_scan.py
+          python3 scripts/nominee_merge.py
+        continue-on-error: true
+
+      - name: Snapshot history (age + price-drop tracking)
+        run: python3 scripts/snapshot_history.py
+
+      - name: Commit refreshed data
+        run: |
+          git config user.email "noreply@anthropic.com"
+          git config user.name "Claude (Thai refresh)"
+          git add docs/listings.json docs/quarantine.json docs/foreign_notes.json data/history.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "thai refresh: listings + nominee + price/age tracking ($(date -u +%Y-%m-%d))"
+            git push origin HEAD:main
+          else
+            echo "no changes this run"
+          fi

@@ -1,0 +1,10 @@
+name = "landrelay"
+main = "cloudflare-worker.js"
+compatibility_date = "2024-09-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+# Browser Rendering: adds ?render=1 mode to the relay for JS-heavy targets
+# (Homegate CH, Willhaben AT, Immobiliare IT, etc). Free tier: 10 min/day.
+[browser]
+binding = "MYBROWSER"

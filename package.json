@@ -1,0 +1,13 @@
+{
+  "name": "landrelay",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Cloudflare Worker relay: direct fetch, IPRoyal proxy, or Browser Rendering",
+  "main": "cloudflare-worker.js",
+  "dependencies": {
+    "@cloudflare/puppeteer": "^0.0.14"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}

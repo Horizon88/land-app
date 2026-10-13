@@ -1,0 +1,31 @@
+{
+  "as_of": "2026-08-08",
+  "source": "parcllabs.com/research/motivated-sellers/map",
+  "national": 5.39,
+  "state_msi": {
+    "Indiana": 6.27,
+    "Oregon": 6.25,
+    "Texas": 6.21,
+    "Arizona": 6.2,
+    "Colorado": 6.07,
+    "Rhode Island": 2.64,
+    "Connecticut": 3.27,
+    "New York": 3.35,
+    "New Jersey": 3.36,
+    "Nebraska": 3.82
+  },
+  "metro_msi": {
+    "Sherman, TX": 7.47,
+    "Austin, TX": 7.29,
+    "Kingsport, TN": 7.13,
+    "San Antonio, TX": 7.08,
+    "Tampa, FL": 7.02,
+    "Rochester, NY": 2.16,
+    "Atlantic City, NJ": 2.44,
+    "Lincoln, NE": 2.48,
+    "Lafayette, LA": 2.74,
+    "Syracuse, NY": 2.86
+  },
+  "county_msi": {},
+  "coverage_note": "Top-5 highest + bottom-5 lowest states + top-10 highest/lowest metros (from Parcl Labs national map JSON-LD). County-level requires paid API \u2014 Parcl Labs sells this data."
+}

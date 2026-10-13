@@ -1,0 +1,37 @@
+name: weekly-snapshot
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '17 2 * * 1'   # Monday 02:17 UTC — off-peak, avoids Sunday-night deploys
+
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Snapshot history (age + price-drop tracking)
+        run: python3 scripts/snapshot_history.py
+      - name: Refresh regulatory watch
+        env:
+          SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
+          HTTPS_PROXY_RESI: ${{ secrets.HTTPS_PROXY_RESI }}
+          CF_RELAY_URL: https://landrelay.flag-theory.workers.dev
+        run: python3 scripts/watch_regulatory.py || true
+      - name: Commit changes
+        run: |
+          git config user.email "noreply@anthropic.com"
+          git config user.name "Claude"
+          git add data/history.json docs/listings.json docs/regulatory_watch.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "weekly snapshot: age + price-drop tracking $(date -u +%Y-%m-%d)"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
