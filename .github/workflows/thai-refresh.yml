@@ -11,8 +11,9 @@ name: Thai listings refresh
 # wherever it is triggered from.
 
 on:
-  schedule:
-    - cron: "0 3 * * 2"    # Tuesdays 03:00 UTC — off-peak, clear of the other weekly jobs
+  # schedule paused 2026-10-14 — uncomment to re-enable
+  # schedule:
+    # - cron: "0 3 * * 2"    # Tuesdays 03:00 UTC — off-peak, clear of the other weekly jobs
   workflow_dispatch: {}
 
 concurrency:

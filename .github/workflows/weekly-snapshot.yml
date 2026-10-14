@@ -1,8 +1,9 @@
 name: weekly-snapshot
 on:
   workflow_dispatch: {}
-  schedule:
-    - cron: '17 2 * * 1'   # Monday 02:17 UTC — off-peak, avoids Sunday-night deploys
+  # schedule paused 2026-10-14 — uncomment to re-enable
+  # schedule:
+    # - cron: '17 2 * * 1'   # Monday 02:17 UTC — off-peak, avoids Sunday-night deploys
 
 concurrency:
   group: snapshot

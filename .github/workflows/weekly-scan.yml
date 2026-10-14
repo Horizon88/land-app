@@ -1,8 +1,9 @@
 name: Weekly land scan
 
 on:
-  schedule:
-    - cron: "0 9 * * 1"   # Mondays 09:00 UTC
+  # schedule paused 2026-10-14 — uncomment to re-enable
+  # schedule:
+    # - cron: "0 9 * * 1"   # Mondays 09:00 UTC
   workflow_dispatch: {}    # also run on demand
 
 permissions:
