@@ -1,0 +1,30 @@
+{
+ "schema": "price_watch_v1",
+ "note": "Listings whose asking price is tracked over time. scripts/price_watch.py re-checks each URL and appends changes.",
+ "watches": {
+  "https://www.redfin.com/RI/Barrington/24-Stone-Tower-Ln-02806/home/52216762": {
+   "code": "US-DGJPF3",
+   "label": "24 Stone Tower Ln, Barrington RI",
+   "added": "2026-10-15",
+   "last_checked": "2026-10-15",
+   "history": [
+    {
+     "date": "2026-06-29",
+     "price": 5395000,
+     "event": "Listed"
+    },
+    {
+     "date": "2026-09-08",
+     "price": 4900000,
+     "event": "Price cut"
+    },
+    {
+     "date": "2026-10-02",
+     "price": 4725000,
+     "event": "Price cut"
+    }
+   ],
+   "context": "Last sold Jun 2019 for $2,236,000."
+  }
+ }
+}
