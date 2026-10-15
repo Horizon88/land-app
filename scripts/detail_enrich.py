@@ -74,8 +74,9 @@ def parse_suumo(h):
     if re.search(r"眺望良好|眺望良し|眺望抜群|絶景|パノラマ", t): perks.append("🌅 great view (眺望)")
     if re.search(r"スキー場まで徒歩|ゲレンデまで徒歩|ゲレンデ目の前|スキーイン", t): perks.append("⛷ walk to the slopes")
     if "別荘地" in t: perks.append("resort estate (別荘地)")
-    imgs = list(dict.fromkeys(re.findall(r"https://img01\.suumo\.com/jj/resizeImage\?src=gazo[^\"'\s>]+?\.jpg", h)))[:8]
-    imgs = [i.replace("&amp;", "&") for i in imgs]
+    # SUUMO's resizer needs w/h params; ask for a large size
+    imgs = list(dict.fromkeys(re.findall(r"https://img01\.suumo\.com/jj/resizeImage\?src=gazo[^\"'\s>&]+?\.jpg", h)))[:8]
+    imgs = [i + "&w=1024&h=768" for i in imgs]
     return {"deal": deal, "warn": warn, "perks": perks, "imgs": imgs,
             "zoning": zoning, "land_cat": land_cat, "road": road[:30], "tenure": tenure[:10]}
 

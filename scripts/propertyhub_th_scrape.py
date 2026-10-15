@@ -107,7 +107,9 @@ def extract(listing):
         "price_thb": int(thb),
         "price_usd": round(int(thb) / 36),
         "lat": round(float(lat), 6), "lng": round(float(lng), 6),
-        "img": ("https://img.propertyhub.in.th" + listing["coverPicture"]) if listing.get("coverPicture") else "",
+        # coverPicture is /pictures/<yyyymm>/<yyyymmdd>/<id>/<hash>.jpg; the CDN serves <id>.jpg
+        "img": (re.sub(r"^(/pictures/\d+/\d+/[A-Za-z0-9]+)/.*$", r"https://bcdn.propertyhub.in.th\1.jpg", listing["coverPicture"])
+                if listing.get("coverPicture") else ""),
         "first_seen": (listing.get("createdAt") or "")[:10] or None,
         "rai_display": rai,
     }

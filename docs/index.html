@@ -137,6 +137,13 @@
   .note-rev{font-size:11px;color:#9fd4ff;margin-top:2px;white-space:normal;font-style:italic}
   .photo-strip{display:flex;gap:6px;overflow-x:auto;margin:8px 0 12px;padding-bottom:4px}
   .photo-strip img{height:110px;border-radius:6px;flex:0 0 auto;cursor:zoom-in;background:#222}
+  #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:3000;align-items:center;justify-content:center}
+  #lightbox.show{display:flex}
+  #lightbox img{max-width:92vw;max-height:86vh;border-radius:6px;box-shadow:0 10px 40px rgba(0,0,0,.7)}
+  #lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);font-size:42px;color:#fff;background:rgba(255,255,255,.08);border:0;border-radius:50%;width:58px;height:58px;cursor:pointer}
+  #lightbox .lb-prev{left:2vw} #lightbox .lb-next{right:2vw}
+  #lightbox .lb-close{position:absolute;top:14px;right:18px;font-size:28px;color:#fff;background:none;border:0;cursor:pointer}
+  #lightbox .lb-count{position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#ccc;font-size:13px}
   #triageBg .triage-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;width:min(760px,96vw);max-height:94vh;overflow:auto;padding:16px}
   .triage-photo{width:100%;height:min(48vh,420px);object-fit:cover;border-radius:8px;background:#111;display:block}
   .triage-btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
@@ -149,8 +156,8 @@
   #detailMap.empty{display:flex;align-items:center;justify-content:center;color:var(--txt-dim);font-size:12px;height:60px}
   .detail-actions .btn{flex:1;justify-content:center;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
   /* Insights drawer */
-  .insights{position:absolute;right:0;top:0;bottom:0;width:300px;background:var(--panel);border-left:1px solid var(--border);transform:translateX(100%);transition:transform .25s;z-index:5;overflow:auto;padding:16px}
-  .insights.show{transform:translateX(0)}
+  .insights{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(420px,92vw);max-height:80vh;background:var(--panel);border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.6);z-index:1500;overflow:auto;padding:16px}
+  .insights.show{display:block}
   .insights h3{font-size:14px;margin-bottom:10px}
   .insights .group{margin-bottom:16px}
   .insights .group h4{font-size:11px;text-transform:uppercase;color:var(--txt-dim);margin-bottom:6px;letter-spacing:.04em}
@@ -213,7 +220,7 @@
     thead th[data-k=coast_km],tbody td:nth-child(11),
     thead th[data-k=distress],tbody td:nth-child(12),
     thead th[data-k=days_on_market],tbody td:nth-child(13){display:none}
-    .insights{width:88%}
+    .insights{width:92vw}
     .detail-modal{max-height:94vh}
     .gallery{height:200px}
     #detailMap{height:130px}
@@ -283,7 +290,6 @@
   <div class="control"><label><input type="checkbox" id="hideForest"> 🚫 Hide forest-encroaching (Thai)</label></div>
   <button class="btn" id="openWeights" title="Adjust rating weights">⚖ Weights</button>
   <div class="control"><label>Sort</label><select id="sort"><option value="r">rating</option><option value="upa">$/acre</option><option value="upm">$/m²</option><option value="ac">acres</option><option value="usd">price USD</option><option value="days_on_market">days listed</option><option value="total_drop_pct">price drop %</option><option value="distress">🔥 distress</option><option value="leverage">🎯 leverage</option></select></div>
-  <button class="btn" id="toggleInsights">Insights ▸</button>
 </div>
 <div id="winnersStrip" style="display:none"></div>
 <main>
@@ -291,6 +297,7 @@
   <div class="panel">
     <table id="tbl"><thead><tr><th data-k="r" class="sorted">★</th><th data-k="cf">country</th><th data-k="rg">region</th><th data-k="a">area</th><th data-k="ac">size</th><th data-k="upa">$/ac · ฿/rai</th><th data-k="upm">$/m²</th><th data-k="usd">price USD</th><th data-k="v">view</th><th data-k="ski_km">⛷ km</th><th data-k="coast_km">🌊 km</th><th data-k="distress">🔥</th><th data-k="days_on_market">⏳</th><th>link</th><th></th></tr></thead><tbody id="tbody"></tbody></table>
     <div class="insights" id="insights">
+      <button class="btn" id="closeInsights" style="float:right;padding:2px 9px" title="Close">✕</button>
       <h3>📊 Patterns from your archives</h3>
       <div id="insightsBody"><p style="color:var(--txt-dim);font-size:12px">Archive listings (with a reason) to start training the model. Patterns will appear here as you accumulate signals.</p></div>
     </div>
@@ -301,6 +308,7 @@
   <span>map: 732 with coords (TH/NZ/BC); table: all 2,274</span>
   <span class="right">
     <label style="cursor:pointer"><input type="checkbox" id="showArch"> show archived (<span id="archN">0</span>)</label>
+    <button class="btn" id="toggleInsights" title="What your archived listings have in common">📊 Archive patterns</button>
     <button class="btn" id="copyArchBtn" title="Copy your archives so they can be saved permanently in the repo">📋 Copy archive list</button>
     <button class="btn" id="exportBtn">⬇ export archives</button>
     <button class="btn" id="importBtn">⬆ import</button>
@@ -309,6 +317,7 @@
 </footer>
 
 <!-- Detail popover -->
+<div id="lightbox"><button class="lb-close" title="Close (Esc)">✕</button><button class="lb-nav lb-prev" title="Previous (←)">‹</button><img alt=""><button class="lb-nav lb-next" title="Next (→)">›</button><div class="lb-count"></div></div>
 <div class="modal-bg" id="triageBg"><div class="triage-card" id="triageCard"></div></div>
 <div class="modal-bg" id="detailBg">
   <div class="modal detail-modal">
@@ -1656,7 +1665,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       <h3>${r.code?`<code style="font-size:13px;opacity:.6;margin-right:8px">${r.code}</code>`:''}${r.rg} ${r.a?' · '+r.a:''}</h3>
       <div class="sub">${r.v||'no view'}${r.view_verified===true?' <span style="color:#7ce38b">✓ verified</span>':r.view_verified===false?' <span style="color:#ff8080">✗ unverified</span>':''} · ${r.t||'title unspecified'} · src: ${r.cur||''}</div>
       ${flag}${arch}
-      ${(r.imgs&&r.imgs.length)?`<div class="photo-strip">${r.imgs.slice(0,8).map(u=>`<a href="${u}" target="_blank" rel="noopener"><img src="${u}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"></a>`).join('')}</div>`:''}
+      ${(r.imgs&&r.imgs.length)?`<div class="photo-strip" data-imgs="${encodeURIComponent(JSON.stringify(r.imgs.slice(0,8)))}">${r.imgs.slice(0,8).map((u,i)=>`<img src="${u}" data-i="${i}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" title="Click to enlarge">`).join('')}</div>`:''}
       ${REVIEWS[r.u]?`<div class="detail-flag" style="background:#10202a;color:#9fd4ff;border-color:#2a5a70">🧐 <b>Claude's photo review${REVIEWS[r.u].thumb==='up'?' 👍':REVIEWS[r.u].thumb==='down'?' 👎':''}</b> — ${REVIEWS[r.u].verdict}${REVIEWS[r.u].date?` <span style="opacity:.6">(${REVIEWS[r.u].date})</span>`:''}</div>`:''}
       ${r.deal&&r.deal.length?`<div class="detail-flag" style="background:#3a1a1a;color:#ff9090;border-color:#702030">⛔ <b>Deal-killer${r.deal.length>1?'s':''}</b>: ${r.deal.join(' · ')}</div>`:''}
       ${r.warn&&r.warn.length?`<div class="detail-flag">⚠ ${r.warn.join(' · ')}</div>`:''}
@@ -3460,10 +3469,9 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
 
   // ---- insights drawer ----
   const insights=document.getElementById('insights');
-  document.getElementById('toggleInsights').onclick=()=>{
-    insights.classList.toggle('show');
-    document.getElementById('toggleInsights').textContent = insights.classList.contains('show') ? 'Insights ◂' : 'Insights ▸';
-  };
+  document.getElementById('toggleInsights').onclick=()=>insights.classList.toggle('show');
+  document.getElementById('closeInsights').onclick=()=>insights.classList.remove('show');
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') insights.classList.remove('show'); });
   function renderInsights(regionTags){
     const body=document.getElementById('insightsBody');
     const total=Object.keys(archives).length;
@@ -3518,6 +3526,31 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     r.readAsText(f);
   };
 
+  // ---- photo lightbox ----
+  const lb=document.getElementById('lightbox'), lbImg=lb.querySelector('img'), lbCount=lb.querySelector('.lb-count');
+  let lbList=[], lbI=0;
+  function lbShow(){ lbImg.src=lbList[lbI]; lbCount.textContent=lbList.length>1?`${lbI+1} / ${lbList.length}`:'';
+    lb.querySelectorAll('.lb-nav').forEach(b=>b.style.display=lbList.length>1?'':'none'); }
+  function openLightbox(list, i){ if(!list||!list.length) return; lbList=list; lbI=i||0; lb.classList.add('show'); lbShow(); }
+  function closeLightbox(){ lb.classList.remove('show'); lbImg.removeAttribute('src'); }
+  lb.querySelector('.lb-prev').onclick=e=>{ e.stopPropagation(); lbI=(lbI-1+lbList.length)%lbList.length; lbShow(); };
+  lb.querySelector('.lb-next').onclick=e=>{ e.stopPropagation(); lbI=(lbI+1)%lbList.length; lbShow(); };
+  lb.querySelector('.lb-close').onclick=closeLightbox;
+  lb.onclick=e=>{ if(e.target===lb) closeLightbox(); };
+  lbImg.onerror=()=>{ lbCount.textContent='photo unavailable'; };
+  document.addEventListener('keydown', e=>{
+    if(!lb.classList.contains('show')) return;
+    if(e.key==='Escape'){ e.stopImmediatePropagation(); closeLightbox(); }
+    else if(e.key==='ArrowRight'){ e.stopImmediatePropagation(); lbI=(lbI+1)%lbList.length; lbShow(); }
+    else if(e.key==='ArrowLeft'){ e.stopImmediatePropagation(); lbI=(lbI-1+lbList.length)%lbList.length; lbShow(); }
+  }, true);
+  document.addEventListener('click', e=>{
+    const im=e.target.closest && e.target.closest('.photo-strip img'); if(!im) return;
+    const strip=im.closest('.photo-strip'); let list=[];
+    try{ list=JSON.parse(decodeURIComponent(strip.dataset.imgs||'')); }catch(err){}
+    openLightbox(list, +im.dataset.i||0);
+  });
+
   // ---- 🃏 Triage: one listing at a time, keep / skip / maybe ----
   const TRI_KEY='triaged_v1';
   let triaged=(()=>{ try{ return JSON.parse(localStorage.getItem(TRI_KEY)||'{}'); }catch(e){ return {}; } })();
@@ -3551,7 +3584,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     triageCard.innerHTML=`
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
         <b>🃏 ${ti+1} / ${tq.length}</b><span style="font-size:12px;color:var(--txt-dim)">K keep · S skip · M maybe · ←/→ photos · O open · Esc close</span></div>
-      ${img?`<img class="triage-photo" src="${img}" referrerpolicy="no-referrer" onerror="this.style.display='none'">`:`<div class="triage-photo" style="display:flex;align-items:center;justify-content:center;color:var(--txt-dim)">no photo yet</div>`}
+      ${img?`<img class="triage-photo" id="triPhoto" src="${img}" referrerpolicy="no-referrer" style="cursor:zoom-in" title="Click to enlarge" onerror="this.style.display='none'">`:`<div class="triage-photo" style="display:flex;align-items:center;justify-content:center;color:var(--txt-dim)">no photo yet</div>`}
       ${imgs.length>1?`<div style="text-align:center;font-size:11px;color:var(--txt-dim);margin-top:4px">photo ${tphoto%imgs.length+1}/${imgs.length}</div>`:''}
       <h3 style="margin:10px 0 2px">${r.code?`<code style="opacity:.6;font-size:12px">${r.code}</code> `:''}${r.cf} · ${r.rg} ${r.a?'· '+r.a:''}</h3>
       <div style="font-size:18px;font-weight:700">${fmtUsd(r.usd)} <span style="font-size:13px;font-weight:400;color:var(--txt-dim)">${r.cur&&r.cur!=='USD'&&r.lp?`(${r.cur} ${(+r.lp).toLocaleString()})`:''} · ${size}${r._gem!=null?` · ✨${r._gem}`:''}</span></div>
@@ -3563,6 +3596,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
         <button class="btn" id="triSkip" style="border-color:#ff8080;color:#ff8080">✕ Skip (S)</button>
         <a class="btn" href="${r.u}" target="_blank" rel="noopener" id="triOpen">Open ↗ (O)</a>
       </div>`;
+    const tp=document.getElementById('triPhoto'); if(tp) tp.onclick=()=>openLightbox(imgs, tphoto%imgs.length);
     document.getElementById('triKeep').onclick=()=>triageAct('keep');
     document.getElementById('triMaybe').onclick=()=>triageAct('maybe');
     document.getElementById('triSkip').onclick=()=>triageAct('skip');
