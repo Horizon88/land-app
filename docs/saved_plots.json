@@ -52,7 +52,12 @@
                 "occupancy": "almost fully booked next winter",
                 "note": "strong performer — proves the location books"
             }
-        ]
+        ],
+        "view_deg": 150,
+        "view_near_km": 0.53,
+        "elev_m": 37,
+        "prom_m": -8,
+        "view_score": 66
     },
     {
         "tp": "land",
@@ -87,7 +92,12 @@
         "price_is_official": true,
         "added": "2026-08-27",
         "xref_url": "https://www.facebook.com/photo/?fbid=27954154180885633&set=pcb.4670486556515209",
-        "xref_note": "Part of the ฿120M / 23-rai Pawinee listing (with deed 54240) · sea view"
+        "xref_note": "Part of the ฿120M / 23-rai Pawinee listing (with deed 54240) · sea view",
+        "view_deg": 145,
+        "view_near_km": 0.45,
+        "elev_m": 20,
+        "prom_m": -6,
+        "view_score": 48
     },
     {
         "tp": "land",
@@ -122,7 +132,12 @@
         "price_is_official": true,
         "added": "2026-08-27",
         "xref_url": "https://www.facebook.com/photo/?fbid=27954154180885633&set=pcb.4670486556515209",
-        "xref_note": "Part of a ฿120M Facebook assembly listing (Khao Thong)"
+        "xref_note": "Part of a ฿120M Facebook assembly listing (Khao Thong)",
+        "view_deg": 175,
+        "view_near_km": 0.23,
+        "elev_m": 67,
+        "prom_m": 57,
+        "view_score": 66
     },
     {
         "tp": "land",
@@ -155,7 +170,12 @@
         "treasury_baht_sqwa": 990,
         "official_value_thb": 16286490,
         "price_is_official": true,
-        "added": "2026-08-27"
+        "added": "2026-08-27",
+        "view_deg": 165,
+        "view_near_km": 0.45,
+        "elev_m": 58,
+        "prom_m": 47,
+        "view_score": 60
     },
     {
         "tp": "land",
@@ -188,7 +208,12 @@
         "treasury_baht_sqwa": 390,
         "official_value_thb": 4417491,
         "price_is_official": true,
-        "added": "2026-08-27"
+        "added": "2026-08-27",
+        "view_deg": 140,
+        "view_near_km": 0.53,
+        "elev_m": 67,
+        "prom_m": 53,
+        "view_score": 54
     },
     {
         "tp": "land",
@@ -221,7 +246,12 @@
         "treasury_baht_sqwa": 450,
         "official_value_thb": 1704060,
         "price_is_official": true,
-        "added": "2026-08-27"
+        "added": "2026-08-27",
+        "view_deg": 140,
+        "view_near_km": 0.68,
+        "elev_m": 110,
+        "prom_m": 91,
+        "view_score": 57
     },
     {
         "tp": "villa",
@@ -257,7 +287,12 @@
         "listing_agent": "Lazudi",
         "for_rent": true,
         "for_sale": true,
-        "note": "Built 6-bed/7-bath villa (1,320 m² indoor) on 1,566 m² (0.98 rai) at Cape Yamu, private beach + Yamu pier, elevated sea views over Phang Nga bay. Price is for the built villa — land $/m² is not comparable to raw-land comps."
+        "note": "Built 6-bed/7-bath villa (1,320 m² indoor) on 1,566 m² (0.98 rai) at Cape Yamu, private beach + Yamu pier, elevated sea views over Phang Nga bay. Price is for the built villa — land $/m² is not comparable to raw-land comps.",
+        "view_deg": 360,
+        "view_near_km": 0.08,
+        "elev_m": 0,
+        "prom_m": null,
+        "view_score": 75
     },
     {
         "tp": "house",
@@ -311,6 +346,11 @@
         "source": "redfin",
         "added": "2026-10-15",
         "ski_km": null,
-        "ski_r": ""
+        "ski_r": "",
+        "view_deg": 330,
+        "view_near_km": 0.06,
+        "elev_m": 2,
+        "prom_m": 2,
+        "view_score": 96
     }
 ]

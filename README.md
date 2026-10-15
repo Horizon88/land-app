@@ -14,7 +14,7 @@ shows comes from JSON files in `docs/`, refreshed by the Python scripts in `scri
 | | |
 |---|---|
 | **✨ Gems** (opens here) | A top-300 feed across every country. A listing only qualifies if it is strong on at least two of: value (price vs similar listings nearby), setting (water, ski lift, view, station), motivated seller, real size. Each row says why. |
-| **🎯 Hunts** | One-click definitions of special: 🎿 Japan ski homes / ski land, 🌊 Japan by the sea, ♨️ Onsen, 🗼 Tokyo value flats, ⛷ Austria ski-in/out, 🏞 Austria lakeside, 🏛 Vienna below-district. Deal-killers are hidden. |
+| **🎯 Hunts** | One-click definitions of special: 🌅 Best views, 🎿 Japan ski homes / ski land, 🌊 Japan by the sea, ♨️ Onsen, 🗼 Tokyo value flats, ⛷ Austria ski-in/out, 🏞 Austria lakeside, 🏛 Vienna below-district. Deal-killers are hidden. |
 | **🃏 Triage** | The top 20 untriaged listings of whatever you're viewing, one at a time: **K** keep (★ shortlist), **S** skip (archive), **M** maybe (👁 watchlist). Gems and hunts learn from it. |
 | **Region tabs** | 🏠 Massachusetts, 🗼 Tokyo, 🏛 Vienna: land and homes for one area in one view. |
 | **🚫 Hide countries** | Remove whole countries everywhere. Defaults for every device live in `docs/prefs.json`. |
@@ -40,7 +40,8 @@ shows comes from JSON files in `docs/`, refreshed by the Python scripts in `scri
 3. **Quality gate** (`scripts/quality_gate.py`): Japan and Austria listings stay only if they're near the sea, a ski lift or a lake (or are Tokyo / Vienna apartments). Everything else goes to `data/raw/*.json.gz`.
 4. **Detail checks** (`scripts/detail_enrich.py`): for the candidates that pass, the listing's own page is read for deal-killers (leasehold, unbuildable zone, farmland, can't-rebuild, no road, Grünland, Baurecht), warnings and perks (onsen rights, sea / Fuji / lake views, ski-in), plus photos. Cached in `data/detail_cache.json`.
 5. **Clean** (`scripts/clean_listings.py`): sanity checks, value flags, stable plot codes (e.g. `TH-HV81KH`), local units (rai, ฿/rai).
-6. **Photo review**: Claude looks at finalists' photos and writes verdicts into `docs/reviews.json` (👍 lifts a listing in Gems, 👎 removes it).
+6. **View score** (`scripts/viewshed.py`): from free terrain elevation (AWS Terrain Tiles), cast 72 rays 7 km out from each candidate and measure how much open sea or lake is actually visible, plus how near it is and whether the plot sits above its surroundings. That combines with view words in the listing and photo reviews into a 0–100 `view_score`. View leads the Gems ranking, and an outstanding view (≥80) qualifies on its own. **🌅 Best views** hunt; sort by view.
+7. **Photo review**: Claude looks at finalists' photos and writes verdicts into `docs/reviews.json` (👍 lifts a listing in Gems, 👎 removes it).
 
 Approximate locations are flagged: listings pinned to a town centre (common on willhaben)
 can't claim ski-in/out or lakeside from distance alone.

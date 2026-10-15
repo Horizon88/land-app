@@ -289,7 +289,7 @@
   <div class="control"><label><input type="checkbox" id="watchedOnly"> 👁 Watched only</label></div>
   <div class="control"><label><input type="checkbox" id="hideForest"> 🚫 Hide forest-encroaching (Thai)</label></div>
   <button class="btn" id="openWeights" title="Adjust rating weights">⚖ Weights</button>
-  <div class="control"><label>Sort</label><select id="sort"><option value="r">rating</option><option value="upa">$/acre</option><option value="upm">$/m²</option><option value="ac">acres</option><option value="usd">price USD</option><option value="days_on_market">days listed</option><option value="total_drop_pct">price drop %</option><option value="distress">🔥 distress</option><option value="leverage">🎯 leverage</option></select></div>
+  <div class="control"><label>Sort</label><select id="sort"><option value="r">rating</option><option value="view_score">🌅 view</option><option value="upa">$/acre</option><option value="upm">$/m²</option><option value="ac">acres</option><option value="usd">price USD</option><option value="days_on_market">days listed</option><option value="total_drop_pct">price drop %</option><option value="distress">🔥 distress</option><option value="leverage">🎯 leverage</option></select></div>
 </div>
 <div id="winnersStrip" style="display:none"></div>
 <main>
@@ -1048,7 +1048,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       let pct=null, ratio=1;
       for(const k of cohortKeys(r)){ const g=groups[k];
         if(g && g.length>=10){ pct=lowerBound(g,r.upm)/g.length; const med=g[g.length>>1]; ratio=med? r.upm/med : 1; break; } }
-      if(pct==null) return;
+      const vsc=r.view_score||0;
+      if(pct==null){ if(vsc<65) return; pct=0.5; ratio=1; }
       const why=[];
       const suspicious = ratio < 0.2;       // <20% of similar plots' median: lease/typo territory
       let value = 40*(1-pct);
@@ -1065,7 +1066,10 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       const lake = lk==null?0 : lk<=0.2?32 : lk<=0.5?26 : lk<=1?18 : 0;
       const perks=r.perks||[], warns=r.warn||[];
       const perkPts=Math.min(12, 6*perks.length), warnPts=Math.min(8, 4*warns.length);
-      const setting = Math.max(coast, ski, view, station, lake) + (r.view_verified?5:0) + perkPts;
+      // measured view: terrain viewshed (how much water you actually see) + listing words + photo review
+      const vpts = vsc>=80?40 : vsc>=65?32 : vsc>=50?24 : vsc>=35?12 : 0;
+      const setting = Math.max(coast, ski, view, station, lake, vpts) + (r.view_verified?5:0) + perkPts;
+      if(vsc>=50) why.push(`🌅 view ${vsc}/100 · water across ${r.view_deg}°`);
       if(coast>=24) why.push(`🌊 ${c<1?Math.round(c*1000)+' m':c+' km'} to water`);
       else if(view>=22) why.push(`🌅 ${v.replace('_',' ')}`);
       if(ski>=24) why.push(s<=0.5?'⛷ ski-in/ski-out':`⛷ ${s} km to lift`);
@@ -1081,8 +1085,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
                   : tp==='house' ? ((r.living_m2||r.m2||0)>=150?10:(r.beds||0)>=3?6:3)
                                  : (ac>=5?10:ac>=1?7:ac>=0.25?4:ac>=0.1?1:0);
       let pen=warnPts; if(!r.lat) pen+=15; if(!(r.imgs&&r.imgs.length)) pen+=4; if(r.area_est) pen+=10; if(r.restricted_foreign) pen+=12;
-      const strong=(pct<=0.30 && !suspicious) + (setting>=22) + (motiv>=8) + (subst>=7 && pct<=0.5 && !suspicious);
-      r._gem=Math.max(0, Math.round(value+setting+motiv+subst-pen));
+      const strong=(pct<=0.30 && !suspicious) + (setting>=22) + (motiv>=8) + (subst>=7 && pct<=0.5 && !suspicious) + (vsc>=80);
+      r._gem=Math.max(0, Math.round(value+setting+motiv+subst-pen + 0.35*vsc));   // view leads the ranking
       r._pct=pct; r._ratio=ratio;
       const rev=REVIEWS[r.u];
       let bonus = rev ? (rev.thumb==='up'?8:rev.thumb==='down'?-30:0) : 0;
@@ -1186,6 +1190,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       match:r=>r.cf==='Austria' && r.tp!=='apartment' && homeScale(r) && (r.loc_approx ? (le(r.ski_km,2) && (r.perks||[]).some(p=>/ski-in|piste/.test(p))) : le(r.ski_km,0.5)) },
     at_lake: { label:'🏞 Austria lakeside', desc:'Austrian land and homes ≤500 m from a lake — Zeller See, Wörthersee, Wolfgangsee, Attersee… (town-centre pins only if the listing mentions lake view / access)',
       match:r=>r.cf==='Austria' && r.tp!=='apartment' && homeScale(r) && (r.loc_approx ? (le(r.lake_km,3) && (r.perks||[]).some(p=>/lake/.test(p))) : le(r.lake_km,0.5)) },
+    best_view: { label:'🌅 Best views', desc:'Measured from terrain: how much open water is visible from the plot (viewshed over elevation data), plus view words in the listing and photo reviews. Score ≥60.',
+      match:r=>(r.view_score||0)>=60 },
     price_watch: { label:'📈 Price watch', desc:'Listings whose asking price is being tracked (docs/price_watch.json)',
       match:r=>!!PRICE_WATCH[r.u] },
     vienna_value: { label:'🏛 Vienna below-district', desc:'Vienna apartments 60-250 m², ≥15% under the district median $/m², not tenanted',
@@ -1205,7 +1211,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     if(state.gems) leaveGems();
     if(state.region){ const t=document.querySelector(`#stats .chip[data-rt="${state.region}"]`); if(t) t.click(); }
     if(!state.hunt) _preHunt={countries:[...state.countries], filters:snapshotFilters(), sortKey:state.sortKey, sortAsc:state.sortAsc};
-    resetFilters(); state.hunt=key; state.sortKey='_gem'; state.sortAsc=false;
+    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'?'view_score':'_gem'); state.sortAsc=false;
     state.countries.clear(); ALL_COUNTRIES.forEach(c=>state.countries.add(c));
     document.querySelectorAll('#stats .chip[data-cf]').forEach(ch=>ch.classList.add('on'));
     huntRow.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.hunt===key));
@@ -1686,7 +1692,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       ${r.deal&&r.deal.length?`<div class="detail-flag" style="background:#3a1a1a;color:#ff9090;border-color:#702030">⛔ <b>Deal-killer${r.deal.length>1?'s':''}</b>: ${r.deal.join(' · ')}</div>`:''}
       ${r.warn&&r.warn.length?`<div class="detail-flag">⚠ ${r.warn.join(' · ')}</div>`:''}
       ${r.perks&&r.perks.length?`<div class="detail-flag" style="background:#0f2a1a;color:#7ce8a8;border-color:#1e6a40">✓ ${r.perks.join(' · ')}</div>`:''}
-      ${(r.zoning||r.land_cat||r.road||r.tenure||r.lake_km!=null)?`<div class="sub" style="margin:-4px 0 10px">${[r.zoning&&('zoning: '+r.zoning), r.land_cat&&r.land_cat!=='-'&&('land category: '+r.land_cat), r.tenure&&('tenure: '+r.tenure), r.road&&('road: '+r.road), r.lake_km!=null&&(`🏞 ${r.lake_km} km to ${r.lake}`), r.cf==='Japan'&&r.coast_km!=null&&(`🌊 ${r.coast_km} km to the sea`)].filter(Boolean).join(' · ')}${r.detail_checked?' · <span style="color:#7ce38b">detail page checked ✓</span>':''}</div>`:''}
+      ${(r.zoning||r.land_cat||r.road||r.tenure||r.lake_km!=null||r.view_score!=null)?`<div class="sub" style="margin:-4px 0 10px">${[r.zoning&&('zoning: '+r.zoning), r.land_cat&&r.land_cat!=='-'&&('land category: '+r.land_cat), r.tenure&&('tenure: '+r.tenure), r.road&&('road: '+r.road), r.lake_km!=null&&(`🏞 ${r.lake_km} km to ${r.lake}`), r.cf==='Japan'&&r.coast_km!=null&&(`🌊 ${r.coast_km} km to the sea`), r.view_score!=null&&(`🌅 view ${r.view_score}/100: water visible across ${r.view_deg}°${r.view_near_km!=null?`, nearest ${r.view_near_km} km`:''}${r.prom_m!=null?`, ${r.prom_m>0?'+':''}${r.prom_m} m vs surroundings`:''}`)].filter(Boolean).join(' · ')}${r.detail_checked?' · <span style="color:#7ce38b">detail page checked ✓</span>':''}</div>`:''}
       ${r._gemOk?`<div class="detail-flag" style="background:#2a2410;color:#ffd166;border-color:#6a5a1a">✨ <b>Gem · ${r._gem}/100</b>${r._why&&r._why.length?' — '+r._why.join(' · '):''}</div>`:''}
       ${r.tp==='apartment'?`<div class="detail-flag" style="background:#101d2a;color:#8fb8e8;border-color:#2a4a70">🏢 <b>${r.layout||(r.beds?r.beds+' rooms':'apartment')}</b> · ${r.living_m2||r.m2} m²${r.floor?` · floor ${r.floor}`:''}${r.year_built?` · built ${r.year_built}`:''}${r.upm?` · <b>$${Math.round(r.upm).toLocaleString()}/m²</b>`:''}${r.station?` · 🚉 ${r.station}${r.walk_min!=null?` ${r.walk_min} min walk`:''}`:''}${r.district?` · ${r.district}`:''}</div>`:''}
       ${r.tp==='house'&&r.station?`<div class="detail-flag" style="background:#101d2a;color:#8fb8e8;border-color:#2a4a70">🚉 ${r.station}${r.walk_min!=null?` · ${r.walk_min} min walk`:''}${r.year_built?` · built ${r.year_built}`:''}${r.layout?` · ${r.layout}`:''}</div>`:''}
