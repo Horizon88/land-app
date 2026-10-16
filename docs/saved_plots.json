@@ -417,5 +417,52 @@
         "elev_m": 90,
         "prom_m": 15,
         "view_score": 53
+    },
+    {
+        "code": "FR-65SBWC",
+        "tp": "house",
+        "cf": "France",
+        "rg": "Pays de la Loire",
+        "a": "Anjou, ~42 km from Angers",
+        "name": "Loire Valley château estate: 25 bedrooms, ~304 ha (751 ac), private 1850 racecourse",
+        "t": "Château (monument historique) · 40 rooms · 2,500 m²",
+        "ac": 751,
+        "m2": 3040000,
+        "plot_m2": 3040000,
+        "living_m2": 2500,
+        "beds": 25,
+        "baths": 10,
+        "usd": 6480000,
+        "cur": "EUR",
+        "lp": "6000000",
+        "upm": 2.13,
+        "lat": 47.4784,
+        "lon": -0.5632,
+        "loc_approx": true,
+        "v": "",
+        "imgs": [
+            "img/FR-65SBWC-1.jpg"
+        ],
+        "u": "https://www.instagram.com/p/DdwqCIpCGhB/",
+        "r": 70,
+        "rb": "src:manual-instagram",
+        "user_added": true,
+        "added": "2026-10-16",
+        "first_seen": "2026-09-26",
+        "perks": [
+            "1 km plane-tree avenue, formal gardens and fountains (park attributed to Édouard André)",
+            "24 m gallery, private chapel, Versailles-style marble salon",
+            "orangery, stables, pool",
+            "35 ha English-style racecourse (1850), leased, 6 meetings a year",
+            "Angers TGV: Paris in 1h22"
+        ],
+        "warn": [
+            "exact address not public: map pin is Angers",
+            "upper floors need restoration",
+            "part of the land is under agricultural lease (bail rural): tenants have strong rights",
+            "listed historic monument: works need Bâtiments de France approval"
+        ],
+        "foreign_note": "France: no restriction on foreign (or EU) buyers. SAFER can pre-empt sales of farmland.",
+        "source": "Instagram @luxury (26 Sep 2026); marketed on Belles Demeures as 'château · Angers · €6,000,000 · 40 rooms · 25 bedrooms · 2,500 m²'"
     }
 ]

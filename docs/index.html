@@ -1192,6 +1192,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       match:r=>r.cf==='Austria' && r.tp!=='apartment' && homeScale(r) && (r.loc_approx ? (le(r.lake_km,3) && (r.perks||[]).some(p=>/lake/.test(p))) : le(r.lake_km,0.5)) },
     best_view: { label:'🌅 Best views', desc:'Measured from terrain: how much open water is visible from the plot (viewshed over elevation data), plus view words in the listing and photo reviews. Score ≥60.',
       match:r=>(r.view_score||0)>=60 },
+    your_picks: { label:'📌 Your picks', desc:'Listings you sent in yourself (links, Instagram finds), newest first',
+      match:r=>!!r.user_added },
     price_watch: { label:'📈 Price watch', desc:'Listings whose asking price is being tracked (docs/price_watch.json)',
       match:r=>!!PRICE_WATCH[r.u] },
     vienna_value: { label:'🏛 Vienna below-district', desc:'Vienna apartments 60-250 m², ≥15% under the district median $/m², not tenanted',
@@ -1211,7 +1213,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     if(state.gems) leaveGems();
     if(state.region){ const t=document.querySelector(`#stats .chip[data-rt="${state.region}"]`); if(t) t.click(); }
     if(!state.hunt) _preHunt={countries:[...state.countries], filters:snapshotFilters(), sortKey:state.sortKey, sortAsc:state.sortAsc};
-    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'?'view_score':'_gem'); state.sortAsc=false;
+    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'?'view_score':key==='your_picks'?'added':'_gem'); state.sortAsc=false;
     state.countries.clear(); ALL_COUNTRIES.forEach(c=>state.countries.add(c));
     document.querySelectorAll('#stats .chip[data-cf]').forEach(ch=>ch.classList.add('on'));
     huntRow.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.hunt===key));
@@ -1481,7 +1483,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     if(pws) h+=`<div class="gem-why" style="color:#9fd4ff">📈 price watch: ${pws.first.price!==pws.last.price?`${fmtM(pws.first.price,pws.cur)} → `:''}<b>${fmtM(pws.last.price,pws.cur)}</b>${pws.pct?` (${pws.pct>0?'+':''}${pws.pct.toFixed(1)}%)`:''}${pws.cuts?` · ${pws.cuts} cut${pws.cuts>1?'s':''}`:''}${pws.off?' · <b>off market</b>':''}</div>`;
     if(r.loc_approx) h+=`<div class="note-warn" title="This listing is pinned to the town centre, not the property">📍 approximate location (town centre)</div>`;
     if(r.deal&&r.deal.length) h+=`<div class="note-deal">⛔ ${r.deal.join(' · ')}</div>`;
-    const good = (state.gems||state.hunt) ? [...(r._why||[]), ...(r._taste?[r._taste]:[])] : (r.perks||[]);
+    const good = ((state.gems||state.hunt) && (r._why||[]).length) ? [...r._why, ...(r._taste?[r._taste]:[])] : (r.perks||[]);
     if(good.length) h+=`<div class="gem-why">${good.join(' · ')}</div>`;
     if(r.warn&&r.warn.length) h+=`<div class="note-warn">⚠ ${r.warn.join(' · ')}</div>`;
     const rv=REVIEWS[r.u]; if(rv) h+=`<div class="note-rev">🧐 ${rv.thumb==='up'?'👍 ':rv.thumb==='down'?'👎 ':''}${rv.verdict}</div>`;
@@ -1499,7 +1501,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       const nomBadge = r.nominee ? `<span title="nominee-held · leverage ${r.leverage} · ${r.nominee.hits.join(', ')}" style="cursor:help">🎯</span>` : '';
       const isTH = r.cf==='Thailand';
       return `<tr class="${cls}" data-u="${r.u}">
-        <td class="r ${ratingClass((state.gems||state.hunt)?r._gem:r.r)}">${(state.gems||state.hunt)?`<span title="gem score (0-100, comparable across countries)">✨${r._gem}</span>`:r.r}${flagBadge}${nomBadge}</td>
+        <td class="r ${ratingClass((state.gems||state.hunt)?r._gem:r.r)}">${(state.gems||state.hunt)?`${r._gem!=null?`<span title="gem score (0-100, comparable across countries)">✨${r._gem}</span>`:'—'}`:r.r}${flagBadge}${nomBadge}</td>
         <td><span class="dot" style="background:${color}"></span>${r.cf.replace('British Columbia','BC').replace('New Zealand','NZ')}</td>
         <td>${r.rg}</td><td>${r.code?`<code style="font-size:10px;opacity:.65;margin-right:5px">${r.code}</code>`:''}${r.a}${rowNotes(r)}</td>
         <td>${r.tp==='abandoned_ski'?'':r.tp==='apartment'?`${r.layout||(r.beds?r.beds+' rm':'')}${(r.layout||r.beds)?' · ':''}${r.living_m2||r.m2} m²${r.walk_min!=null?` · 🚉${r.walk_min}′`:''}`:r.tp==='house'?`${r.beds?r.beds+'bd · ':''}${r.sqft_living?r.sqft_living.toLocaleString()+' sf':(r.living_m2||r.m2||'')+' m²'}`:(isTH&&r.rai!=null?r.rai+' rai':(r.ac??''))}</td>
