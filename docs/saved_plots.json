@@ -464,5 +464,59 @@
         ],
         "foreign_note": "France: no restriction on foreign (or EU) buyers. SAFER can pre-empt sales of farmland.",
         "source": "Instagram @luxury (26 Sep 2026); marketed on Belles Demeures as 'château · Angers · €6,000,000 · 40 rooms · 25 bedrooms · 2,500 m²'"
+    },
+    {
+        "code": "GB-TBJSZD",
+        "tp": "house",
+        "cf": "United Kingdom",
+        "rg": "Scotland",
+        "a": "Cloncaird Castle, Maybole, South Ayrshire",
+        "name": "Cloncaird Castle: B-listed Scottish castle, 15 bedrooms, 143 acres + 9 cottages",
+        "t": "Castle · freehold · 7 receptions",
+        "ac": 143,
+        "m2": 578701,
+        "plot_m2": 578701,
+        "beds": 15,
+        "baths": 8,
+        "usd": 3810000,
+        "cur": "GBP",
+        "lp": "3000000",
+        "upm": 6.58,
+        "lat": 55.3345943,
+        "lon": -4.5901524,
+        "v": "",
+        "imgs": [
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_01_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_02_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_03_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_04_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_05_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_06_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_07_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_08_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_09_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_10_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_11_l_gal.jpg",
+            "https://assets.savills.com/properties/GBDHRUDFR260006/DFR260006_12_l_gal.jpg"
+        ],
+        "u": "https://search.savills.com/property-detail/gbDHRUDFR260006",
+        "r": 70,
+        "rb": "src:manual-savills",
+        "user_added": true,
+        "added": "2026-10-16",
+        "perks": [
+            "late-16th-c tower house, rebuilt 1814: panelling, ornate ceilings, open fires, spiral stairs",
+            "circular music room, library, snooker room, formal dining",
+            "9 cottages (8 run as holiday lets): income from day one",
+            "glass-roofed courtyard events space with commercial kitchen and own drive",
+            "143 acres of gardens, woodland and farmland; Ayr 12 miles"
+        ],
+        "warn": [
+            "UNDER OFFER on Savills: a sale is already agreed in principle; ask the agent whether it's still open to offers",
+            "B-listed: alterations need listed-building consent",
+            "EPC rating F: big heating bills"
+        ],
+        "foreign_note": "UK: no restriction on foreign buyers. Scotland charges LBTT (land tax), plus a 8% surcharge on second homes.",
+        "source": "Savills Dumfries Rural Agency · Instagram post Dd5ibstDuD5 · also on Zoopla 73570232"
     }
 ]
