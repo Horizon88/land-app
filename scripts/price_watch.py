@@ -40,6 +40,10 @@ def current_price(html):
                     return int(float(off.get("price")))
                 except Exception:
                     pass
+    # Japanese portals (Yahoo!不動産 / SUUMO): price in 万円 → yen
+    m = re.search(r'buildingPrice&quot;:(\d+)', html) or re.search(r'"buildingPrice"\s*:\s*(\d+)', html) or \
+        re.search(r'販売価格[^0-9]{0,40}([\d,]+)\s*万円', html)
+    if m: return int(m.group(1).replace(",", "")) * 10000
     m = re.search(r'"listingPrice"\s*:\s*\{[^}]*"amount"\s*:\s*(\d+)', html) or \
         re.search(r'"price"\s*:\s*"?(\d{5,})"?', html)
     return int(m.group(1)) if m else None

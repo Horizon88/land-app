@@ -25,6 +25,21 @@
     }
    ],
    "context": "Last sold Jun 2019 for $2,236,000."
+  },
+  "https://realestate.yahoo.co.jp/used/house/detail_corp/b0022309343/": {
+   "code": "JP-PRTJWY",
+   "label": "Susami ocean-view house (Wakayama)",
+   "cur": "JPY",
+   "added": "2026-10-16",
+   "last_checked": "2026-10-16",
+   "history": [
+    {
+     "date": "2024-06-14",
+     "price": 11000000,
+     "event": "Listed"
+    }
+   ],
+   "context": "On Yahoo!不動産 since 14 Jun 2024 at ¥11,000,000 (≈$70k); renovated Jun 2024."
   }
  }
 }
