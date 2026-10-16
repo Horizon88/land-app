@@ -518,5 +518,63 @@
         ],
         "foreign_note": "UK: no restriction on foreign buyers. Scotland charges LBTT (land tax), plus a 8% surcharge on second homes.",
         "source": "Savills Dumfries Rural Agency · Instagram post Dd5ibstDuD5 · also on Zoopla 73570232"
+    },
+    {
+        "code": "FR-Q2ACMK",
+        "tp": "house",
+        "cf": "France",
+        "rg": "Nouvelle-Aquitaine",
+        "a": "Lot-et-Garonne, near Agen",
+        "name": "Hilltop château near Agen: 10 bedrooms, 24.5 acres, pool, tennis, stables",
+        "t": "Château (1865 on 16th-c foundations) · 937 m² (691 château + 246 outbuilding)",
+        "ac": 24.54,
+        "m2": 99301,
+        "plot_m2": 99301,
+        "living_m2": 937,
+        "beds": 10,
+        "baths": 8,
+        "usd": 2268000,
+        "cur": "EUR",
+        "lp": "2100000",
+        "upm": 22.84,
+        "lat": 44.2033,
+        "lon": 0.6163,
+        "loc_approx": true,
+        "v": "",
+        "imgs": [
+            "https://media.apimo.pro/cache/6c8e6f080dc54ef5e7e53c5a84d869c1_8ad86fe1d8_4096-big.jpg",
+            "https://media.apimo.pro/cache/ca99ab441ae93bb0087b3f640f015135_38d2fbf47f_4096-big.jpg",
+            "https://media.apimo.pro/cache/c63c8b190f20f84c9c4e4f20b7206550_5235b25fb1_4096-big.jpg",
+            "https://media.apimo.pro/cache/f56868b1ea0937eff4506d4944dc95cb_bc5a5e73d2_4096-big.jpg",
+            "https://media.apimo.pro/cache/07a2318d4f27f804e78db80bf1de4db3_27f5f2aaa7_4096-big.jpg",
+            "https://media.apimo.pro/cache/ce6a3a846335d5c95fc970838a049441_0d2d3de67c_4096-big.jpg",
+            "https://media.apimo.pro/cache/1bfd4c7d59a44da2e302ef3efa967084_6311c6de26_4096-big.jpg",
+            "https://media.apimo.pro/cache/89a051f582eecd9cacbb251b816523c5_7d792a3b7e_4096-big.jpg",
+            "https://media.apimo.pro/cache/05d102eb6708c3cdb162fed156b7ebda_40f0fa5383_4096-big.jpg",
+            "https://media.apimo.pro/cache/a0c0ddf342d922a9d806adce8523d3aa_285b506ba3_4096-big.jpg",
+            "https://media.apimo.pro/cache/874862284b353a2af9d18845921d8d99_b403f7bfa7_4096-big.jpg",
+            "https://media.apimo.pro/cache/12ea49b833fc8030d21010d82dff5518_c46c6fb5b3_4096-big.jpg",
+            "https://media.apimo.pro/cache/ec5c40a9a5c244b541e6d8f6ea9d9874_238db24c31_4096-big.jpg",
+            "https://media.apimo.pro/cache/16404147f425966bacfbbe4e4fc509e4_b7b598a2a2_4096-big.jpg"
+        ],
+        "u": "https://christiesrealestatemalta.com/international/property-for-sale/france/chateau/agen/10-bedroom-chateau/3586478024",
+        "r": 72,
+        "rb": "src:manual-christies",
+        "user_added": true,
+        "added": "2026-10-16",
+        "perks": [
+            "5 floors on solid rock; first-floor living rooms open to a big terrace with views",
+            "extra wing with room for 5 more bedrooms",
+            "fenced horse paddocks, 2 barns, 2 stables, pool, tennis court",
+            "ruined chapel in the woods",
+            "Agen TGV + private-jet airport nearby; Bordeaux & Toulouse airports"
+        ],
+        "warn": [
+            "exact location not public: map pin is Agen",
+            "flat over the outbuildings needs renovation",
+            "1865 vs '1501' build date differs between listings: ask"
+        ],
+        "foreign_note": "France: no restriction on foreign (or EU) buyers.",
+        "source": "Christie's International Real Estate (exclusive) · agent Jane Vernon +33 6 43 50 01 21 · ref 3586478024 / JVP1142 · Instagram @igmansions"
     }
 ]
