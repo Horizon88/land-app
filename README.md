@@ -18,6 +18,7 @@ shows comes from JSON files in `docs/`, refreshed by the Python scripts in `scri
 | **🃏 Triage** | The top 20 untriaged listings of whatever you're viewing, one at a time: **K** keep (★ shortlist), **S** skip (archive), **M** maybe (👁 watchlist). Gems and hunts learn from it. |
 | **Region tabs** | 🏠 Massachusetts, 🗼 Tokyo, 🏛 Vienna: land and homes for one area in one view. |
 | **🚫 Hide countries** | Remove whole countries everywhere. Defaults for every device live in `docs/prefs.json`. |
+| **🌍 Country ranking** (`countries.html`) | Countries plotted by price per acre (comparable ¼–50 ac plots), quality of life (UN HDI) + weather for the months you pick (10 yrs of daily data where your listings are), bubble size = low tax for a foreign buyer. Bubble or rotatable 3D view, plus a ranked table. Rebuild with `python3 scripts/country_stats.py`. |
 | **Detail panel** | Photos, ⛔ deal-killers, ⚠ warnings, ✓ perks, zoning / tenure / road facts, sea & lake distance, Claude's photo review, bid guidance, offers, packages. |
 | **Archive / star** | Saved per browser, synced via ☁ Sync, and made permanent in `docs/archived.json` (use **📋 Copy archive list**). |
 

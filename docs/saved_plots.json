@@ -676,5 +676,60 @@
         ],
         "foreign_note": "UK: no restriction on foreign buyers. Buying via the company means you inherit its liabilities: needs full due diligence.",
         "source": "Savills (share sale of Tulchan Sporting Estates Ltd), guide £67M · Instagram @luxury"
+    },
+    {
+        "code": "GB-EWX385",
+        "tp": "house",
+        "cf": "United Kingdom",
+        "rg": "Scotland",
+        "a": "Glengorm, near Tobermory, Isle of Mull",
+        "name": "Glengorm Castle & Estate, Isle of Mull: 18-bedroom castle, 3,702 acres, 3+ miles of coastline",
+        "t": "B-listed Scottish Baronial castle (1860) + estate · freehold",
+        "ac": 3702,
+        "m2": 14981476,
+        "plot_m2": 14981476,
+        "beds": 18,
+        "usd": 11430000,
+        "cur": "GBP",
+        "lp": "9000000",
+        "upm": 0.763,
+        "lat": 56.636414,
+        "lon": -6.1775012,
+        "v": "sea_view",
+        "coast_km": 0.3,
+        "imgs": [
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_22_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_23_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_24_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_25_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_26_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_27_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_28_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_30_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_31_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_32_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_33_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_34_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_36_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_37_l_gal.jpg"
+        ],
+        "u": "https://search.savills.com/property-detail/gbEDRUEDR240042",
+        "r": 75,
+        "rb": "src:manual-savills",
+        "user_added": true,
+        "added": "2026-10-17",
+        "perks": [
+            "🌊 3+ miles of its own Atlantic coastline, sea views to the Small Isles",
+            "3,338 acres pasture/hill + 260 acres woodland, 3 lochs",
+            "17 estate houses, holiday lets, Glengorm coffee shop & gallery: running businesses",
+            "pedigree livestock farm; fishing, shooting and stalking"
+        ],
+        "warn": [
+            "UNDER OFFER on Savills: ask whether it's still open to offers",
+            "B-listed castle: listed-building consent for changes",
+            "island logistics: ferry from Oban, Tobermory 6 km"
+        ],
+        "foreign_note": "UK: no restriction on foreign buyers. Scotland: LBTT up to 12% plus 8% if you own another home anywhere.",
+        "source": "Savills Edinburgh · ref EDR240042 · Instagram post DeHM3HziUx0"
     }
 ]

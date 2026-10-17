@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Country Ranking</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2028; --panel2:#232b35; --border:#2e3845; --grid:#232b35;
+    --txt:#e4e6eb; --txt-dim:#8a93a3; --txt-mute:#5f6876; --accent:#4fa3ff;
+    --good:#7ce38b; --warn:#ffb86c;
+    /* sequential blue (dark-surface steps): low overall score → high */
+    --s-lo:#184f95; --s-hi:#9ec5f4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--txt)}
+  header{padding:12px 16px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  header a{color:var(--accent);text-decoration:none;font-size:13px}
+  h1{font-size:16px;font-weight:600}
+  .sub{color:var(--txt-dim);font-size:12px}
+  .controls{padding:12px 16px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .ctl{display:flex;flex-direction:column;gap:6px}
+  .ctl>label,.lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-dim)}
+  /* month bar */
+  .months{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;width:min(460px,100%);user-select:none;touch-action:none}
+  .months button{font:inherit;font-size:12px;padding:7px 0;background:var(--panel2);color:var(--txt-dim);border:1px solid var(--border);cursor:pointer}
+  .months button:first-child{border-radius:6px 0 0 6px}
+  .months button:last-child{border-radius:0 6px 6px 0}
+  .months button.on{background:#1c3a5e;color:#fff;border-color:#2a78d6}
+  .months button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .presets{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{padding:3px 10px;border-radius:99px;background:var(--panel2);border:1px solid var(--border);font-size:12px;cursor:pointer;color:var(--txt)}
+  .chip.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+  .chip:focus-visible{outline:2px solid var(--accent)}
+  input[type=range]{accent-color:var(--accent);width:180px}
+  .seg{display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .seg button{font:inherit;font-size:12px;padding:5px 12px;background:var(--panel2);color:var(--txt-dim);border:0;cursor:pointer}
+  .seg button.on{background:#1c3a5e;color:#fff}
+  main{padding:14px 16px 40px;display:grid;gap:18px;max-width:1280px;margin:0 auto}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px}
+  #chart{position:relative;width:100%;height:min(640px,72vh);min-height:380px}
+  #chart svg{width:100%;height:100%;display:block}
+  #chart3d{width:100%;height:min(640px,72vh);min-height:380px;display:none}
+  .axis text{fill:var(--txt-dim);font-size:11px}
+  .axis line,.axis path{stroke:var(--border)}
+  .gridline{stroke:var(--grid)}
+  .axis-title{fill:var(--txt-dim);font-size:12px}
+  .bub{cursor:pointer;transition:opacity .15s}
+  .bub circle{stroke:var(--bg);stroke-width:2}
+  .bub.few circle{stroke-dasharray:3 3;stroke:var(--txt-dim);stroke-width:1.5}
+  .labels text{fill:var(--txt);font-size:11px;pointer-events:none;paint-order:stroke;stroke:var(--bg);stroke-width:3px;stroke-linejoin:round}
+  .bub:focus{outline:none}
+  .bub:focus circle,.bub:hover circle{stroke:var(--txt);stroke-width:2}
+  .dim .bub,.dim .labels text{opacity:.35}
+  .dim .labels text.hot{opacity:1}
+  .dim .bubx{opacity:.35}
+  .dim .bub.hot{opacity:1}
+  .zone{fill:var(--txt-mute);font-size:11px;font-style:italic}
+  #tip{position:absolute;pointer-events:none;background:#0b0f14;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-size:12px;line-height:1.5;max-width:300px;opacity:0;transition:opacity .1s;z-index:5;box-shadow:0 6px 24px rgba(0,0,0,.4)}
+  #tip b{font-size:13px}
+  #tip .k{color:var(--txt-dim)}
+  #tip .n{font-variant-numeric:tabular-nums}
+  .legend{display:flex;gap:22px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--txt-dim);margin-top:8px}
+  .legend svg{vertical-align:middle}
+  .grad{display:inline-block;width:90px;height:10px;border-radius:3px;background:linear-gradient(90deg,var(--s-lo),var(--s-hi));vertical-align:middle;margin:0 6px}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+  th{color:var(--txt-dim);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;position:sticky;top:0;background:var(--panel)}
+  th:nth-child(2),td:nth-child(2),td.note,th.note{text-align:left}
+  td.note{white-space:normal;color:var(--txt-dim);font-size:12px;min-width:280px}
+  tr:hover td{background:var(--panel2)}
+  .pill{display:inline-block;padding:1px 7px;border-radius:99px;font-size:11px;border:1px solid var(--border);color:var(--txt-dim)}
+  .bar{display:inline-block;height:6px;border-radius:3px;background:var(--accent);vertical-align:middle;margin-left:6px;opacity:.8}
+  .method{color:var(--txt-dim);font-size:12px;line-height:1.6;max-width:75ch}
+  .method h3{color:var(--txt);font-size:13px;margin:0 0 6px}
+  .method p+p{margin-top:6px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (max-width:640px){ header{gap:8px} .controls{gap:14px} input[type=range]{width:140px} }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">← Listings</a>
+  <h1>🌍 Where to buy: countries ranked</h1>
+  <span class="sub" id="built"></span>
+</header>
+
+<div class="controls">
+  <div class="ctl">
+    <span class="lbl" id="monthsLbl">Months you'd be there</span>
+    <div class="months" id="months" role="group" aria-labelledby="monthsLbl"></div>
+    <div class="presets">
+      <button class="chip" data-p="0-11">All year</button>
+      <button class="chip" data-p="5-7">N. summer (Jun–Aug)</button>
+      <button class="chip" data-p="11-2">N. winter (Dec–Mar)</button>
+      <button class="chip" data-p="3-4">Spring (Apr–May)</button>
+      <button class="chip" data-p="8-9">Autumn (Sep–Oct)</button>
+    </div>
+  </div>
+  <div class="ctl">
+    <label for="w">Quality of life ↔ weather</label>
+    <input id="w" type="range" min="0" max="100" value="50">
+    <span class="sub" id="wLbl"></span>
+  </div>
+  <div class="ctl">
+    <span class="lbl">Weather taste</span>
+    <label class="sub" style="display:flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="snow"> ⛷ snowy months count as good</label>
+  </div>
+  <div class="ctl">
+    <span class="lbl">View</span>
+    <div class="seg"><button id="v2" class="on">Bubbles</button><button id="v3">3D grid</button></div>
+  </div>
+</div>
+
+<main>
+  <section class="card">
+    <div id="chart" aria-label="Bubble chart: x quality of life and weather, y price per acre, bubble size low tax"><div id="tip" role="tooltip"></div></div>
+    <div id="chart3d"></div>
+    <div class="legend">
+      <span>↔ <b style="color:var(--txt)">quality of life + weather</b> (better →)</span>
+      <span>↕ <b style="color:var(--txt)">median price per acre</b> (log scale, cheaper ↓)</span>
+      <span><svg width="64" height="26" aria-hidden="true"><circle cx="9" cy="13" r="4" fill="var(--s-lo)"/><circle cx="40" cy="13" r="12" fill="var(--s-lo)"/></svg> bubble size: <b style="color:var(--txt)">big = low tax</b>, tiny = heavy tax</span>
+      <span>colour: overall score <span class="grad"></span></span>
+      <span><svg width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="8" fill="none" stroke="var(--txt-dim)" stroke-dasharray="3 3"/></svg> dashed = price not comparable (few or only tiny plots)</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="tablewrap">
+      <table id="tbl"><thead><tr>
+        <th data-k="rank">#</th><th data-k="cf">Country</th><th data-k="score">Score</th>
+        <th data-k="x">Life + weather</th><th data-k="wx">Weather (months)</th><th data-k="hdi">QoL (HDI)</th>
+        <th data-k="upa">$/acre</th><th data-k="tax">Tax 10 yr</th><th class="note">Tax notes (foreign buyer)</th>
+      </tr></thead><tbody></tbody></table>
+    </div>
+  </section>
+
+  <section class="card method">
+    <h3>How this is scored</h3>
+    <p><b>Price per acre</b>: median of the land listings in your app with plots of ¼–50 acres, so tiny building plots don't skew it (the middle half is shown on hover). Countries with fewer than 20 such plots fall back to all their listings and are drawn dashed: treat their height as rough.</p>
+    <p><b>Weather</b>: 10 years of daily data (2016–2025, Open-Meteo/ERA5) at three spots where that country's listings actually are, averaged for the months you pick. Each month scores daytime highs (best 20–27 °C), rainy days and sunshine. With ⛷ on, snowy months (high ≤ 5 °C, 4+ snow days) score on snow instead of warmth.</p>
+    <p><b>Quality of life</b>: UN Human Development Index 2023 (health, education, income).</p>
+    <p><b>Tax</b>: my estimate of what a foreign buyer of a ~US$1M second home pays over 10 years: purchase taxes + foreign-buyer surcharges + 10 years of annual property/wealth tax, as a % of the price. Rules vary by region inside countries, so treat it as a guide and confirm locally. Foreign-ownership bans are in the notes; they aren't taxes but can rule a country out.</p>
+    <p><b>Score</b> = 40% life + weather, 30% cheapness (log price), 30% low tax.</p>
+  </section>
+</main>
+
+<script>
+(async function(){
+  const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const PREF_KEY='country_rank_prefs_v1';
+  let prefs={from:0,to:11,w:50,snow:false,view:'2d'};
+  try{ Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY)||'{}')); }catch(e){}
+  const save=()=>{ try{ localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); }catch(e){} };
+
+  const data=await (await fetch('countries.json',{cache:'no-cache'})).json();
+  document.getElementById('built').textContent=`${Object.keys(data.countries).length} countries · built ${data.built}`;
+  const C=Object.entries(data.countries).map(([cf,c])=>({cf,...c})).filter(c=>c.months);
+
+  // ---------- month bar: click a start month, then an end month (wraps past Dec) ----------
+  const mEl=document.getElementById('months');
+  MON.forEach((m,i)=>{ const b=document.createElement('button'); b.textContent=m; b.dataset.i=i; b.setAttribute('aria-pressed','false'); mEl.appendChild(b); });
+  const selMonths=()=>{ const a=[]; let i=prefs.from; for(let k=0;k<12;k++){ a.push(i); if(i===prefs.to) break; i=(i+1)%12; } return a; };
+  let anchor=null, dragging=false;
+  const paintMonths=()=>{ const s=new Set(selMonths()); [...mEl.children].forEach((b,i)=>{ b.classList.toggle('on',s.has(i)); b.setAttribute('aria-pressed',s.has(i)); });
+    document.querySelectorAll('.presets .chip').forEach(c=>{ const [f,t]=c.dataset.p.split('-').map(Number); c.classList.toggle('on', f===prefs.from&&t===prefs.to); }); };
+  mEl.addEventListener('pointerdown',e=>{ const b=e.target.closest('button'); if(!b) return; anchor=+b.dataset.i; dragging=true; prefs.from=prefs.to=anchor; paintMonths(); });
+  mEl.addEventListener('pointerover',e=>{ if(!dragging) return; const b=e.target.closest('button'); if(!b) return; prefs.from=anchor; prefs.to=+b.dataset.i; paintMonths(); });
+  window.addEventListener('pointerup',()=>{ if(dragging){ dragging=false; save(); update(); } });
+  mEl.addEventListener('keydown',e=>{ const b=e.target.closest('button'); if(!b) return;
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); const i=+b.dataset.i;
+      if(anchor===null||prefs.from!==prefs.to){ anchor=i; prefs.from=prefs.to=i; } else { prefs.from=anchor; prefs.to=i; anchor=null; }
+      paintMonths(); save(); update(); } });
+  document.querySelectorAll('.presets .chip').forEach(c=>c.onclick=()=>{ const [f,t]=c.dataset.p.split('-').map(Number); prefs.from=f; prefs.to=t; paintMonths(); save(); update(); });
+
+  const wEl=document.getElementById('w'), snowEl=document.getElementById('snow');
+  wEl.value=prefs.w; snowEl.checked=prefs.snow;
+  wEl.oninput=()=>{ prefs.w=+wEl.value; save(); update(); };
+  snowEl.onchange=()=>{ prefs.snow=snowEl.checked; save(); update(); };
+
+  // ---------- scoring ----------
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  function monthScore(m){
+    const snowy = prefs.snow && m.tmax<=5 && m.snow>=4;
+    const temp = snowy ? clamp(m.snow/10,0,1)*100
+               : m.tmax>=20&&m.tmax<=27 ? 100 : m.tmax<20 ? clamp(1-(20-m.tmax)/12,0,1)*100 : clamp(1-(m.tmax-27)/10,0,1)*100;
+    const wet = snowy ? 100 : clamp(1-m.wet/20,0,1)*100;
+    const sun = clamp(m.sun/9,0,1)*100;
+    return 0.5*temp + 0.25*wet + 0.25*sun;
+  }
+  const lg=Math.log10;
+  function compute(){
+    const ms=selMonths(), w=prefs.w/100;
+    const rows=C.map(c=>{
+      const sel=ms.map(i=>c.months[i]);
+      const avg=k=>sel.reduce((s,m)=>s+m[k],0)/sel.length;
+      const wx=sel.reduce((s,m)=>s+monthScore(m),0)/sel.length;
+      const q=c.hdi!=null ? clamp((c.hdi-0.6)/(0.98-0.6),0,1)*100 : 50;
+      return {...c, tax_obj:c.tax, wx, q, x: w*q+(1-w)*wx, upa:c.usd_per_acre, tax:c.tax.total10,
+        tmax:avg('tmax'), wet:avg('wet'), sun:avg('sun'), snowd:avg('snow')};
+    });
+    const pmin=Math.min(...rows.map(r=>lg(r.upa))), pmax=Math.max(...rows.map(r=>lg(r.upa)));
+    const tmax=Math.max(...rows.map(r=>r.tax));
+    rows.forEach(r=>{ r.cheap=100*(1-(lg(r.upa)-pmin)/(pmax-pmin||1)); r.lowtax=100*(1-r.tax/tmax);
+      r.score=0.4*r.x+0.3*r.cheap+0.3*r.lowtax; });
+    rows.sort((a,b)=>b.score-a.score).forEach((r,i)=>r.rank=i+1);
+    return {rows,tmax};
+  }
+
+  // ---------- formatting ----------
+  const money=v=> v>=1e6?'$'+(v/1e6).toFixed(1)+'M' : v>=1e3?'$'+Math.round(v/1e3)+'k' : '$'+Math.round(v);
+  const lerp=(a,b,t)=>a+(b-a)*t;
+  const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+  const css=getComputedStyle(document.documentElement);
+  const LO=hex(css.getPropertyValue('--s-lo').trim()), HI=hex(css.getPropertyValue('--s-hi').trim());
+  const colorFor=(s,smin,smax)=>{ const t=clamp((s-smin)/((smax-smin)||1),0,1); return `rgb(${LO.map((v,i)=>Math.round(lerp(v,HI[i],t))).join(',')})`; };
+  const radius=(tax,tmax)=> 5 + 29*Math.pow(1-tax/tmax, 1.3);
+
+  // ---------- 2D bubble chart (SVG) ----------
+  const chart=document.getElementById('chart'), tip=document.getElementById('tip');
+  const NS='http://www.w3.org/2000/svg';
+  const el=(n,a={},p)=>{ const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); if(p) p.appendChild(e); return e; };
+  function draw2d(rows,tmax){
+    chart.querySelector('svg')?.remove();
+    const W=chart.clientWidth, H=chart.clientHeight, m={l:64,r:24,t:18,b:46};
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img'}); chart.insertBefore(svg,tip);
+    const xs=rows.map(r=>r.x), xmin=Math.floor(Math.min(...xs)/10)*10, xmax=Math.min(100,Math.ceil(Math.max(...xs)/10)*10);
+    const ylo=Math.floor(Math.min(...rows.map(r=>lg(r.upa)))), yhi=Math.ceil(Math.max(...rows.map(r=>lg(r.upa))));
+    const X=v=>m.l+(v-xmin)/(xmax-xmin||1)*(W-m.l-m.r), Y=v=>H-m.b-(lg(v)-ylo)/(yhi-ylo||1)*(H-m.t-m.b);
+    const g=el('g',{class:'axis'},svg);
+    for(let e=ylo;e<=yhi;e++){ [1,3].forEach(k=>{ const v=k*10**e; if(lg(v)>yhi) return; const y=Y(v);
+      el('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,class:'gridline','stroke-width':k===1?1:.5},g);
+      const t=el('text',{x:m.l-8,y:y+4,'text-anchor':'end'},g); t.textContent=money(v); }); }
+    for(let v=xmin;v<=xmax;v+=10){ const x=X(v); el('line',{x1:x,x2:x,y1:m.t,y2:H-m.b,class:'gridline'},g);
+      const t=el('text',{x,y:H-m.b+16,'text-anchor':'middle'},g); t.textContent=v; }
+    const xt=el('text',{x:(m.l+W-m.r)/2,y:H-8,'text-anchor':'middle',class:'axis-title'},svg); xt.textContent='Quality of life + weather →';
+    const yt=el('text',{x:14,y:(m.t+H-m.b)/2,transform:`rotate(-90 14 ${(m.t+H-m.b)/2})`,'text-anchor':'middle',class:'axis-title'},svg); yt.textContent='Median price per acre (USD, log) →';
+    const z=el('text',{x:W-m.r-6,y:H-m.b-8,'text-anchor':'end',class:'zone'},svg); z.textContent='sweet spot: cheap, good life ↘';
+    const smin=Math.min(...rows.map(r=>r.score)), smax=Math.max(...rows.map(r=>r.score));
+    const layer=el('g',{},svg), labels=el('g',{class:'labels'}), placed=[];
+    const circ=rows.map(r=>({cf:r.cf,x:X(r.x),y:Y(r.upa),r:radius(r.tax,tmax)}));
+    const onCircle=(a,self)=>circ.some(c=>{ if(c.cf===self) return false;
+      const nx=clamp(c.x,a.x,a.x+a.w), ny=clamp(c.y,a.y,a.y+a.h); return (nx-c.x)**2+(ny-c.y)**2 < (c.r-2)**2; });
+    const hits=(a,self)=>placed.some(p=>a.x<p.x+p.w&&a.x+a.w>p.x&&a.y<p.y+p.h&&a.y+a.h>p.y)||a.x<m.l||a.x+a.w>W-m.r||a.y<m.t||onCircle(a,self);
+    // rank order: better-ranked countries get first pick of label spots
+    const labelSpot=(r)=>{ const cx=X(r.x), cy=Y(r.upa), rr=radius(r.tax,tmax), w=r.cf.length*6.4+4, h=13;
+      const opts=[[cx-w/2,cy-rr-4-h],[cx-w/2,cy+rr+3],[cx+rr+4,cy-h/2],[cx-rr-4-w,cy-h/2]];
+      for(const [x,y] of opts){ const box={x,y,w,h}; if(!hits(box,r.cf)){ placed.push(box); return box; } }
+      for(const [x,y] of opts){ const box={x,y,w,h}; if(!placed.some(p=>box.x<p.x+p.w&&box.x+box.w>p.x&&box.y<p.y+p.h&&box.y+box.h>p.y)){ placed.push(box); return box; } }
+      const box={x:opts[0][0],y:opts[0][1],w,h}; placed.push(box); return box; };
+    const spots={}; [...rows].sort((a,b)=>a.rank-b.rank).forEach(r=>spots[r.cf]=labelSpot(r));
+    [...rows].sort((a,b)=>radius(b.tax,tmax)-radius(a.tax,tmax)).forEach(r=>{   // big bubbles behind small ones
+      const cx=X(r.x), cy=Y(r.upa), rr=radius(r.tax,tmax);
+      const b=el('g',{class:'bub'+(r.price_skew?' few':''),tabindex:0,'aria-label':`${r.cf}: rank ${r.rank}`},layer);
+      el('circle',{cx,cy,r:rr,fill:colorFor(r.score,smin,smax),'fill-opacity':.85},b);
+      const sp=spots[r.cf]; const t=el('text',{x:sp.x+sp.w/2,y:sp.y+sp.h-2,'text-anchor':'middle',class:'lab'},labels); t.textContent=r.cf; b._lab=t;
+      const show=()=>{ svg.classList.add('dim'); b.classList.add('hot'); b._lab.classList.add('hot'); tip.innerHTML=tipHtml(r); tip.style.opacity=1;
+        const tw=tip.offsetWidth, th=tip.offsetHeight; let lx=cx+rr+10, ly=cy-th/2;
+        if(lx+tw>W) lx=cx-rr-10-tw; ly=clamp(ly,4,H-th-4); tip.style.left=lx+'px'; tip.style.top=ly+'px'; };
+      const hide=()=>{ svg.classList.remove('dim'); b.classList.remove('hot'); b._lab.classList.remove('hot'); tip.style.opacity=0; };
+      b.addEventListener('pointerenter',show); b.addEventListener('pointerleave',hide);
+      b.addEventListener('focus',show); b.addEventListener('blur',hide);
+    });
+    svg.appendChild(labels);
+  }
+  function tipHtml(r){
+    const ms=selMonths(), span=ms.length===12?'all year':`${MON[ms[0]]}–${MON[ms[ms.length-1]]}`;
+    return `<b>#${r.rank} ${r.cf}</b> <span class="k">score ${r.score.toFixed(0)}</span><br>
+      <span class="k">$/acre</span> <span class="n">${money(r.upa)}</span>${r.usd_per_acre_p25?` <span class="k">(middle half ${money(r.usd_per_acre_p25)}–${money(r.usd_per_acre_p75)})</span>`:''}<br>
+      <span class="k">based on</span> ${r.n_price} ${r.price_basis}<br>
+      <span class="k">weather ${span}</span> <span class="n">${r.wx.toFixed(0)}/100</span>: highs ${r.tmax.toFixed(0)} °C · ${r.wet.toFixed(0)} rainy d/mo · ${r.sun.toFixed(1)} h sun/d${r.snowd>=1?` · ${r.snowd.toFixed(0)} snow d/mo`:''}<br>
+      <span class="k">quality of life</span> HDI ${r.hdi??'n/a'}${r.hdi_note?` <span class="k">(${r.hdi_note})</span>`:''}<br>
+      <span class="k">tax over 10 yrs</span> <span class="n">${r.tax}%</span> <span class="k">= ${r.tax_obj.purchase}% buying${r.tax_obj.foreign?` + ${r.tax_obj.foreign}% foreign`:''} + 10 × ${r.tax_obj.annual}%/yr</span><br>
+      <span class="k">${r.tax_obj.note}</span>`;
+  }
+
+  // ---------- 3D (Plotly, loaded on demand) ----------
+  let plotlyReady=null;
+  const loadPlotly=()=> plotlyReady ||= new Promise((ok,fail)=>{ const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.33.0/plotly.min.js'; s.onload=ok; s.onerror=fail; document.head.appendChild(s); });
+  async function draw3d(rows,tmax){
+    const box=document.getElementById('chart3d');
+    try{ await loadPlotly(); }catch(e){ box.textContent='Could not load the 3D library. Check your connection and try again.'; return; }
+    const smin=Math.min(...rows.map(r=>r.score)), smax=Math.max(...rows.map(r=>r.score));
+    const ax=(t,extra={})=>({title:{text:t,font:{color:'#8a93a3',size:12}},color:'#8a93a3',gridcolor:'#2e3845',zerolinecolor:'#2e3845',backgroundcolor:'#1a2028',showbackground:true,...extra});
+    Plotly.react(box,[{type:'scatter3d',mode:'markers+text',x:rows.map(r=>r.x),y:rows.map(r=>r.upa),z:rows.map(r=>r.tax),
+      text:rows.map(r=>r.cf),textposition:'top center',textfont:{color:'#e4e6eb',size:11},
+      hovertext:rows.map(r=>`#${r.rank} ${r.cf}<br>score ${r.score.toFixed(0)}<br>${money(r.upa)}/acre<br>life+weather ${r.x.toFixed(0)}<br>tax ${r.tax}% over 10 yrs`),hoverinfo:'text',
+      marker:{size:rows.map(r=>radius(r.tax,tmax)*0.8),color:rows.map(r=>colorFor(r.score,smin,smax)),opacity:.9,line:{color:'#0f1419',width:1}}}],
+      {paper_bgcolor:'#1a2028',font:{color:'#e4e6eb'},margin:{l:0,r:0,t:0,b:0},showlegend:false,
+       scene:{xaxis:ax('Quality of life + weather →'),yaxis:ax('$ per acre (log)',{type:'log'}),zaxis:ax('Tax % over 10 yrs (lower = bigger bubble)'),
+              camera:{eye:{x:1.6,y:-1.6,z:0.9}}}},
+      {responsive:true,displaylogo:false});
+  }
+
+  // ---------- table ----------
+  let sortK='rank', sortDir=1;
+  document.querySelectorAll('#tbl th[data-k]').forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = sortK===k ? -sortDir : (k==='cf'||k==='rank'||k==='upa'||k==='tax'?1:-1); sortK=k; update(); });
+  function drawTable(rows){
+    const r2=[...rows].sort((a,b)=>{ const va=a[sortK], vb=b[sortK]; return (typeof va==='string'? va.localeCompare(vb) : (va??-1)-(vb??-1))*sortDir; });
+    document.querySelector('#tbl tbody').innerHTML=r2.map(r=>`<tr>
+      <td>${r.rank}</td><td><b>${r.cf}</b>${r.price_skew?' <span class="pill" title="price per acre not comparable: few listings or only small plots">≈ price</span>':''}</td>
+      <td>${r.score.toFixed(0)}<span class="bar" style="width:${(r.score*0.6).toFixed(0)}px"></span></td>
+      <td>${r.x.toFixed(0)}</td><td>${r.wx.toFixed(0)}</td><td>${r.hdi??'n/a'}</td>
+      <td>${money(r.upa)}</td><td>${r.tax}%</td><td class="note">${r.tax_obj.note}</td></tr>`).join('');
+  }
+
+  function update(){
+    const {rows,tmax}=compute();
+    document.getElementById('wLbl').textContent = prefs.w===50?'equal weight':prefs.w>50?`${prefs.w}% life, ${100-prefs.w}% weather`:`${100-prefs.w}% weather, ${prefs.w}% life`;
+    if(prefs.view==='3d'){ chart.style.display='none'; document.getElementById('chart3d').style.display='block'; draw3d(rows,tmax); }
+    else { document.getElementById('chart3d').style.display='none'; chart.style.display='block'; draw2d(rows,tmax); }
+    drawTable(rows);
+  }
+  const v2=document.getElementById('v2'), v3=document.getElementById('v3');
+  const setView=v=>{ prefs.view=v; v2.classList.toggle('on',v==='2d'); v3.classList.toggle('on',v==='3d'); save(); update(); };
+  v2.onclick=()=>setView('2d'); v3.onclick=()=>setView('3d');
+  v2.classList.toggle('on',prefs.view==='2d'); v3.classList.toggle('on',prefs.view==='3d');
+  window.addEventListener('resize',()=>{ if(prefs.view==='2d') update(); });
+  paintMonths(); update();
+})();
+</script>
+</body>
+</html>
