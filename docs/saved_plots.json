@@ -632,5 +632,49 @@
         ],
         "foreign_note": "UK: no restriction on foreign buyers. Scotland charges LBTT plus an 8% surcharge on second homes.",
         "source": "Strutt & Parker, National Country House Dept (Annabel Blackett) · ref CSD253440 · Zoopla 73435006 · Instagram @luxury"
+    },
+    {
+        "code": "GB-TC2R35",
+        "tp": "house",
+        "cf": "United Kingdom",
+        "rg": "Scotland",
+        "a": "Tulchan Estate, Advie, Speyside (Highland)",
+        "name": "Tulchan Estate: 21,768-acre Highland sporting estate, Edwardian lodge, River Spey fishing",
+        "t": "Sporting estate · sold as 100% of Tulchan Sporting Estates Ltd (share sale)",
+        "ac": 21768,
+        "m2": 88092048,
+        "plot_m2": 88092048,
+        "beds": 14,
+        "usd": 85090000,
+        "cur": "GBP",
+        "lp": "67000000",
+        "upm": 0.966,
+        "lat": 57.4026892,
+        "lon": -3.4512414,
+        "v": "",
+        "imgs": [
+            "img/GB-TC2R35-1.jpg"
+        ],
+        "u": "https://www.instagram.com/p/DdzO3eGiGdw/",
+        "r": 70,
+        "rb": "src:manual-instagram",
+        "user_added": true,
+        "added": "2026-10-17",
+        "first_seen": "2026-02-27",
+        "perks": [
+            "Edwardian Tulchan Lodge: 14 en-suite bedrooms, 5 receptions, cinema, spa, wine-tasting room",
+            "salmon fishing on the River Spey",
+            "two grouse moors, forests, purple moorland",
+            "five tenant farms (rental income)",
+            "share sale: buying the company, not the land, so no LBTT/ADS land tax (0.5% stamp duty on shares instead)"
+        ],
+        "warn": [
+            "£67M guide (Savills, Feb 2026); land-reform campaigners question whether it is genuinely for sale",
+            "Scotland's Land Reform Act: large estates face new public-interest rules (possible lotting, community right to buy, management plans)",
+            "grouse moors now need a licence (Wildlife Management and Muirburn Act 2024)",
+            "tenant farms: tenants have strong rights; you can't simply take the land back"
+        ],
+        "foreign_note": "UK: no restriction on foreign buyers. Buying via the company means you inherit its liabilities: needs full due diligence.",
+        "source": "Savills (share sale of Tulchan Sporting Estates Ltd), guide £67M · Instagram @luxury"
     }
 ]
