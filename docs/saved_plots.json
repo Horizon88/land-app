@@ -576,5 +576,61 @@
         ],
         "foreign_note": "France: no restriction on foreign (or EU) buyers.",
         "source": "Christie's International Real Estate (exclusive) · agent Jane Vernon +33 6 43 50 01 21 · ref 3586478024 / JVP1142 · Instagram @igmansions"
+    },
+    {
+        "code": "GB-GEMDSZ",
+        "tp": "house",
+        "cf": "United Kingdom",
+        "rg": "Scotland",
+        "a": "Ronachan, Clachan, Kintyre (Argyll)",
+        "name": "Ronachan House: Victorian mansion above a white-sand bay, Kintyre, views to Islay, Jura & Gigha",
+        "t": "Country house + coach house, lookout & lodge · 13 bed / 11 bath / 8 receptions · freehold",
+        "ac": 10.51,
+        "m2": 42532,
+        "plot_m2": 42532,
+        "beds": 13,
+        "baths": 11,
+        "usd": 2667000,
+        "cur": "GBP",
+        "lp": "2100000",
+        "upm": 62.71,
+        "lat": 55.738,
+        "lon": -5.5961,
+        "v": "sea_view",
+        "coast_km": 0.1,
+        "imgs": [
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_01.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_02.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_04.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_06.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_08.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_07.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_03.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_24.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_05.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_09.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_25.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_16.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_18.jpg",
+            "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_19.jpg"
+        ],
+        "u": "https://www.struttandparker.com/properties/ronachan-house",
+        "r": 75,
+        "rb": "src:manual-struttandparker",
+        "user_added": true,
+        "added": "2026-10-17",
+        "perks": [
+            "🌊 lawns slope to the white sands of Ronachan Bay, direct foot access",
+            "sea views across to Islay, Jura and Gigha",
+            "main house + coach-house flat + lookout flat + 2-bed lodge: income/guest space",
+            "restored period interiors; currently run commercially"
+        ],
+        "warn": [
+            "SALE AGREED (Strutt & Parker): someone's offer was accepted, but nothing is binding in Scotland until missives conclude; ask to be told if it falls through",
+            "beach itself not owned (access only)",
+            "EPC F; remote: ~2.5 h drive from Glasgow"
+        ],
+        "foreign_note": "UK: no restriction on foreign buyers. Scotland charges LBTT plus an 8% surcharge on second homes.",
+        "source": "Strutt & Parker, National Country House Dept (Annabel Blackett) · ref CSD253440 · Zoopla 73435006 · Instagram @luxury"
     }
 ]
