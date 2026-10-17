@@ -789,5 +789,50 @@
             "canyon road access in winter"
         ],
         "source": "Summit Sotheby's International Realty · Kerry Oman 801-467-2100 · MLS 2120390 · Instagram @igmansions"
+    },
+    {
+        "code": "ZA-V9K7R5",
+        "tp": "house",
+        "cf": "South Africa",
+        "rg": "Western Cape",
+        "a": "Pezula Private Estate, Knysna",
+        "name": "Pezula Private Estate, Knysna: 6-bed ocean-view house on 3.94 acres",
+        "t": "House · gated estate · 12,659 sq ft",
+        "ac": 3.94,
+        "m2": 15945,
+        "plot_m2": 15945,
+        "beds": 6,
+        "baths": 6,
+        "sqft_living": 12659,
+        "living_m2": 1176,
+        "usd": 1970000,
+        "cur": "USD",
+        "lp": "1970000",
+        "upm": 123.5,
+        "lat": -34.0735,
+        "lon": 23.0915,
+        "loc_approx": true,
+        "v": "sea_view",
+        "imgs": [
+            "img/ZA-V9K7R5-1.jpg"
+        ],
+        "u": "https://www.instagram.com/p/Ddl8KhjlNYq/",
+        "r": 72,
+        "rb": "src:manual-instagram",
+        "user_added": true,
+        "added": "2026-10-17",
+        "perks": [
+            "🌊 uninterrupted ocean views from high on the estate",
+            "ocean-facing pool, big terraces, fire pit; internal courtyard",
+            "travertine floors, rock-face fireplace, full solar system, 4 garages",
+            "gated estate (golf, spa, beach access at Noetzie)"
+        ],
+        "warn": [
+            "exact listing not found on the portals: ask Knysna Real Estate (@knysnarealestate) for the reference; map pin is the estate",
+            "estate levies on top of rates",
+            "South Africa: rand volatility; load-shedding (solar helps)"
+        ],
+        "foreign_note": "South Africa: no restriction on foreign buyers; transfer duty up to 13% above ~R12M; funds must be declared to the SA Reserve Bank to repatriate them later.",
+        "source": "Instagram @igmansions · listed by Knysna Real Estate"
     }
 ]

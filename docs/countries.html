@@ -36,7 +36,7 @@
   .seg{display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden}
   .seg button{font:inherit;font-size:12px;padding:5px 12px;background:var(--panel2);color:var(--txt-dim);border:0;cursor:pointer}
   .seg button.on{background:#1c3a5e;color:#fff}
-  main{padding:14px 16px 40px;display:grid;gap:18px;max-width:1280px;margin:0 auto}
+  main{padding:14px 16px 40px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px;max-width:1280px;margin:0 auto}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px}
   #chart{position:relative;width:100%;height:min(640px,72vh);min-height:380px}
   #chart svg{width:100%;height:100%;display:block}
@@ -72,6 +72,10 @@
   tr:hover td{background:var(--panel2)}
   .pill{display:inline-block;padding:1px 7px;border-radius:99px;font-size:11px;border:1px solid var(--border);color:var(--txt-dim)}
   .bar{display:inline-block;height:6px;border-radius:3px;background:var(--accent);vertical-align:middle;margin-left:6px;opacity:.8}
+  .res{font-size:12px;white-space:nowrap}
+  .res.non{color:var(--good)} .res.res{color:var(--warn)} .res.risk{color:#ffd166} .res.opt{color:var(--accent)}
+  .stay{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .stay output{font-variant-numeric:tabular-nums;color:var(--txt);font-size:13px;min-width:120px}
   .method{color:var(--txt-dim);font-size:12px;line-height:1.6;max-width:75ch}
   .method h3{color:var(--txt);font-size:13px;margin:0 0 6px}
   .method p+p{margin-top:6px}
@@ -108,6 +112,14 @@
     <label class="sub" style="display:flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="snow"> ⛷ snowy months count as good</label>
   </div>
   <div class="ctl">
+    <label for="days">Time there each year</label>
+    <div class="stay"><input id="days" type="range" min="0" max="365" step="1"><output id="daysLbl" for="days"></output></div>
+    <div class="presets" id="dayPresets">
+      <button class="chip" data-d="60">2 mo</button><button class="chip" data-d="90">3 mo</button><button class="chip" data-d="120">4 mo</button><button class="chip" data-d="183">6 mo</button><button class="chip" data-d="365">Live there</button>
+    </div>
+    <label class="sub" style="display:flex;gap:6px;align-items:center;cursor:pointer" title="A house or flat you can stay in. Bare land usually doesn't count."><input type="checkbox" id="home"> 🏡 I own a home there</label>
+  </div>
+  <div class="ctl">
     <span class="lbl">Income tax on</span>
     <div class="seg"><button id="incHere" title="Top rate on income earned in that country">💼 Income earned there</button><button id="incAbroad" title="Investments, remote work, pension from abroad">🌍 Income from abroad</button></div>
   </div>
@@ -135,7 +147,7 @@
       <table id="tbl"><thead><tr>
         <th data-k="rank">#</th><th data-k="cf">Country</th><th data-k="score">Score</th>
         <th data-k="x">Life + weather</th><th data-k="wx">Weather (months)</th><th data-k="hdi">QoL (HDI)</th>
-        <th data-k="upa">$/acre</th><th data-k="tax">Income tax</th><th data-k="inc_other" id="otherHdr">From abroad</th><th class="note">Income tax notes</th>
+        <th data-k="upa">$/acre</th><th data-k="resk">Tax-resident?</th><th data-k="tax">Income tax</th><th data-k="inc_other" id="otherHdr">From abroad</th><th class="note">Income tax &amp; residency notes</th>
       </tr></thead><tbody></tbody></table>
     </div>
   </section>
@@ -143,9 +155,10 @@
   <section class="card method">
     <h3>How this is scored</h3>
     <p><b>Price per acre</b>: median of the land listings in your app with plots of ¼–50 acres, so tiny building plots don't skew it (the middle half is shown on hover). Countries with fewer than 20 such plots fall back to all their listings and are drawn dashed: treat their height as rough.</p>
-    <p><b>Weather</b>: 10 years of daily data (2016–2025, Open-Meteo/ERA5) at three spots where that country's listings actually are, averaged for the months you pick. Each month scores daytime highs (best 20–27 °C), rainy days and sunshine. With ⛷ on, snowy months (high ≤ 5 °C, 4+ snow days) score on snow instead of warmth.</p>
+    <p><b>Weather</b>: daily data (2016–2025, Open-Meteo/ERA5; 2021–2025 for countries added without listings, at their main sea and ski areas) at up to three spots where that country's listings actually are, averaged for the months you pick. Each month scores daytime highs (best 20–27 °C), rainy days and sunshine. With ⛷ on, snowy months (high ≤ 5 °C, 4+ snow days) score on snow instead of warmth.</p>
     <p><b>Quality of life</b>: UN Human Development Index 2023 (health, education, income).</p>
     <p><b>Income tax</b> (bubble size): the top personal rate if you live there, either on income earned in that country or, with 🌍, on income from abroad (investments, remote work). 0% = territorial or foreign income exempt. Many countries give new arrivals a few tax-free years on foreign income (UK, NZ, Japan, Chile, Indonesia, Portugal's IFICI); those are in the notes, the chart uses the long-run rate. Rough figures for 2026: confirm with a tax adviser, and note US citizens owe US tax wherever they live.</p>
+    <p><b>Tax residency</b>: with the days slider and the 🏡 box, each country's rules decide whether you'd be tax-resident. If you're not, it doesn't tax your income from abroad (🌍 bubble = 0%); income earned inside a country is taxed there either way. Tests that average over several years (USA, Ireland, Norway, Mauritius) are shown as the per-year figure if you come every year. A home can make you resident with far fewer days (Germany: any day; Austria: over 70 days; UK: from 121 days), and a treaty between two countries can override this. The rules are summarised in the table; confirm with an adviser before relying on a day count.</p>
     <p><b>Property purchase tax</b> (hover only): what a foreign buyer of a ~US$1M second home pays over 10 years: purchase taxes + foreign-buyer surcharges + 10 years of annual property/wealth tax, as a % of the price. Rules vary by region inside countries, so treat it as a guide and confirm locally. Foreign-ownership bans are in the notes; they aren't taxes but can rule a country out.</p>
     <p><b>Score</b> = 40% life + weather, 30% cheapness (log price), 30% low income tax. Dashed (non-comparable) prices count as average cheapness.</p>
   </section>
@@ -155,13 +168,13 @@
 (async function(){
   const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const PREF_KEY='country_rank_prefs_v1';
-  let prefs={from:0,to:11,w:50,snow:false,view:'2d',inc:'here'};
+  let prefs={from:0,to:11,w:50,snow:false,view:'2d',inc:'abroad',days:120,home:false};
   try{ Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY)||'{}')); }catch(e){}
   const save=()=>{ try{ localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); }catch(e){} };
 
   const data=await (await fetch('countries.json',{cache:'no-cache'})).json();
   document.getElementById('built').textContent=`${Object.keys(data.countries).length} countries · built ${data.built}`;
-  const C=Object.entries(data.countries).map(([cf,c])=>({cf,...c})).filter(c=>c.months);
+  const C=Object.entries(data.countries).map(([cf,c])=>({cf,...c,noPrice:c.usd_per_acre==null})).filter(c=>c.months);
 
   // ---------- month bar: click a start month, then an end month (wraps past Dec) ----------
   const mEl=document.getElementById('months');
@@ -169,7 +182,7 @@
   const selMonths=()=>{ const a=[]; let i=prefs.from; for(let k=0;k<12;k++){ a.push(i); if(i===prefs.to) break; i=(i+1)%12; } return a; };
   let anchor=null, dragging=false;
   const paintMonths=()=>{ const s=new Set(selMonths()); [...mEl.children].forEach((b,i)=>{ b.classList.toggle('on',s.has(i)); b.setAttribute('aria-pressed',s.has(i)); });
-    document.querySelectorAll('.presets .chip').forEach(c=>{ const [f,t]=c.dataset.p.split('-').map(Number); c.classList.toggle('on', f===prefs.from&&t===prefs.to); }); };
+    document.querySelectorAll('.presets .chip[data-p]').forEach(c=>{ const [f,t]=c.dataset.p.split('-').map(Number); c.classList.toggle('on', f===prefs.from&&t===prefs.to); }); };
   mEl.addEventListener('pointerdown',e=>{ const b=e.target.closest('button'); if(!b) return; anchor=+b.dataset.i; dragging=true; prefs.from=prefs.to=anchor; paintMonths(); });
   mEl.addEventListener('pointerover',e=>{ if(!dragging) return; const b=e.target.closest('button'); if(!b) return; prefs.from=anchor; prefs.to=+b.dataset.i; paintMonths(); });
   window.addEventListener('pointerup',()=>{ if(dragging){ dragging=false; save(); update(); } });
@@ -177,8 +190,16 @@
     if(e.key==='Enter'||e.key===' '){ e.preventDefault(); const i=+b.dataset.i;
       if(anchor===null||prefs.from!==prefs.to){ anchor=i; prefs.from=prefs.to=i; } else { prefs.from=anchor; prefs.to=i; anchor=null; }
       paintMonths(); save(); update(); } });
-  document.querySelectorAll('.presets .chip').forEach(c=>c.onclick=()=>{ const [f,t]=c.dataset.p.split('-').map(Number); prefs.from=f; prefs.to=t; paintMonths(); save(); update(); });
+  document.querySelectorAll('.presets .chip[data-p]').forEach(c=>c.onclick=()=>{ const [f,t]=c.dataset.p.split('-').map(Number); prefs.from=f; prefs.to=t; paintMonths(); save(); update(); });
 
+  const dEl=document.getElementById('days'), dLbl=document.getElementById('daysLbl'), homeEl=document.getElementById('home');
+  const paintDays=()=>{ dEl.value=prefs.days; const mo=prefs.days/30.4;
+    dLbl.textContent=`${prefs.days} days${prefs.days>=365?' (all year)':prefs.days>=28?` (~${mo<10?mo.toFixed(1).replace(/\.0$/,''):Math.round(mo)} mo)`:''}`;
+    document.querySelectorAll('#dayPresets .chip').forEach(c=>c.classList.toggle('on',+c.dataset.d===prefs.days)); };
+  dEl.oninput=()=>{ prefs.days=+dEl.value; paintDays(); save(); update(); };
+  document.querySelectorAll('#dayPresets .chip').forEach(c=>c.onclick=()=>{ prefs.days=+c.dataset.d; paintDays(); save(); update(); });
+  homeEl.checked=prefs.home; homeEl.onchange=()=>{ prefs.home=homeEl.checked; save(); update(); };
+  paintDays();
   const wEl=document.getElementById('w'), snowEl=document.getElementById('snow');
   wEl.value=prefs.w; snowEl.checked=prefs.snow;
   wEl.oninput=()=>{ prefs.w=+wEl.value; save(); update(); };
@@ -195,6 +216,17 @@
     return 0.5*temp + 0.25*wet + 0.25*sun;
   }
   const lg=Math.log10;
+  // would you be tax-resident with this many days a year (and a home there)?
+  function residency(c){
+    const R=c.residency||{days:183}, h=R.home, d=prefs.days, own=prefs.home&&h;
+    let thr=R.days, viaHome=false;
+    if(own && h.kind==='hard' && h.days+1<thr){ thr=h.days+1; viaHome=true; }
+    if(d>=thr) return {k:'res', label:'● resident', thr, why: viaHome?`owning a home: resident above ${h.days} days`:`${thr}+ days a year makes you resident`, rule:own?h.note:''};
+    if(own && h.kind==='soft' && d>h.days) return {k:'risk', label:'◐ maybe', thr, why:'a home there may make you resident', rule:h.note};
+    if(own && h.kind==='opt' && d>=h.days) return {k:'opt', label:'○ your choice', thr, why:`not resident, but you could opt in (${h.days}+ days)`, rule:h.note};
+    return {k:'non', label:'○ not resident', thr, why:`under ${thr} days a year`, rule:own?h.note:''};
+  }
+  const RES_ORDER={non:0,opt:1,risk:2,res:3};
   function compute(){
     const ms=selMonths(), w=prefs.w/100;
     const rows=C.map(c=>{
@@ -202,11 +234,14 @@
       const avg=k=>sel.reduce((s,m)=>s+m[k],0)/sel.length;
       const wx=sel.reduce((s,m)=>s+monthScore(m),0)/sel.length;
       const q=c.hdi!=null ? clamp((c.hdi-0.6)/(0.98-0.6),0,1)*100 : 50;
-      const it=c.income_tax, here=prefs.inc==='here';
-      return {...c, tax_obj:c.tax, it, wx, q, x: w*q+(1-w)*wx, upa:c.usd_per_acre, tax: here?it.top:it.abroad, inc_other: here?it.abroad:it.top,
+      const it=c.income_tax, here=prefs.inc==='here', rs=residency(c);
+      const abroadNow = (rs.k==='res'||rs.k==='risk') ? it.abroad : 0;   // non-residents aren't taxed on foreign income
+      return {...c, tax_obj:c.tax, it, rs, resk:RES_ORDER[rs.k], wx, q, x: w*q+(1-w)*wx, upa:c.usd_per_acre,
+        tax: here?it.top:abroadNow, inc_other: here?abroadNow:it.top,
         tmax:avg('tmax'), wet:avg('wet'), sun:avg('sun'), snowd:avg('snow')};
     });
-    const pmin=Math.min(...rows.map(r=>lg(r.upa))), pmax=Math.max(...rows.map(r=>lg(r.upa)));
+    const priced=rows.filter(r=>!r.noPrice);
+    const pmin=Math.min(...priced.map(r=>lg(r.upa))), pmax=Math.max(...priced.map(r=>lg(r.upa)));
     const tmax=Math.max(55,...rows.map(r=>r.tax));
     rows.forEach(r=>{ r.cheap= r.price_skew ? 50 : 100*(1-(lg(r.upa)-pmin)/(pmax-pmin||1)); /* non-comparable prices get a neutral score */ r.lowtax=100*(1-r.tax/tmax);
       r.score=0.4*r.x+0.3*r.cheap+0.3*r.lowtax; });
@@ -229,37 +264,44 @@
   const el=(n,a={},p)=>{ const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); if(p) p.appendChild(e); return e; };
   function draw2d(rows,tmax){
     chart.querySelector('svg')?.remove();
-    const W=chart.clientWidth, H=chart.clientHeight, m={l:64,r:24,t:18,b:46};
+    const W=chart.clientWidth, H=chart.clientHeight, BAND=64, m={l:64,r:24,t:18,b:46+BAND};
+    const priced=rows.filter(r=>!r.noPrice), hasBand=priced.length<rows.length;
+    if(!hasBand) m.b=46;
     const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img'}); chart.insertBefore(svg,tip);
     const xs=rows.map(r=>r.x), xmin=Math.floor(Math.min(...xs)/10)*10, xmax=Math.min(100,Math.ceil(Math.max(...xs)/10)*10);
-    const ylo=Math.floor(Math.min(...rows.map(r=>lg(r.upa)))), yhi=Math.ceil(Math.max(...rows.map(r=>lg(r.upa))));
-    const X=v=>m.l+(v-xmin)/(xmax-xmin||1)*(W-m.l-m.r), Y=v=>H-m.b-(lg(v)-ylo)/(yhi-ylo||1)*(H-m.t-m.b);
+    const ylo=Math.floor(Math.min(...priced.map(r=>lg(r.upa)))), yhi=Math.ceil(Math.max(...priced.map(r=>lg(r.upa))));
+    const X=v=>m.l+(v-xmin)/(xmax-xmin||1)*(W-m.l-m.r);
+    const bandY=H-46-BAND/2+6;
+    const Y=v=> v==null ? bandY : H-m.b-(lg(v)-ylo)/(yhi-ylo||1)*(H-m.t-m.b);
+    const R=r=> r.noPrice ? Math.min(radius(r.tax,tmax),20) : radius(r.tax,tmax);
     const g=el('g',{class:'axis'},svg);
     for(let e=ylo;e<=yhi;e++){ [1,3].forEach(k=>{ const v=k*10**e; if(lg(v)>yhi) return; const y=Y(v);
       el('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,class:'gridline','stroke-width':k===1?1:.5},g);
       const t=el('text',{x:m.l-8,y:y+4,'text-anchor':'end'},g); t.textContent=money(v); }); }
-    for(let v=xmin;v<=xmax;v+=10){ const x=X(v); el('line',{x1:x,x2:x,y1:m.t,y2:H-m.b,class:'gridline'},g);
-      const t=el('text',{x,y:H-m.b+16,'text-anchor':'middle'},g); t.textContent=v; }
+    for(let v=xmin;v<=xmax;v+=10){ const x=X(v); el('line',{x1:x,x2:x,y1:m.t,y2:H-46,class:'gridline'},g);
+      const t=el('text',{x,y:H-46+16,'text-anchor':'middle'},g); t.textContent=v; }
+    if(hasBand){ el('line',{x1:m.l,x2:W-m.r,y1:H-m.b+6,y2:H-m.b+6,stroke:'var(--border)','stroke-dasharray':'4 4'},g);
+      const bl=el('text',{x:m.l-8,y:bandY+4,'text-anchor':'end'},g); bl.textContent='no listings'; }
     const xt=el('text',{x:(m.l+W-m.r)/2,y:H-8,'text-anchor':'middle',class:'axis-title'},svg); xt.textContent='Quality of life + weather →';
     const yt=el('text',{x:14,y:(m.t+H-m.b)/2,transform:`rotate(-90 14 ${(m.t+H-m.b)/2})`,'text-anchor':'middle',class:'axis-title'},svg); yt.textContent='Median price per acre (USD, log) →';
     const z=el('text',{x:W-m.r-6,y:H-m.b-8,'text-anchor':'end',class:'zone'},svg); z.textContent='sweet spot: cheap, good life ↘';
     const smin=Math.min(...rows.map(r=>r.score)), smax=Math.max(...rows.map(r=>r.score));
     const layer=el('g',{},svg), labels=el('g',{class:'labels'}), placed=[];
-    const circ=rows.map(r=>({cf:r.cf,x:X(r.x),y:Y(r.upa),r:radius(r.tax,tmax)}));
+    const circ=rows.map(r=>({cf:r.cf,x:X(r.x),y:Y(r.upa),r:R(r)}));
     const onCircle=(a,self)=>circ.some(c=>{ if(c.cf===self) return false;
       const nx=clamp(c.x,a.x,a.x+a.w), ny=clamp(c.y,a.y,a.y+a.h); return (nx-c.x)**2+(ny-c.y)**2 < (c.r-2)**2; });
     const hits=(a,self)=>placed.some(p=>a.x<p.x+p.w&&a.x+a.w>p.x&&a.y<p.y+p.h&&a.y+a.h>p.y)||a.x<m.l||a.x+a.w>W-m.r||a.y<m.t||onCircle(a,self);
     // rank order: better-ranked countries get first pick of label spots
-    const labelSpot=(r)=>{ const cx=X(r.x), cy=Y(r.upa), rr=radius(r.tax,tmax), w=r.cf.length*6.4+4, h=13;
+    const labelSpot=(r)=>{ const cx=X(r.x), cy=Y(r.upa), rr=R(r), w=r.cf.length*6.4+4, h=13;
       const opts=[[cx-w/2,cy-rr-4-h],[cx-w/2,cy+rr+3],[cx+rr+4,cy-h/2],[cx-rr-4-w,cy-h/2]];
       for(const [x,y] of opts){ const box={x,y,w,h}; if(!hits(box,r.cf)){ placed.push(box); return box; } }
       for(const [x,y] of opts){ const box={x,y,w,h}; if(!placed.some(p=>box.x<p.x+p.w&&box.x+box.w>p.x&&box.y<p.y+p.h&&box.y+box.h>p.y)){ placed.push(box); return box; } }
       const box={x:opts[0][0],y:opts[0][1],w,h}; placed.push(box); return box; };
     const spots={}; [...rows].sort((a,b)=>a.rank-b.rank).forEach(r=>spots[r.cf]=labelSpot(r));
-    [...rows].sort((a,b)=>radius(b.tax,tmax)-radius(a.tax,tmax)).forEach(r=>{   // big bubbles behind small ones
-      const cx=X(r.x), cy=Y(r.upa), rr=radius(r.tax,tmax);
+    [...rows].sort((a,b)=>R(b)-R(a)).forEach(r=>{   // big bubbles behind small ones
+      const cx=X(r.x), cy=Y(r.upa), rr=R(r);
       const b=el('g',{class:'bub'+(r.price_skew?' few':''),tabindex:0,'aria-label':`${r.cf}: rank ${r.rank}`},layer);
-      el('circle',{cx,cy,r:rr,fill:colorFor(r.score,smin,smax),'fill-opacity':.85},b);
+      el('circle',{cx,cy,r:rr,fill:colorFor(r.score,smin,smax),'fill-opacity':r.noPrice?.45:.85},b);
       const sp=spots[r.cf]; const t=el('text',{x:sp.x+sp.w/2,y:sp.y+sp.h-2,'text-anchor':'middle',class:'lab'},labels); t.textContent=r.cf; b._lab=t;
       const show=()=>{ svg.classList.add('dim'); b.classList.add('hot'); b._lab.classList.add('hot'); tip.innerHTML=tipHtml(r); tip.style.opacity=1;
         const tw=tip.offsetWidth, th=tip.offsetHeight; let lx=cx+rr+10, ly=cy-th/2;
@@ -273,11 +315,13 @@
   function tipHtml(r){
     const ms=selMonths(), span=ms.length===12?'all year':`${MON[ms[0]]}–${MON[ms[ms.length-1]]}`;
     return `<b>#${r.rank} ${r.cf}</b> <span class="k">score ${r.score.toFixed(0)}</span><br>
-      <span class="k">$/acre</span> <span class="n">${money(r.upa)}</span>${r.usd_per_acre_p25?` <span class="k">(middle half ${money(r.usd_per_acre_p25)}–${money(r.usd_per_acre_p75)})</span>`:''}<br>
-      <span class="k">based on</span> ${r.n_price} ${r.price_basis}<br>
+      ${r.noPrice?`<span class="k">$/acre: no land listings in the app yet</span><br>`:`<span class="k">$/acre</span> <span class="n">${money(r.upa)}</span>${r.usd_per_acre_p25?` <span class="k">(middle half ${money(r.usd_per_acre_p25)}–${money(r.usd_per_acre_p75)})</span>`:''}<br>
+      <span class="k">based on</span> ${r.n_price} ${r.price_basis}<br>`}
+      <span class="k">at ${prefs.days} days/yr${prefs.home?' with a home':''}:</span> <b>${r.rs.label.slice(2)}</b> <span class="k">(${r.rs.why})</span><br>
+      ${r.rs.rule?`<span class="k">${r.rs.rule}</span><br>`:''}${r.residency?.note?`<span class="k">${r.residency.note}</span><br>`:''}
       <span class="k">weather ${span}</span> <span class="n">${r.wx.toFixed(0)}/100</span>: highs ${r.tmax.toFixed(0)} °C · ${r.wet.toFixed(0)} rainy d/mo · ${r.sun.toFixed(1)} h sun/d${r.snowd>=1?` · ${r.snowd.toFixed(0)} snow d/mo`:''}<br>
       <span class="k">quality of life</span> HDI ${r.hdi??'n/a'}${r.hdi_note?` <span class="k">(${r.hdi_note})</span>`:''}<br>
-      <span class="k">income tax</span> <span class="n">${r.it.top}%</span> <span class="k">earned there ·</span> <span class="n">${r.it.abroad}%</span> <span class="k">on income from abroad</span><br>
+      <span class="k">income tax</span> <span class="n">${r.it.top}%</span> <span class="k">earned there ·</span> <span class="n">${(r.rs.k==='res'||r.rs.k==='risk')?r.it.abroad+'%':'0% (not resident'+(r.it.abroad?`; ${r.it.abroad}% if resident`:'')+')'}</span> <span class="k">on income from abroad</span><br>
       <span class="k">${r.it.note}</span><br>
       <span class="k">buying + 10 yrs property tax: ${r.tax_obj.total10}% (${r.tax_obj.purchase}% buying${r.tax_obj.foreign?` + ${r.tax_obj.foreign}% foreign`:''} + ${r.tax_obj.annual}%/yr)</span>`;
   }
@@ -289,6 +333,7 @@
   async function draw3d(rows,tmax){
     const box=document.getElementById('chart3d');
     try{ await loadPlotly(); }catch(e){ box.textContent='Could not load the 3D library. Check your connection and try again.'; return; }
+    rows=rows.filter(r=>!r.noPrice);
     const smin=Math.min(...rows.map(r=>r.score)), smax=Math.max(...rows.map(r=>r.score));
     const ax=(t,extra={})=>({title:{text:t,font:{color:'#8a93a3',size:12}},color:'#8a93a3',gridcolor:'#2e3845',zerolinecolor:'#2e3845',backgroundcolor:'#1a2028',showbackground:true,...extra});
     Plotly.react(box,[{type:'scatter3d',mode:'markers+text',x:rows.map(r=>r.x),y:rows.map(r=>r.upa),z:rows.map(r=>r.tax),
@@ -303,14 +348,15 @@
 
   // ---------- table ----------
   let sortK='rank', sortDir=1;
-  document.querySelectorAll('#tbl th[data-k]').forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = sortK===k ? -sortDir : (k==='cf'||k==='rank'||k==='upa'||k==='tax'||k==='inc_other'?1:-1); sortK=k; update(); });
+  document.querySelectorAll('#tbl th[data-k]').forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = sortK===k ? -sortDir : (k==='cf'||k==='rank'||k==='upa'||k==='tax'||k==='inc_other'||k==='resk'?1:-1); sortK=k; update(); });
   function drawTable(rows){
     const r2=[...rows].sort((a,b)=>{ const va=a[sortK], vb=b[sortK]; return (typeof va==='string'? va.localeCompare(vb) : (va??-1)-(vb??-1))*sortDir; });
     document.querySelector('#tbl tbody').innerHTML=r2.map(r=>`<tr>
       <td>${r.rank}</td><td><b>${r.cf}</b>${r.price_skew?' <span class="pill" title="price per acre not comparable: few listings or only small plots">≈ price</span>':''}</td>
       <td>${r.score.toFixed(0)}<span class="bar" style="width:${(r.score*0.6).toFixed(0)}px"></span></td>
       <td>${r.x.toFixed(0)}</td><td>${r.wx.toFixed(0)}</td><td>${r.hdi??'n/a'}</td>
-      <td>${money(r.upa)}</td><td>${r.tax}%</td><td>${r.inc_other}%</td><td class="note">${r.it.note}</td></tr>`).join('');
+      <td>${r.noPrice?'<span class="k" style="color:var(--txt-mute)">no listings</span>':money(r.upa)}</td>
+      <td><span class="res ${r.rs.k}" title="${(r.rs.why+'. '+(r.rs.rule||'')+' '+(r.residency?.note||'')).replace(/"/g,'&quot;')}">${r.rs.label}</span></td><td>${r.tax}%</td><td>${r.inc_other}%</td><td class="note">${r.it.note}${r.residency?.note?` <br><i>Residency:</i> ${r.residency.note}`:''}${r.residency?.home?` <br><i>With a home:</i> ${r.residency.home.note}`:''}</td></tr>`).join('');
   }
 
   function update(){
