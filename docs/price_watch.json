@@ -6,7 +6,7 @@
    "code": "US-DGJPF3",
    "label": "24 Stone Tower Ln, Barrington RI",
    "added": "2026-10-15",
-   "last_checked": "2026-10-15",
+   "last_checked": "2026-10-17",
    "history": [
     {
      "date": "2026-06-29",
@@ -31,7 +31,7 @@
    "label": "Susami ocean-view house (Wakayama)",
    "cur": "JPY",
    "added": "2026-10-16",
-   "last_checked": "2026-10-16",
+   "last_checked": "2026-10-17",
    "history": [
     {
      "date": "2024-06-14",
@@ -40,6 +40,25 @@
     }
    ],
    "context": "On Yahoo!不動産 since 14 Jun 2024 at ¥11,000,000 (≈$70k); renovated Jun 2024."
+  },
+  "https://golf.unitedrealestate.com/home/for-sale/provo-ut/5618-e-south-fork-rd/49223207": {
+   "code": "US-704MJB",
+   "label": "5618 E South Fork Rd, Provo Canyon UT",
+   "added": "2026-10-17",
+   "last_checked": "2026-10-17",
+   "history": [
+    {
+     "date": "~2026-01",
+     "price": 43000000,
+     "event": "Listed"
+    },
+    {
+     "date": "~2026-09",
+     "price": 38000000,
+     "event": "Price cut"
+    }
+   ],
+   "context": "Listed at $43M about 9 months ago; cut $5M to $38M. Dates are approximate (from listing-site day counts)."
   }
  }
 }

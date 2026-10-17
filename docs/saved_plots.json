@@ -731,5 +731,63 @@
         ],
         "foreign_note": "UK: no restriction on foreign buyers. Scotland: LBTT up to 12% plus 8% if you own another home anywhere.",
         "source": "Savills Edinburgh · ref EDR240042 · Instagram post DeHM3HziUx0"
+    },
+    {
+        "code": "US-704MJB",
+        "tp": "house",
+        "cf": "USA",
+        "rg": "Utah",
+        "a": "5618 E South Fork Rd, Provo Canyon",
+        "name": "Provo Canyon 'Lord of the Rings' estate: 22,958 sq ft, 29.6 acres, pond, lake house",
+        "t": "Single-family estate + 6,200 sq ft guest house · MLS 2120390",
+        "ac": 29.56,
+        "m2": 119625,
+        "plot_m2": 119625,
+        "beds": 6,
+        "baths": 10,
+        "sqft_living": 22958,
+        "living_m2": 2133,
+        "usd": 38000000,
+        "cur": "USD",
+        "lp": "38000000",
+        "upm": 317.7,
+        "lat": 40.33788,
+        "lon": -111.52782,
+        "v": "",
+        "ski_km": 7.9,
+        "ski_r": "Sundance Mountain Resort",
+        "imgs": [
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/1-fcbec6a9804fe419b791e3d8afe56350-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/2-a324302c31c5d92df79c816ddf7c3fc0-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/3-c1b58ef7ffaf57adfa71ce3010bcbfce-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/4-407a5cf001b67f59fd6daa64f9c7fd9c-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/5-2ecf9024c62cdf9f93e2d417d2c7f0b8-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/6-f4f70f58200ab2591821f498e6fb5959-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/7-3d360ea7171f78b865b0f681db2dd5f0-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/8-0c05c9abaf913ccf84ba94f54ca1c508-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/9-df53cc86684289906fac4734a70887e1-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/10-c12b768410aa58ed37b45809a9f0fcc9-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/11-a5272d9e704171e2559ae2eb067916bc-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/12-57566acacc14b92cc03c77955c317305-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/13-d9ffe632a65ae2b29ef816806eeec59a-l.jpg",
+            "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/14-ddd3e0ed6778cceb7114a2feb0890205-l.jpg"
+        ],
+        "u": "https://golf.unitedrealestate.com/home/for-sale/provo-ut/5618-e-south-fork-rd/49223207",
+        "r": 72,
+        "rb": "src:manual-mls",
+        "user_added": true,
+        "added": "2026-10-17",
+        "total_drop_pct": 11.6,
+        "perks": [
+            "mountain views, private pond with waterfalls, pool, separate lake house",
+            "sports level: basketball & racquetball courts, 50 ft climbing wall, golf sim, theater, spa",
+            "~8 km to Sundance ski resort; ~1 h to Salt Lake City airport",
+            "3-storey library, hobbit-style doors (designed by Michael Upwall, built by Magleby)"
+        ],
+        "warn": [
+            "$38M for a very personal, themed build: resale market is thin",
+            "canyon road access in winter"
+        ],
+        "source": "Summit Sotheby's International Realty · Kerry Oman 801-467-2100 · MLS 2120390 · Instagram @igmansions"
     }
 ]

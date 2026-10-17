@@ -20,6 +20,11 @@
     "note": "acquisition + registration tax on assessed value; fixed-asset + city-planning tax ~1.7% of assessed value/yr",
     "total10": 14.0
    },
+   "income_tax": {
+    "top": 55,
+    "abroad": 55,
+    "note": "45% national + 10% local. Non-permanent residents (first 5 of 10 yrs) only pay on foreign income they bring into Japan."
+   },
    "climate_points": [
     [
      34.352,
@@ -138,6 +143,11 @@
     "note": "provincial land transfer tax; federal ban on foreign purchase of homes in cities until 2027 (rural/recreational exempt); BC adds 20% for foreigners in some regions",
     "total10": 8.0
    },
+   "income_tax": {
+    "top": 53.5,
+    "abroad": 53.5,
+    "note": "federal + provincial (BC/ON ~53.5%); worldwide income."
+   },
    "climate_points": [
     [
      45.656,
@@ -240,7 +250,7 @@
    ]
   },
   "USA": {
-   "n": 3875,
+   "n": 3876,
    "n_price": 2288,
    "price_basis": "plots of 0.25-50 acres",
    "price_skew": false,
@@ -256,6 +266,11 @@
     "note": "state/county transfer tax ~0.5-1%; property tax ~1.1%/yr (MA)",
     "total10": 12.0
    },
+   "income_tax": {
+    "top": 42,
+    "abroad": 42,
+    "note": "37% federal + state (MA 9% over $1M, UT 4.65%); worldwide income. US citizens pay this wherever they live."
+   },
    "climate_points": [
     [
      34.603,
@@ -266,8 +281,8 @@
      -70.866
     ],
     [
-     43.656,
-     -70.732
+     43.655,
+     -70.733
     ]
    ],
    "months": [
@@ -373,6 +388,11 @@
     "annual": 0.1,
     "note": "3.5% Grunderwerbsteuer + 1.1% land-register fee; Grundsteuer tiny; EU nationals treated as locals",
     "total10": 5.6
+   },
+   "income_tax": {
+    "top": 55,
+    "abroad": 27.5,
+    "note": "50% above ~€100k, 55% above €1M; capital income 27.5% flat; worldwide."
    },
    "climate_points": [
     [
@@ -487,6 +507,11 @@
     "annual": 0.6,
     "note": "IMT ~6% + 0.8% stamp duty; IMI 0.3-0.45% + AIMI above €600k",
     "total10": 13.0
+   },
+   "income_tax": {
+    "top": 53,
+    "abroad": 28,
+    "note": "48% + 5% solidarity; 28% flat on investment income. IFICI ('NHR 2.0'): 20% on qualifying jobs and most foreign income exempt for 10 yrs, if you qualify."
    },
    "climate_points": [
     [
@@ -606,6 +631,11 @@
     "note": "foreigners pay 4% flat stamp duty; some states add a foreign levy (e.g. Penang 3%); RM1M+ minimum price for foreigners in most states",
     "total10": 9.0
    },
+   "income_tax": {
+    "top": 30,
+    "abroad": 0,
+    "note": "foreign income brought in by individuals is exempt until end-2036."
+   },
    "climate_points": [
     [
      2.492,
@@ -723,6 +753,11 @@
     "annual": 0.1,
     "note": "transfer fee 2% (often split); foreigners cannot own land: condo or 30-yr lease only",
     "total10": 3.0
+   },
+   "income_tax": {
+    "top": 35,
+    "abroad": 35,
+    "note": "since 2024, foreign income is taxed if brought into Thailand (not if kept abroad). LTR-visa holders: foreign income exempt."
    },
    "climate_points": [
     [
@@ -842,6 +877,11 @@
     "note": "notary + registry; contribuciones ~1% of fiscal value (rural land often exempt)",
     "total10": 6.5
    },
+   "income_tax": {
+    "top": 40,
+    "abroad": 40,
+    "note": "foreigners pay only on Chilean income for their first 3 years, then worldwide."
+   },
    "climate_points": [
     [
      -35.675,
@@ -951,6 +991,11 @@
     "annual": 0.05,
     "note": "2% PCC on resale; property tax per m², very low; farmland restricted for non-farmers",
     "total10": 2.5
+   },
+   "income_tax": {
+    "top": 36,
+    "abroad": 19,
+    "note": "32% + 4% solidarity above PLN 1M; 19% on capital income; 19% flat option for business income."
    },
    "climate_points": [
     [
@@ -1070,6 +1115,11 @@
     "note": "notary + registration; building tax ~0.1-0.2%/yr; non-EU buyers cannot own land directly",
     "total10": 3.5
    },
+   "income_tax": {
+    "top": 10,
+    "abroad": 10,
+    "note": "10% flat income tax (plus health contributions); dividends 16%."
+   },
    "climate_points": [
     [
      45.65,
@@ -1187,6 +1237,11 @@
     "annual": 0.5,
     "note": "ITBI 2-3% + registry; IPTU/ITR; limits on foreign ownership of rural land",
     "total10": 8.5
+   },
+   "income_tax": {
+    "top": 27.5,
+    "abroad": 15,
+    "note": "27.5% on salary; 15% on offshore investments since 2024; new minimum tax on high earners from 2026."
    },
    "climate_points": [
     [
@@ -1306,6 +1361,11 @@
     "note": "BPHTB 5% + notary; foreigners only via Hak Pakai (right-of-use) or company",
     "total10": 8.0
    },
+   "income_tax": {
+    "top": 35,
+    "abroad": 35,
+    "note": "worldwide; skilled expats can elect Indonesian-income-only for the first 4 years."
+   },
    "climate_points": [
     [
      -8.818,
@@ -1423,6 +1483,11 @@
     "annual": 0.4,
     "note": "no stamp duty or capital-gains tax; council rates; foreigners mostly banned from buying existing homes",
     "total10": 4.5
+   },
+   "income_tax": {
+    "top": 39,
+    "abroad": 39,
+    "note": "new residents: most foreign income exempt for the first 4 years; no capital-gains tax."
    },
    "climate_points": [
     [
@@ -1542,6 +1607,11 @@
     "note": "provincial stamp tax + deed costs; rural land limits for foreigners",
     "total10": 6.0
    },
+   "income_tax": {
+    "top": 35,
+    "abroad": 35,
+    "note": "worldwide; plus an annual wealth tax (bienes personales)."
+   },
    "climate_points": [
     [
      -41.13,
@@ -1655,6 +1725,11 @@
     "annual": 0.3,
     "note": "4% title-deed fee (often split); property tax 0.1-0.6%/yr",
     "total10": 7.0
+   },
+   "income_tax": {
+    "top": 40,
+    "abroad": 40,
+    "note": "worldwide for residents."
    },
    "climate_points": [
     [
@@ -1774,6 +1849,11 @@
     "note": "cantonal transfer tax + notary; wealth + property tax; Lex Koller caps holiday-home sales to foreigners",
     "total10": 7.5
    },
+   "income_tax": {
+    "top": 40,
+    "abroad": 40,
+    "note": "varies a lot by canton (Zug ~22%, Zurich ~40%); non-working foreigners can negotiate lump-sum (forfait) taxation in many cantons."
+   },
    "climate_points": [
     [
      46.096,
@@ -1892,6 +1972,11 @@
     "note": "rough: stamp duty + transfer costs; foreigners barred from freehold land inside town boundaries",
     "total10": 9.0
    },
+   "income_tax": {
+    "top": 20,
+    "abroad": 20,
+    "note": "rough: top resident rate ~20% plus a social-responsibility levy on high incomes."
+   },
    "climate_points": [
     [
      -17.777,
@@ -2005,6 +2090,11 @@
     "annual": 0.1,
     "note": "flat registration fee; property tax 0-1% only above an income threshold; foreigners cannot buy farmland",
     "total10": 1.3
+   },
+   "income_tax": {
+    "top": 20,
+    "abroad": 0,
+    "note": "20% flat; foreign income exempt (territorial); 1% turnover tax for small businesses."
    },
    "climate_points": [
     [
@@ -2120,6 +2210,11 @@
     "note": "rough: French-style registration duties + notary (~11%)",
     "total10": 13.0
    },
+   "income_tax": {
+    "top": 40,
+    "abroad": 40,
+    "note": "rough: own territorial income tax, top ~40%."
+   },
    "climate_points": [
     [
      -22.274,
@@ -2234,6 +2329,11 @@
     "note": "rough: leasehold only (75-yr leases); stamp duty + lease registration; no income or property tax",
     "total10": 5.0
    },
+   "income_tax": {
+    "top": 0,
+    "abroad": 0,
+    "note": "no personal income tax."
+   },
    "climate_points": [
     [
      -15.38,
@@ -2344,6 +2444,11 @@
     "note": "Alien Landholding Licence 10% of value for foreigners; buyer stamp duty ~1%",
     "total10": 14.0
    },
+   "income_tax": {
+    "top": 28,
+    "abroad": 28,
+    "note": "rough: top rate 28%."
+   },
    "climate_points": [
     [
      12.005,
@@ -2453,6 +2558,11 @@
     "annual": 2.0,
     "note": "stamp duty + 8-9% foreign surcharge; land-tax foreign surcharge 2-5%/yr; ban on foreigners buying established homes 2025-27",
     "total10": 34.5
+   },
+   "income_tax": {
+    "top": 47,
+    "abroad": 47,
+    "note": "45% + 2% Medicare; temporary-visa residents don't pay on foreign income."
    },
    "climate_points": [
     [
@@ -2572,6 +2682,11 @@
     "note": "Scotland: LBTT up to 12% (~10% effective at £2M) + 8% ADS if you own another home anywhere (reclaimable if it becomes your main home); council tax",
     "total10": 20.0
    },
+   "income_tax": {
+    "top": 48,
+    "abroad": 48,
+    "note": "Scotland 48% top rate; new arrivals: foreign income and gains exempt for the first 4 years (FIG regime)."
+   },
    "climate_points": [
     [
      55.335,
@@ -2689,6 +2804,11 @@
     "annual": 0.5,
     "note": "notary + registration ~7.5-8% on resale; taxe foncière; IFI wealth tax above €1.3M",
     "total10": 13.0
+   },
+   "income_tax": {
+    "top": 49,
+    "abroad": 30,
+    "note": "45% + 4% high-income surcharge; ~30% flat on investment income; impatriate regime for workers moving in."
    },
    "climate_points": [
     [

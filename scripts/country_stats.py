@@ -54,6 +54,37 @@ TAX = {
  "United Kingdom":dict(purchase=10.0,foreign=8, annual=0.2,  note="Scotland: LBTT up to 12% (~10% effective at £2M) + 8% ADS if you own another home anywhere (reclaimable if it becomes your main home); council tax"),
 }
 
+# Personal income tax for a resident (2026, rough; confirm with a local adviser).
+# top = top marginal rate on income earned in the country (national + typical local).
+# abroad = long-run rate on foreign income (investments, remote work) for a resident;
+#          0 = territorial / remittance-exempt. Temporary new-arrival breaks are in the note.
+INCOME = {
+ "Japan":         dict(top=55, abroad=55, note="45% national + 10% local. Non-permanent residents (first 5 of 10 yrs) only pay on foreign income they bring into Japan."),
+ "Canada":        dict(top=53.5, abroad=53.5, note="federal + provincial (BC/ON ~53.5%); worldwide income."),
+ "USA":           dict(top=42, abroad=42, note="37% federal + state (MA 9% over $1M, UT 4.65%); worldwide income. US citizens pay this wherever they live."),
+ "Austria":       dict(top=55, abroad=27.5, note="50% above ~€100k, 55% above €1M; capital income 27.5% flat; worldwide."),
+ "Portugal":      dict(top=53, abroad=28, note="48% + 5% solidarity; 28% flat on investment income. IFICI ('NHR 2.0'): 20% on qualifying jobs and most foreign income exempt for 10 yrs, if you qualify."),
+ "Malaysia":      dict(top=30, abroad=0, note="foreign income brought in by individuals is exempt until end-2036."),
+ "Thailand":      dict(top=35, abroad=35, note="since 2024, foreign income is taxed if brought into Thailand (not if kept abroad). LTR-visa holders: foreign income exempt."),
+ "Chile":         dict(top=40, abroad=40, note="foreigners pay only on Chilean income for their first 3 years, then worldwide."),
+ "Poland":        dict(top=36, abroad=19, note="32% + 4% solidarity above PLN 1M; 19% on capital income; 19% flat option for business income."),
+ "Romania":       dict(top=10, abroad=10, note="10% flat income tax (plus health contributions); dividends 16%."),
+ "Brazil":        dict(top=27.5, abroad=15, note="27.5% on salary; 15% on offshore investments since 2024; new minimum tax on high earners from 2026."),
+ "Indonesia":     dict(top=35, abroad=35, note="worldwide; skilled expats can elect Indonesian-income-only for the first 4 years."),
+ "New Zealand":   dict(top=39, abroad=39, note="new residents: most foreign income exempt for the first 4 years; no capital-gains tax."),
+ "Argentina":     dict(top=35, abroad=35, note="worldwide; plus an annual wealth tax (bienes personales)."),
+ "Turkey":        dict(top=40, abroad=40, note="worldwide for residents."),
+ "Switzerland":   dict(top=40, abroad=40, note="varies a lot by canton (Zug ~22%, Zurich ~40%); non-working foreigners can negotiate lump-sum (forfait) taxation in many cantons."),
+ "Fiji":          dict(top=20, abroad=20, note="rough: top resident rate ~20% plus a social-responsibility levy on high incomes."),
+ "Georgia":       dict(top=20, abroad=0, note="20% flat; foreign income exempt (territorial); 1% turnover tax for small businesses."),
+ "New Caledonia": dict(top=40, abroad=40, note="rough: own territorial income tax, top ~40%."),
+ "Vanuatu":       dict(top=0, abroad=0, note="no personal income tax."),
+ "Grenada":       dict(top=28, abroad=28, note="rough: top rate 28%."),
+ "Australia":     dict(top=47, abroad=47, note="45% + 2% Medicare; temporary-visa residents don't pay on foreign income."),
+ "France":        dict(top=49, abroad=30, note="45% + 4% high-income surcharge; ~30% flat on investment income; impatriate regime for workers moving in."),
+ "United Kingdom":dict(top=48, abroad=48, note="Scotland 48% top rate; new arrivals: foreign income and gains exempt for the first 4 years (FIG regime)."),
+}
+
 def hdi_table():
     p = os.path.join("/tmp", "hdr25.csv")
     if not os.path.exists(p):
@@ -140,6 +171,7 @@ def main():
             "usd_per_acre_p75": round(statistics.quantiles(land, n=4)[2]) if len(land) >= 4 else None,
             "hdi": h, "hdi_note": hnote,
             "tax": dict(t, total10=round(t["purchase"] + t["foreign"] + 10 * t["annual"], 1)),
+            "income_tax": INCOME[cf],
             "climate_points": samples, "months": months,
         }
     json.dump(out, open(os.path.join(ROOT, "docs", "countries.json"), "w"), ensure_ascii=False, indent=1)
