@@ -4,7 +4,7 @@
  "method": "Build docs/countries.json for the country ranking page (docs/countries.html).\n\nPer country:\n  - price per acre: median USD/acre of land listings in the app (falls back to\n    every listing with an acreage when a country has fewer than 5 land rows)\n  - quality of life: UN Human Development Index 2023 (HDR 2025 data file)\n  - climate: monthly normals 2016-2025 from the Open-Meteo archive (ERA5),\n    averaged over three sample points taken from where that country's listings\n    actually are (20th / 50th / 80th percentile of latitude)\n  - tax: estimated cost for a foreign individual buying a ~US$1M second home and\n    holding it 10 years: one-off purchase taxes + foreign-buyer surcharges + 10x\n    annual property/wealth tax, as % of price. Rough, hand-maintained, see TAX.\n\nUsage: python3 scripts/country_stats.py   (climate cached in scripts/geo/climate_cache.json)",
  "countries": {
   "Japan": {
-   "n": 11776,
+   "n": 11777,
    "n_price": 280,
    "price_basis": "plots of 0.25-50 acres",
    "price_skew": false,
@@ -1978,7 +1978,58 @@
      "sun": 10.18,
      "snow": 0
     }
-   ]
+   ],
+   "bands": {
+    "currency": "FJD",
+    "year": 2026,
+    "bands": [
+     [
+      0,
+      0
+     ],
+     [
+      30000,
+      18
+     ],
+     [
+      50000,
+      20
+     ],
+     [
+      270000,
+      33
+     ],
+     [
+      300000,
+      34
+     ],
+     [
+      350000,
+      35
+     ],
+     [
+      400000,
+      36
+     ],
+     [
+      450000,
+      37
+     ],
+     [
+      500000,
+      38
+     ],
+     [
+      1000000,
+      39
+     ]
+    ],
+    "nonresident": "20% from the first dollar, same rates above FJD 270k",
+    "capital_gains": "10% on disposal of capital assets incl. land/buildings and shares; residents also on foreign assets (credit for foreign tax)",
+    "dividends": "untaxed since 1 Aug 2017",
+    "source": "https://www.munroleyslaw.com/doing-business-in-fiji/fiji-tax-rates/",
+    "usd_per_unit": 0.44
+   }
   },
   "Georgia": {
    "n": 46,

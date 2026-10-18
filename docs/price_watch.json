@@ -59,6 +59,21 @@
     }
    ],
    "context": "Listed at $43M about 9 months ago; cut $5M to $38M. Dates are approximate (from listing-site day counts)."
+  },
+  "https://suumo.jp/chukoikkodate/okayama/sc_bizen/nc_21439768/": {
+   "code": "JP-G8VV3Q",
+   "label": "Kōjima island sea-view house (Okayama)",
+   "cur": "JPY",
+   "added": "2026-10-18",
+   "last_checked": "2026-10-18",
+   "history": [
+    {
+     "date": "2026-10-18",
+     "price": 9800000,
+     "event": "Listed"
+    }
+   ],
+   "context": "SUUMO listing; photos taken July 2026."
   }
  }
 }

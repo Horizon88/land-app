@@ -1,0 +1,53 @@
+{
+ "_note": "Resident personal income-tax bands. bands = [[from, rate%], ...] in local currency. Maintained by hand from the cited sources; re-check yearly.",
+ "Fiji": {
+  "currency": "FJD",
+  "year": 2026,
+  "bands": [
+   [
+    0,
+    0
+   ],
+   [
+    30000,
+    18
+   ],
+   [
+    50000,
+    20
+   ],
+   [
+    270000,
+    33
+   ],
+   [
+    300000,
+    34
+   ],
+   [
+    350000,
+    35
+   ],
+   [
+    400000,
+    36
+   ],
+   [
+    450000,
+    37
+   ],
+   [
+    500000,
+    38
+   ],
+   [
+    1000000,
+    39
+   ]
+  ],
+  "nonresident": "20% from the first dollar, same rates above FJD 270k",
+  "capital_gains": "10% on disposal of capital assets incl. land/buildings and shares; residents also on foreign assets (credit for foreign tax)",
+  "dividends": "untaxed since 1 Aug 2017",
+  "source": "https://www.munroleyslaw.com/doing-business-in-fiji/fiji-tax-rates/"
+ }
+}

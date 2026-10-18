@@ -76,6 +76,21 @@
   .res.non{color:var(--good)} .res.res{color:var(--warn)} .res.risk{color:#ffd166} .res.opt{color:var(--accent)}
   .stay{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .stay output{font-variant-numeric:tabular-nums;color:var(--txt);font-size:13px;min-width:120px}
+  #detail{position:fixed;inset:0;background:rgba(5,8,12,.6);display:none;align-items:flex-start;justify-content:center;z-index:20;overflow:auto;padding:40px 16px}
+  #detail.show{display:flex}
+  #detail .box{background:var(--panel);border:1px solid var(--border);border-radius:10px;max-width:720px;width:100%;padding:18px 20px 20px;position:relative}
+  #detail h2{font-size:18px;margin-bottom:2px}
+  #detail h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-dim);margin:16px 0 6px;font-weight:500}
+  #detail .x{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--txt-dim);font-size:20px;cursor:pointer}
+  #detail .x:focus-visible{outline:2px solid var(--accent)}
+  #detail p,#detail li{font-size:13px;line-height:1.55}
+  #detail ul{margin-left:18px}
+  #detail table{width:auto;min-width:320px}
+  #detail td,#detail th{padding:4px 10px;text-align:right;cursor:default}
+  #detail .calc{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:13px}
+  #detail input[type=number]{background:var(--panel2);border:1px solid var(--border);color:var(--txt);border-radius:6px;padding:4px 8px;width:130px;font:inherit}
+  #detail .big{font-size:15px;color:var(--txt)}
+  #tbl tbody tr{cursor:pointer}
   .method{color:var(--txt-dim);font-size:12px;line-height:1.6;max-width:75ch}
   .method h3{color:var(--txt);font-size:13px;margin:0 0 6px}
   .method p+p{margin-top:6px}
@@ -163,6 +178,8 @@
     <p><b>Score</b> = 40% life + weather, 30% cheapness (log price), 30% low income tax. Dashed (non-comparable) prices count as average cheapness.</p>
   </section>
 </main>
+
+<div id="detail" role="dialog" aria-modal="true" aria-labelledby="dTitle"><div class="box"><button class="x" aria-label="Close">✕</button><div id="dBody"></div></div></div>
 
 <script>
 (async function(){
@@ -314,6 +331,7 @@
       const hide=()=>{ svg.classList.remove('dim'); b.classList.remove('hot'); b._lab.classList.remove('hot'); tip.style.opacity=0; };
       b.addEventListener('pointerenter',show); b.addEventListener('pointerleave',hide);
       b.addEventListener('focus',show); b.addEventListener('blur',hide);
+      b.addEventListener('click',()=>openDetail(r)); b.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openDetail(r); } });
     });
     svg.appendChild(labels);
   }
@@ -322,12 +340,13 @@
     return `<b>#${r.rank} ${r.cf}</b> <span class="k">score ${r.score.toFixed(0)}</span><br>
       ${r.noPrice?`<span class="k">$/acre: no land listings in the app yet</span><br>`:`<span class="k">$/acre</span> <span class="n">${money(r.upa)}</span>${r.usd_per_acre_p25?` <span class="k">(middle half ${money(r.usd_per_acre_p25)}–${money(r.usd_per_acre_p75)})</span>`:''}<br>
       <span class="k">based on</span> ${r.n_price} ${r.price_basis}<br>`}
-      <span class="k">at ${prefs.days} days/yr${prefs.home?' with a home':''}:</span> <b>${r.rs.label.slice(2)}</b> <span class="k">(${r.rs.why})</span><br>
+      <span class="k">resident after ${(r.residency?.days??183)>=365?'a year':daysTxt(r.residency?.days??183)} · at ${prefs.days} days/yr${prefs.home?' with a home':''}:</span> <b>${r.rs.label.slice(2)}</b> <span class="k">(${r.rs.why})</span><br>
       ${r.rs.rule?`<span class="k">${r.rs.rule}</span><br>`:''}${r.residency?.note?`<span class="k">${r.residency.note}</span><br>`:''}
       <span class="k">weather ${span}</span> <span class="n">${r.wx.toFixed(0)}/100</span>: highs ${r.tmax.toFixed(0)} °C · ${r.wet.toFixed(0)} rainy d/mo · ${r.sun.toFixed(1)} h sun/d${r.snowd>=1?` · ${r.snowd.toFixed(0)} snow d/mo`:''}<br>
       <span class="k">quality of life</span> HDI ${r.hdi??'n/a'}${r.hdi_note?` <span class="k">(${r.hdi_note})</span>`:''}<br>
       <span class="k">income tax</span> <span class="n">${r.it.top}%</span> <span class="k">earned there ·</span> <span class="n">${(r.rs.k==='res'||r.rs.k==='risk')?r.it.abroad+'%':'0% (not resident'+(r.it.abroad?`; ${r.it.abroad}% if resident`:'')+')'}</span> <span class="k">on income from abroad</span><br>
       <span class="k">${r.it.note}</span><br>
+      <span class="k" style="color:var(--accent)">click for tax bands and details</span><br>
       <span class="k">buying + 10 yrs property tax: ${r.tax_obj.total10}% (${r.tax_obj.purchase}% buying${r.tax_obj.foreign?` + ${r.tax_obj.foreign}% foreign`:''} + ${r.tax_obj.annual}%/yr)</span>`;
   }
 
@@ -351,21 +370,73 @@
       {responsive:true,displaylogo:false});
   }
 
+  // ---------- country detail panel ----------
+  const months=d=> d>=365?'a full year':`≈ ${(d/30.4).toFixed(d%30.4<3||d>=180?0:1).replace(/\.0$/,'')} months`;
+  const daysTxt=d=> `${d} days (${months(d)})`;
+  const DL=document.getElementById('detail'), DB=document.getElementById('dBody');
+  let lastFocus=null, curRow=null;
+  const fmtMoney=(v,cur)=> (cur==='USD'?'$':'')+Math.round(v).toLocaleString()+(cur&&cur!=='USD'?' '+cur:'');
+  function taxOn(income, bands){ let t=0; for(let i=0;i<bands.length;i++){ const [lo,rate]=bands[i], hi=i+1<bands.length?bands[i+1][0]:Infinity;
+      if(income>lo) t+=(Math.min(income,hi)-lo)*rate/100; } return t; }
+  function calcHtml(r){
+    const b=r.bands; if(!b||!b.usd_per_unit) return '';
+    const usd=prefs.income||150000, loc=usd/b.usd_per_unit, t=taxOn(loc,b.bands);
+    return `<div class="calc"><label for="incomeIn">If you were resident with a yearly income of US$</label><input id="incomeIn" type="number" min="0" step="10000" value="${usd}">
+      <span>→ <b class="big">${(t/loc*100||0).toFixed(1)}%</b> average income tax (≈ US$${Math.round(t*b.usd_per_unit).toLocaleString()} a year)</span></div>
+      <p class="sub" style="margin-top:4px">Bands only, before deductions, credits and local surcharges. ${b.currency} at ≈ US$${b.usd_per_unit}.</p>`;
+  }
+  function detailHtml(r){
+    const R=r.residency||{days:183}, h=R.home, b=r.bands, it=r.it, t=r.tax_obj;
+    const band = b ? `<h3>Income tax bands (${b.year}, ${b.currency}, residents)</h3>
+      <table><thead><tr><th>Income from</th><th>≈ US$</th><th>Rate</th></tr></thead><tbody>
+      ${b.bands.map(([lo,rate])=>`<tr><td>${fmtMoney(lo,b.currency)}</td><td>${b.usd_per_unit?'$'+Math.round(lo*b.usd_per_unit).toLocaleString():''}</td><td><b>${rate}%</b></td></tr>`).join('')}</tbody></table>
+      ${calcHtml(r)}
+      <ul style="margin-top:8px">${b.nonresident?`<li>Non-residents: ${b.nonresident}</li>`:''}${b.extras?`<li>${b.extras}</li>`:''}
+        ${b.capital_gains?`<li>Capital gains: ${b.capital_gains}</li>`:''}${b.dividends?`<li>Dividends: ${b.dividends}</li>`:''}</ul>
+      ${b.uncertain?`<p class="sub">⚠ ${b.why||'figures not fully verified'}</p>`:''}
+      ${b.source?`<p class="sub">Source: <a href="${b.source}" target="_blank" rel="noopener" style="color:var(--accent)">${new URL(b.source).hostname}</a></p>`:''}`
+      : `<h3>Income tax</h3><p>Top rate <b>${it.top}%</b>. Detailed bands not added yet for this country.</p>`;
+    return `<h2 id="dTitle">${r.cf}</h2><p class="sub">#${r.rank} · score ${r.score.toFixed(0)} · HDI ${r.hdi??'n/a'} · ${r.noPrice?'no land listings yet':money(r.upa)+'/acre'}</p>
+      <h3>When you become tax-resident</h3>
+      <p class="big">${R.days>=365?'Only if you live there (a year, or make it your home)':`After <b>${daysTxt(R.days)}</b> a year`}</p>
+      ${R.note?`<p>${R.note}</p>`:''}
+      ${h?`<p><b>If you own a home there:</b> ${h.note}</p>`:''}
+      <p>At your settings (<b>${daysTxt(prefs.days)}</b>${prefs.home?', with a home':''}): <span class="res ${r.rs.k}"><b>${r.rs.label}</b></span>, ${r.rs.why}.</p>
+      <h3>Income from abroad (investments, remote work, pension)</h3>
+      <p class="big"><b>${it.abroad}%</b> if resident${r.rs.k==='non'||r.rs.k==='opt'?' · <b>0%</b> at your settings (not resident)':''}</p>
+      <p>${it.note}</p>
+      ${band}
+      <h3>Buying and owning property (foreign buyer)</h3>
+      <p>${t.purchase}% to buy${t.foreign?` + ${t.foreign}% foreign-buyer charge`:''} · ${t.annual}% a year · ≈ <b>${t.total10}%</b> over 10 years</p>
+      <p>${t.note}</p>`;
+  }
+  function openDetail(r){ curRow=r; lastFocus=document.activeElement; DB.innerHTML=detailHtml(r); DL.classList.add('show'); DL.querySelector('.x').focus(); wireCalc(); }
+  function wireCalc(){ const i=document.getElementById('incomeIn'); if(!i) return;
+    i.oninput=()=>{ prefs.income=Math.max(0,+i.value||0); save(); const c=i.closest('.calc'), pos=i.selectionStart;
+      c.outerHTML=calcHtml(curRow); const n=document.getElementById('incomeIn'); n.focus(); try{ n.setSelectionRange(pos,pos); }catch(e){} wireCalc(); }; }
+  const closeDetail=()=>{ DL.classList.remove('show'); if(lastFocus) lastFocus.focus(); };
+  DL.querySelector('.x').onclick=closeDetail;
+  DL.addEventListener('click',e=>{ if(e.target===DL) closeDetail(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&DL.classList.contains('show')) closeDetail(); });
+  let ROWS=[];
+
   // ---------- table ----------
   let sortK='rank', sortDir=1;
   document.querySelectorAll('#tbl th[data-k]').forEach(th=>th.onclick=()=>{ const k=th.dataset.k; sortDir = sortK===k ? -sortDir : (k==='cf'||k==='rank'||k==='upa'||k==='tax'||k==='inc_other'||k==='resk'?1:-1); sortK=k; update(); });
   function drawTable(rows){
     const r2=[...rows].sort((a,b)=>{ const va=a[sortK], vb=b[sortK]; return (typeof va==='string'? va.localeCompare(vb) : (va??-1)-(vb??-1))*sortDir; });
-    document.querySelector('#tbl tbody').innerHTML=r2.map(r=>`<tr>
+    document.querySelector('#tbl tbody').innerHTML=r2.map(r=>`<tr data-cf="${r.cf}" tabindex="0">
       <td>${r.rank}</td><td><b>${r.cf}</b>${r.price_skew?' <span class="pill" title="price per acre not comparable: few listings or only small plots">≈ price</span>':''}</td>
       <td>${r.score.toFixed(0)}<span class="bar" style="width:${(r.score*0.6).toFixed(0)}px"></span></td>
       <td>${r.x.toFixed(0)}</td><td>${r.wx.toFixed(0)}</td><td>${r.hdi??'n/a'}</td>
       <td>${r.noPrice?'<span class="k" style="color:var(--txt-mute)">no listings</span>':money(r.upa)}</td>
-      <td><span class="res ${r.rs.k}" title="${(r.rs.why+'. '+(r.rs.rule||'')+' '+(r.residency?.note||'')).replace(/"/g,'&quot;')}">${r.rs.label}</span></td><td>${r.tax}%</td><td>${r.inc_other}%</td><td class="note">${r.it.note}${r.residency?.note?` <br><i>Residency:</i> ${r.residency.note}`:''}${r.residency?.home?` <br><i>With a home:</i> ${r.residency.home.note}`:''}</td></tr>`).join('');
+      <td><span class="res ${r.rs.k}" data-thr="${r.rs.thr}" title="${(r.rs.why+'. '+(r.rs.rule||'')+' '+(r.residency?.note||'')).replace(/"/g,'&quot;')}">${r.rs.label}</span><br><span class="sub">${(r.residency?.days??183)>=365?'only if you live there':'at '+daysTxt(r.rs.thr)}</span></td><td>${r.tax}%</td><td>${r.inc_other}%</td><td class="note">${r.it.note}${r.residency?.note?` <br><i>Residency:</i> ${r.residency.note}`:''}${r.residency?.home?` <br><i>With a home:</i> ${r.residency.home.note}`:''}</td></tr>`).join('');
   }
 
+  document.querySelector('#tbl tbody').addEventListener('click',e=>{ const tr=e.target.closest('tr[data-cf]'); if(tr) openDetail(ROWS.find(x=>x.cf===tr.dataset.cf)); });
+  document.querySelector('#tbl tbody').addEventListener('keydown',e=>{ const tr=e.target.closest('tr[data-cf]'); if(tr&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); openDetail(ROWS.find(x=>x.cf===tr.dataset.cf)); } });
   function update(){
-    const {rows,tmax}=compute();
+    const {rows,tmax}=compute(); ROWS=rows;
     document.getElementById('wLbl').textContent = prefs.w===50?'equal weight':prefs.w>50?`${prefs.w}% life, ${100-prefs.w}% weather`:`${100-prefs.w}% weather, ${prefs.w}% life`;
     if(prefs.view==='3d'){ chart.style.display='none'; document.getElementById('chart3d').style.display='block'; draw3d(rows,tmax); }
     else { document.getElementById('chart3d').style.display='none'; chart.style.display='block'; draw2d(rows,tmax); }

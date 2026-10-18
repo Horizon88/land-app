@@ -237,6 +237,13 @@ EXTRA = {
  "Andorra": [(42.58, 1.67), (42.51, 1.52)],
 }
 
+# rough FX to show band thresholds in US$ (labelled "≈" in the UI)
+FX_USD = {"USD": 1, "CAD": 0.73, "GBP": 1.27, "EUR": 1.08, "JPY": 0.0064, "THB": 0.029, "MYR": 0.22,
+          "AUD": 0.66, "NZD": 0.60, "CLP": 0.00105, "IDR": 0.000062, "PHP": 0.0175, "MXN": 0.054,
+          "CRC": 0.0019, "PAB": 1, "GEL": 0.37, "RON": 0.217, "BGN": 0.55, "AED": 0.272, "UYU": 0.025,
+          "FJD": 0.44, "ZAR": 0.056, "CHF": 1.13, "PLN": 0.25, "TRY": 0.029, "BRL": 0.18}
+BANDS_PATH = os.path.join(ROOT, "scripts", "geo", "income_bands.json")
+
 def hdi_table():
     p = os.path.join("/tmp", "hdr25.csv")
     if not os.path.exists(p):
@@ -347,6 +354,11 @@ def main():
             "income_tax": INCOME[cf], "residency": RES[cf],
             "climate_points": pts, "months": months,
         }
+    bands = json.load(open(BANDS_PATH)) if os.path.exists(BANDS_PATH) else {}
+    for cf, c in out["countries"].items():
+        b = bands.get(cf)
+        if b:
+            c["bands"] = dict(b, usd_per_unit=FX_USD.get(b.get("currency")))
     json.dump(out, open(os.path.join(ROOT, "docs", "countries.json"), "w"), ensure_ascii=False, indent=1)
     print("wrote docs/countries.json:", len(out["countries"]), "countries", file=sys.stderr)
 

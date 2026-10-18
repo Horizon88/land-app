@@ -44,6 +44,11 @@ def current_price(html):
     m = re.search(r'buildingPrice&quot;:(\d+)', html) or re.search(r'"buildingPrice"\s*:\s*(\d+)', html) or \
         re.search(r'販売価格[^0-9]{0,40}([\d,]+)\s*万円', html)
     if m: return int(m.group(1).replace(",", "")) * 10000
+    # SUUMO and other Japanese pages: "価格 … 1億2,000万円" / "980万円" in the visible text
+    text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", re.sub(r"<(script|style).*?</\1>", "", html, flags=re.S)))
+    m = re.search(r"価格[^0-9億]{0,30}(?:(\d+)億)?\s*([\d,]+)?\s*万円", text)
+    if m and (m.group(1) or m.group(2)):
+        return int(m.group(1) or 0) * 100_000_000 + int((m.group(2) or "0").replace(",", "")) * 10000
     m = re.search(r'"listingPrice"\s*:\s*\{[^}]*"amount"\s*:\s*(\d+)', html) or \
         re.search(r'"price"\s*:\s*"?(\d{5,})"?', html)
     return int(m.group(1)) if m else None
