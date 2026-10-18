@@ -1861,7 +1861,7 @@
    ]
   },
   "Fiji": {
-   "n": 81,
+   "n": 82,
    "n_price": 76,
    "price_basis": "plots of 0.25-50 acres",
    "price_skew": false,
@@ -1871,25 +1871,34 @@
    "hdi": 0.731,
    "hdi_note": null,
    "tax": {
-    "purchase": 4.0,
+    "purchase": 1.0,
     "foreign": 0,
-    "annual": 0.5,
-    "note": "rough: stamp duty + transfer costs; foreigners barred from freehold land inside town boundaries",
-    "total10": 9.0
+    "annual": 0.1,
+    "note": "stamp duty abolished Aug 2020 (legal/registration costs only); 10% capital gains tax when you sell; foreigners can't buy residential land inside town boundaries and must build (FJD 250k+) on vacant residential land within 2 yrs; 12.5% VAT on some sales",
+    "total10": 2.0
    },
    "income_tax": {
-    "top": 20,
-    "abroad": 20,
-    "note": "rough: top resident rate ~20% plus a social-responsibility levy on high incomes."
+    "top": 39,
+    "abroad": 39,
+    "note": "residents: 0% to FJD 30k, 18-20% to FJD 270k, then 33-39% (39% above FJD 1M); non-residents 20% from the first dollar. Dividends untaxed since 2017; 10% CGT on gains, for residents also on foreign assets. Workers on contracts of up to 3 yrs: foreign income exempt."
    },
    "residency": {
     "days": 183,
-    "note": "183 days."
+    "home": {
+     "kind": "soft",
+     "days": 0,
+     "note": "domicile in Fiji (your permanent home) makes you resident."
+    },
+    "note": "183 days in any 12 months, or domicile."
    },
    "climate_points": [
     [
      -17.777,
      177.436
+    ],
+    [
+     -17.71,
+     178.06
     ],
     [
      -16.787,

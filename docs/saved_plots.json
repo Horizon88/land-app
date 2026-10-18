@@ -463,7 +463,12 @@
             "listed historic monument: works need Bâtiments de France approval"
         ],
         "foreign_note": "France: no restriction on foreign (or EU) buyers. SAFER can pre-empt sales of farmland.",
-        "source": "Instagram @luxury (26 Sep 2026); marketed on Belles Demeures as 'château · Angers · €6,000,000 · 40 rooms · 25 bedrooms · 2,500 m²'"
+        "source": "Instagram @luxury (26 Sep 2026); marketed on Belles Demeures as 'château · Angers · €6,000,000 · 40 rooms · 25 bedrooms · 2,500 m²'",
+        "view_deg": 0,
+        "view_near_km": null,
+        "elev_m": 44,
+        "prom_m": 5,
+        "view_score": 0
     },
     {
         "code": "GB-TBJSZD",
@@ -517,7 +522,12 @@
             "EPC rating F: big heating bills"
         ],
         "foreign_note": "UK: no restriction on foreign buyers. Scotland charges LBTT (land tax), plus a 8% surcharge on second homes.",
-        "source": "Savills Dumfries Rural Agency · Instagram post Dd5ibstDuD5 · also on Zoopla 73570232"
+        "source": "Savills Dumfries Rural Agency · Instagram post Dd5ibstDuD5 · also on Zoopla 73570232",
+        "view_deg": 0,
+        "view_near_km": null,
+        "elev_m": 92,
+        "prom_m": -20,
+        "view_score": 0
     },
     {
         "code": "FR-Q2ACMK",
@@ -575,7 +585,12 @@
             "1865 vs '1501' build date differs between listings: ask"
         ],
         "foreign_note": "France: no restriction on foreign (or EU) buyers.",
-        "source": "Christie's International Real Estate (exclusive) · agent Jane Vernon +33 6 43 50 01 21 · ref 3586478024 / JVP1142 · Instagram @igmansions"
+        "source": "Christie's International Real Estate (exclusive) · agent Jane Vernon +33 6 43 50 01 21 · ref 3586478024 / JVP1142 · Instagram @igmansions",
+        "view_deg": 0,
+        "view_near_km": null,
+        "elev_m": 55,
+        "prom_m": 7,
+        "view_score": 0
     },
     {
         "code": "GB-GEMDSZ",
@@ -631,7 +646,12 @@
             "EPC F; remote: ~2.5 h drive from Glasgow"
         ],
         "foreign_note": "UK: no restriction on foreign buyers. Scotland charges LBTT plus an 8% surcharge on second homes.",
-        "source": "Strutt & Parker, National Country House Dept (Annabel Blackett) · ref CSD253440 · Zoopla 73435006 · Instagram @luxury"
+        "source": "Strutt & Parker, National Country House Dept (Annabel Blackett) · ref CSD253440 · Zoopla 73435006 · Instagram @luxury",
+        "view_deg": 15,
+        "view_near_km": 3.96,
+        "elev_m": 20,
+        "prom_m": -4,
+        "view_score": 29
     },
     {
         "code": "GB-TC2R35",
@@ -675,7 +695,12 @@
             "tenant farms: tenants have strong rights; you can't simply take the land back"
         ],
         "foreign_note": "UK: no restriction on foreign buyers. Buying via the company means you inherit its liabilities: needs full due diligence.",
-        "source": "Savills (share sale of Tulchan Sporting Estates Ltd), guide £67M · Instagram @luxury"
+        "source": "Savills (share sale of Tulchan Sporting Estates Ltd), guide £67M · Instagram @luxury",
+        "view_deg": 0,
+        "view_near_km": null,
+        "elev_m": 186,
+        "prom_m": -23,
+        "view_score": 0
     },
     {
         "code": "GB-EWX385",
@@ -730,7 +755,12 @@
             "island logistics: ferry from Oban, Tobermory 6 km"
         ],
         "foreign_note": "UK: no restriction on foreign buyers. Scotland: LBTT up to 12% plus 8% if you own another home anywhere.",
-        "source": "Savills Edinburgh · ref EDR240042 · Instagram post DeHM3HziUx0"
+        "source": "Savills Edinburgh · ref EDR240042 · Instagram post DeHM3HziUx0",
+        "view_deg": 140,
+        "view_near_km": 1.35,
+        "elev_m": 68,
+        "prom_m": 31,
+        "view_score": 71
     },
     {
         "code": "US-704MJB",
@@ -788,7 +818,12 @@
             "$38M for a very personal, themed build: resale market is thin",
             "canyon road access in winter"
         ],
-        "source": "Summit Sotheby's International Realty · Kerry Oman 801-467-2100 · MLS 2120390 · Instagram @igmansions"
+        "source": "Summit Sotheby's International Realty · Kerry Oman 801-467-2100 · MLS 2120390 · Instagram @igmansions",
+        "view_deg": 0,
+        "view_near_km": null,
+        "elev_m": 1710,
+        "prom_m": -269,
+        "view_score": 10
     },
     {
         "code": "ZA-V9K7R5",
@@ -833,6 +868,75 @@
             "South Africa: rand volatility; load-shedding (solar helps)"
         ],
         "foreign_note": "South Africa: no restriction on foreign buyers; transfer duty up to 13% above ~R12M; funds must be declared to the SA Reserve Bank to repatriate them later.",
-        "source": "Instagram @igmansions · listed by Knysna Real Estate"
+        "source": "Instagram @igmansions · listed by Knysna Real Estate",
+        "view_deg": 130,
+        "view_near_km": 1.46,
+        "elev_m": 172,
+        "prom_m": 110,
+        "view_score": 55
+    },
+    {
+        "code": "FJ-FXDF2K",
+        "tp": "house",
+        "cf": "Fiji",
+        "rg": "Yasawa Islands",
+        "a": "Vawa Island (northernmost Yasawa)",
+        "name": "Vawa Island, Fiji: 75-acre private island with a modern 4-suite residence",
+        "t": "Private island · 5,500 sq ft main house + 2 guest cabins",
+        "ac": 75,
+        "m2": 303500,
+        "plot_m2": 303500,
+        "beds": 4,
+        "baths": 5,
+        "sqft_living": 5500,
+        "living_m2": 511,
+        "usd": 10000000,
+        "cur": "USD",
+        "lp": "10000000",
+        "upm": 32.9,
+        "lat": -16.7981528,
+        "lon": 177.4569109,
+        "v": "beachfront",
+        "coast_km": 0,
+        "imgs": [
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_1.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_2.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_3.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_4.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_5.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_6.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_7.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_8.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_9.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_10.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_11.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_12.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_13.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_14.jpg"
+        ],
+        "u": "https://fiji.bayleys.co.nz/listings/lifestyle/south-pacific-islands/fiji/1-vawa-island-viti-levu-5000415",
+        "r": 80,
+        "rb": "src:manual-bayleys",
+        "user_added": true,
+        "added": "2026-10-18",
+        "perks": [
+            "🌊 whole island: white-sand beaches, coral reef, coves, rock pools; manta rays",
+            "Danish-architect glass-and-steel house, 4 suites with outdoor baths, 2 guest cabins",
+            "on-site manager and local staff; satellite internet",
+            "no neighbouring resorts"
+        ],
+        "warn": [
+            "price is US$10M PLUS GST/VAT: ask how much applies",
+            "tenure not stated: confirm freehold vs native/Crown lease before anything else",
+            "remote: boat or seaplane only; cyclone season Nov-Apr",
+            "10% capital gains tax when you sell"
+        ],
+        "foreign_note": "Fiji: foreigners can buy freehold outside town boundaries; stamp duty abolished in 2020; 10% CGT on sale.",
+        "source": "Bayleys Fiji · Sapna Vithal (Nadi) · listing 5000415 · Instagram @igmansions (listed by @adambrawer)",
+        "view_deg": 300,
+        "view_near_km": 0.29,
+        "elev_m": 82,
+        "prom_m": 82,
+        "view_score": 76
     }
 ]
