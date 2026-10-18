@@ -73,7 +73,7 @@
   .pill{display:inline-block;padding:1px 7px;border-radius:99px;font-size:11px;border:1px solid var(--border);color:var(--txt-dim)}
   .bar{display:inline-block;height:6px;border-radius:3px;background:var(--accent);vertical-align:middle;margin-left:6px;opacity:.8}
   .res{font-size:12px;white-space:nowrap}
-  .res.non{color:var(--good)} .res.res{color:var(--warn)} .res.risk{color:#ffd166} .res.opt{color:var(--accent)}
+  .res.s-non{color:var(--good)} .res.s-res{color:var(--warn)} .res.s-risk{color:#ffd166} .res.s-opt{color:var(--accent)}
   .stay{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .stay output{font-variant-numeric:tabular-nums;color:var(--txt);font-size:13px;min-width:120px}
   #detail{position:fixed;inset:0;background:rgba(5,8,12,.6);display:none;align-items:flex-start;justify-content:center;z-index:20;overflow:auto;padding:40px 16px}
@@ -133,6 +133,7 @@
       <button class="chip" data-d="60">2 mo</button><button class="chip" data-d="90">3 mo</button><button class="chip" data-d="120">4 mo</button><button class="chip" data-d="183">6 mo</button><button class="chip" data-d="365">Live there</button>
     </div>
     <label class="sub" style="display:flex;gap:6px;align-items:center;cursor:pointer" title="A house or flat you can stay in. Bare land usually doesn't count."><input type="checkbox" id="home"> 🏡 I own a home there</label>
+    <label class="sub" style="display:flex;gap:6px;align-items:center">Your income US$ <input id="income" type="number" min="0" step="10000" style="width:110px;background:var(--panel2);border:1px solid var(--border);color:var(--txt);border-radius:6px;padding:3px 6px;font:inherit"> /yr</label>
   </div>
   <div class="ctl">
     <span class="lbl">Income tax on</span>
@@ -162,7 +163,7 @@
       <table id="tbl"><thead><tr>
         <th data-k="rank">#</th><th data-k="cf">Country</th><th data-k="score">Score</th>
         <th data-k="x">Life + weather</th><th data-k="wx">Weather (months)</th><th data-k="hdi">QoL (HDI)</th>
-        <th data-k="upa">$/acre</th><th data-k="resk">Tax-resident?</th><th data-k="tax">Income tax</th><th data-k="inc_other" id="otherHdr">From abroad</th><th class="note">Income tax &amp; residency notes</th>
+        <th data-k="upa">$/acre</th><th data-k="freeDays">Tax-free stay</th><th data-k="resk">You'd be</th><th data-k="tax" id="taxHdr">Your tax</th><th data-k="inc_other" id="otherHdr">From abroad</th><th class="note">Income tax &amp; residency notes</th>
       </tr></thead><tbody></tbody></table>
     </div>
   </section>
@@ -173,6 +174,7 @@
     <p><b>Weather</b>: daily data (2016–2025, Open-Meteo/ERA5; 2021–2025 for countries added without listings, at their main sea and ski areas) at up to three spots where that country's listings actually are, averaged for the months you pick. Each month scores daytime highs (best 20–27 °C), rainy days and sunshine. With ⛷ on, snowy months (high ≤ 5 °C, 4+ snow days) score on snow instead of warmth.</p>
     <p><b>Quality of life</b>: UN Human Development Index 2023 (health, education, income).</p>
     <p><b>Income tax</b> (bubble size): the top personal rate if you live there, either on income earned in that country or, with 🌍, on income from abroad (investments, remote work). 0% = territorial or foreign income exempt. Many countries give new arrivals a few tax-free years on foreign income (UK, NZ, Japan, Chile, Indonesia, Portugal's IFICI); those are in the notes, the chart uses the long-run rate. Rough figures for 2026: confirm with a tax adviser, and note US citizens owe US tax wherever they live.</p>
+    <p><b>Your tax</b> (bubble size, table): what you'd pay at your days, home and income. Not tax-resident → 0% on income from abroad. Resident → 0% where foreign income is exempt, the flat investment rate where one exists, otherwise the country's bands (Japan +10% local tax, Italy +~2.5%; US federal only, no state tax). Income earned in a country is taxed there either way.</p>
     <p><b>Tax residency</b>: with the days slider and the 🏡 box, each country's rules decide whether you'd be tax-resident. If you're not, it doesn't tax your income from abroad (🌍 bubble = 0%); income earned inside a country is taxed there either way. Tests that average over several years (USA, Ireland, Norway, Mauritius) are shown as the per-year figure if you come every year. A home can make you resident with far fewer days (Germany: any day; Austria: over 70 days; UK: from 121 days), and a treaty between two countries can override this. The rules are summarised in the table; confirm with an adviser before relying on a day count.</p>
     <p><b>Property purchase tax</b> (hover only): what a foreign buyer of a ~US$1M second home pays over 10 years: purchase taxes + foreign-buyer surcharges + 10 years of annual property/wealth tax, as a % of the price. Rules vary by region inside countries, so treat it as a guide and confirm locally. Foreign-ownership bans are in the notes; they aren't taxes but can rule a country out.</p>
     <p><b>Score</b> = 40% life + weather, 30% cheapness (log price), 30% low income tax. Dashed (non-comparable) prices count as average cheapness.</p>
@@ -185,7 +187,7 @@
 (async function(){
   const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const PREF_KEY='country_rank_prefs_v1';
-  let prefs={from:0,to:11,w:50,snow:false,view:'2d',inc:'abroad',days:120,home:false};
+  let prefs={from:0,to:11,w:50,snow:false,view:'2d',inc:'abroad',days:120,home:false,income:150000};
   try{ Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY)||'{}')); }catch(e){}
   const save=()=>{ try{ localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); }catch(e){} };
 
@@ -216,6 +218,8 @@
   dEl.oninput=()=>{ prefs.days=+dEl.value; paintDays(); save(); update(); };
   document.querySelectorAll('#dayPresets .chip').forEach(c=>c.onclick=()=>{ prefs.days=+c.dataset.d; paintDays(); save(); update(); });
   homeEl.checked=prefs.home; homeEl.onchange=()=>{ prefs.home=homeEl.checked; save(); update(); };
+  const incEl=document.getElementById('income'); incEl.value=prefs.income;
+  incEl.oninput=()=>{ prefs.income=Math.max(0,+incEl.value||0); save(); update(); };
   paintDays();
   const wEl=document.getElementById('w'), snowEl=document.getElementById('snow');
   wEl.value=prefs.w; snowEl.checked=prefs.snow;
@@ -244,6 +248,21 @@
     return {k:'non', label:'○ not resident', thr, why:`under ${thr} days a year`, rule:own?h.note:''};
   }
   const RES_ORDER={non:0,opt:1,risk:2,res:3};
+  // what YOU pay at your days / home / income: 0 on foreign income when not resident
+  function bandPct(b, usd){ if(!b||!b.usd_per_unit||!usd) return null; const loc=usd/b.usd_per_unit;
+    return taxOn(loc,b.bands)/loc*100 + (b.add_flat||0); }
+  function effective(c, rs, it){
+    const usd=prefs.income, resident=(rs.k==='res'||rs.k==='risk'), bp=bandPct(c.bands,usd);
+    if(prefs.inc==='abroad'){
+      if(!resident) return {pct:0, why:`not tax-resident at ${prefs.days} days: income from abroad isn't taxed here`};
+      if(it.abroad===0) return {pct:0, why:'resident, but foreign income is exempt'};
+      if(it.abroad<it.top) return {pct:it.abroad, why:`resident: investment income from abroad at a flat ${it.abroad}%`};
+      if(bp!=null) return {pct:bp, why:`resident: worldwide income at the normal bands${c.bands.add_flat?` + ${c.bands.add_flat_label}`:''}`};
+      return {pct:it.abroad, why:'resident: top rate (bands not added yet)'};
+    }
+    if(bp!=null) return {pct:bp, why:`income earned there, resident bands${c.bands.add_flat?` + ${c.bands.add_flat_label}`:''}; it's taxed there whether or not you're resident (non-resident rates can differ${c.bands.nonresident?': '+c.bands.nonresident:''})`};
+    return {pct:it.top, why:'income earned there at the top rate (bands not added yet)'};
+  }
   function compute(){
     const ms=selMonths(), w=prefs.w/100;
     const rows=C.map(c=>{
@@ -252,9 +271,10 @@
       const wx=sel.reduce((s,m)=>s+monthScore(m),0)/sel.length;
       const q=c.hdi!=null ? clamp((c.hdi-0.6)/(0.98-0.6),0,1)*100 : 50;
       const it=c.income_tax, here=prefs.inc==='here', rs=residency(c);
-      const abroadNow = (rs.k==='res'||rs.k==='risk') ? it.abroad : 0;   // non-residents aren't taxed on foreign income
-      return {...c, tax_obj:c.tax, it, rs, resk:RES_ORDER[rs.k], wx, q, x: w*q+(1-w)*wx, upa:c.usd_per_acre,
-        tax: here?it.top:abroadNow, inc_other: here?abroadNow:it.top,
+      const eff=effective(c, rs, it), R0=c.residency||{days:183};
+      return {...c, tax_obj:c.tax, it, rs, eff, resk:RES_ORDER[rs.k], wx, q, x: w*q+(1-w)*wx, upa:c.usd_per_acre,
+        tax: Math.round(eff.pct*10)/10, taxUsd: Math.round(prefs.income*eff.pct/100), freeDays: rs.thr-1,
+        inc_other: here ? ((rs.k==='res'||rs.k==='risk')?it.abroad:0) : it.top,
         tmax:avg('tmax'), wet:avg('wet'), sun:avg('sun'), snowd:avg('snow')};
     });
     const priced=rows.filter(r=>!r.noPrice);
@@ -344,7 +364,9 @@
       ${r.rs.rule?`<span class="k">${r.rs.rule}</span><br>`:''}${r.residency?.note?`<span class="k">${r.residency.note}</span><br>`:''}
       <span class="k">weather ${span}</span> <span class="n">${r.wx.toFixed(0)}/100</span>: highs ${r.tmax.toFixed(0)} °C · ${r.wet.toFixed(0)} rainy d/mo · ${r.sun.toFixed(1)} h sun/d${r.snowd>=1?` · ${r.snowd.toFixed(0)} snow d/mo`:''}<br>
       <span class="k">quality of life</span> HDI ${r.hdi??'n/a'}${r.hdi_note?` <span class="k">(${r.hdi_note})</span>`:''}<br>
-      <span class="k">income tax</span> <span class="n">${r.it.top}%</span> <span class="k">earned there ·</span> <span class="n">${(r.rs.k==='res'||r.rs.k==='risk')?r.it.abroad+'%':'0% (not resident'+(r.it.abroad?`; ${r.it.abroad}% if resident`:'')+')'}</span> <span class="k">on income from abroad</span><br>
+      <span class="k">your tax</span> <b>${r.tax}%</b> <span class="k">${r.taxUsd?'(≈ US$'+r.taxUsd.toLocaleString()+'/yr) ':''}· ${r.eff.why}</span><br>
+      <span class="k">tax-free stay: up to</span> ${(r.residency?.days??183)>=365&&!(prefs.home&&r.residency?.home?.kind==='hard')?'any visit under a year':r.freeDays<=0?'none (any stay, with a home)':daysTxt(r.freeDays)}<br>
+      <span class="k">rates</span> <span class="n">${r.it.top}%</span> <span class="k">earned there ·</span> <span class="n">${(r.rs.k==='res'||r.rs.k==='risk')?r.it.abroad+'%':'0% (not resident'+(r.it.abroad?`; ${r.it.abroad}% if resident`:'')+')'}</span> <span class="k">on income from abroad</span><br>
       <span class="k">${r.it.note}</span><br>
       <span class="k" style="color:var(--accent)">click for tax bands and details</span><br>
       <span class="k">buying + 10 yrs property tax: ${r.tax_obj.total10}% (${r.tax_obj.purchase}% buying${r.tax_obj.foreign?` + ${r.tax_obj.foreign}% foreign`:''} + ${r.tax_obj.annual}%/yr)</span>`;
@@ -381,8 +403,8 @@
   function calcHtml(r){
     const b=r.bands; if(!b||!b.usd_per_unit) return '';
     const usd=prefs.income||150000, loc=usd/b.usd_per_unit, t=taxOn(loc,b.bands);
-    return `<div class="calc"><label for="incomeIn">If you were resident with a yearly income of US$</label><input id="incomeIn" type="number" min="0" step="10000" value="${usd}">
-      <span>→ <b class="big">${(t/loc*100||0).toFixed(1)}%</b> average income tax (≈ US$${Math.round(t*b.usd_per_unit).toLocaleString()} a year)</span></div>
+    return `<div class="calc"><label for="incomeIn">If you <i>were</i> resident, on a yearly income of US$</label><input id="incomeIn" type="number" min="0" step="10000" value="${usd}">
+      <span>→ <b class="big">${(t/loc*100+(b.add_flat||0)||0).toFixed(1)}%</b> average income tax${b.add_flat?` incl. ${b.add_flat_label}`:''} (≈ US$${Math.round(t*b.usd_per_unit+usd*(b.add_flat||0)/100).toLocaleString()} a year)</span></div>
       <p class="sub" style="margin-top:4px">Bands only, before deductions, credits and local surcharges. ${b.currency} at ≈ US$${b.usd_per_unit}.</p>`;
   }
   function detailHtml(r){
@@ -398,10 +420,11 @@
       : `<h3>Income tax</h3><p>Top rate <b>${it.top}%</b>. Detailed bands not added yet for this country.</p>`;
     return `<h2 id="dTitle">${r.cf}</h2><p class="sub">#${r.rank} · score ${r.score.toFixed(0)} · HDI ${r.hdi??'n/a'} · ${r.noPrice?'no land listings yet':money(r.upa)+'/acre'}</p>
       <h3>When you become tax-resident</h3>
-      <p class="big">${R.days>=365?'Only if you live there (a year, or make it your home)':`After <b>${daysTxt(R.days)}</b> a year`}</p>
+      <p class="big">${R.days>=365?'Only if you live there (a year, or make it your home)':`After <b>${daysTxt(R.days)}</b> a year`} · tax-free stay up to <b>${R.days>=365?'under a year':daysTxt(R.days-1)}</b>${h&&h.kind==='hard'?` (<b>${h.days} days</b> if you own a home)`:''}</p>
+      <p class="big" style="margin-top:6px">Your tax at ${daysTxt(prefs.days)}${prefs.home?' with a home':''}, US$${prefs.income.toLocaleString()}/yr ${prefs.inc==='abroad'?'from abroad':'earned there'}: <b>${r.tax}%</b>${r.taxUsd?` ≈ US$${r.taxUsd.toLocaleString()} a year`:' (nothing)'}</p><p class="sub">${r.eff.why}</p>
       ${R.note?`<p>${R.note}</p>`:''}
       ${h?`<p><b>If you own a home there:</b> ${h.note}</p>`:''}
-      <p>At your settings (<b>${daysTxt(prefs.days)}</b>${prefs.home?', with a home':''}): <span class="res ${r.rs.k}"><b>${r.rs.label}</b></span>, ${r.rs.why}.</p>
+      <p>At your settings (<b>${daysTxt(prefs.days)}</b>${prefs.home?', with a home':''}): <span class="res s-${r.rs.k}"><b>${r.rs.label}</b></span>, ${r.rs.why}.</p>
       <h3>Income from abroad (investments, remote work, pension)</h3>
       <p class="big"><b>${it.abroad}%</b> if resident${r.rs.k==='non'||r.rs.k==='opt'?' · <b>0%</b> at your settings (not resident)':''}</p>
       <p>${it.note}</p>
@@ -412,7 +435,7 @@
   }
   function openDetail(r){ curRow=r; lastFocus=document.activeElement; DB.innerHTML=detailHtml(r); DL.classList.add('show'); DL.querySelector('.x').focus(); wireCalc(); }
   function wireCalc(){ const i=document.getElementById('incomeIn'); if(!i) return;
-    i.oninput=()=>{ prefs.income=Math.max(0,+i.value||0); save(); const c=i.closest('.calc'), pos=i.selectionStart;
+    i.oninput=()=>{ prefs.income=Math.max(0,+i.value||0); incEl.value=prefs.income; save(); const c=i.closest('.calc'), pos=i.selectionStart;
       c.outerHTML=calcHtml(curRow); const n=document.getElementById('incomeIn'); n.focus(); try{ n.setSelectionRange(pos,pos); }catch(e){} wireCalc(); }; }
   const closeDetail=()=>{ DL.classList.remove('show'); if(lastFocus) lastFocus.focus(); };
   DL.querySelector('.x').onclick=closeDetail;
@@ -430,7 +453,8 @@
       <td>${r.score.toFixed(0)}<span class="bar" style="width:${(r.score*0.6).toFixed(0)}px"></span></td>
       <td>${r.x.toFixed(0)}</td><td>${r.wx.toFixed(0)}</td><td>${r.hdi??'n/a'}</td>
       <td>${r.noPrice?'<span class="k" style="color:var(--txt-mute)">no listings</span>':money(r.upa)}</td>
-      <td><span class="res ${r.rs.k}" data-thr="${r.rs.thr}" title="${(r.rs.why+'. '+(r.rs.rule||'')+' '+(r.residency?.note||'')).replace(/"/g,'&quot;')}">${r.rs.label}</span><br><span class="sub">${(r.residency?.days??183)>=365?'only if you live there':'at '+daysTxt(r.rs.thr)}</span></td><td>${r.tax}%</td><td>${r.inc_other}%</td><td class="note">${r.it.note}${r.residency?.note?` <br><i>Residency:</i> ${r.residency.note}`:''}${r.residency?.home?` <br><i>With a home:</i> ${r.residency.home.note}`:''}</td></tr>`).join('');
+      <td>${(r.residency?.days??183)>=365&&!(prefs.home&&r.residency?.home?.kind==='hard')?'<b>under 1 yr</b><br><span class="sub">unless you move there</span>':(r.freeDays<=0?`<b>none</b><br><span class="sub">any stay, with a home</span>`:`<b>${r.freeDays} days</b><br><span class="sub">${months(r.freeDays)}</span>`)}</td>
+      <td><span class="res s-${r.rs.k}" data-thr="${r.rs.thr}" title="${(r.rs.why+'. '+(r.rs.rule||'')+' '+(r.residency?.note||'')).replace(/"/g,'&quot;')}">${r.rs.label}</span></td><td title="${r.eff.why}"><b>${r.tax}%</b><br><span class="sub">${r.taxUsd?'≈ US$'+r.taxUsd.toLocaleString()+'/yr':'nothing'}</span></td><td>${r.inc_other}%</td><td class="note">${r.it.note}${r.residency?.note?` <br><i>Residency:</i> ${r.residency.note}`:''}${r.residency?.home?` <br><i>With a home:</i> ${r.residency.home.note}`:''}</td></tr>`).join('');
   }
 
   document.querySelector('#tbl tbody').addEventListener('click',e=>{ const tr=e.target.closest('tr[data-cf]'); if(tr) openDetail(ROWS.find(x=>x.cf===tr.dataset.cf)); });
@@ -444,7 +468,7 @@
   }
   const iH=document.getElementById('incHere'), iA=document.getElementById('incAbroad'), oh=document.getElementById('otherHdr');
   const setInc=v=>{ prefs.inc=v; iH.classList.toggle('on',v==='here'); iA.classList.toggle('on',v==='abroad');
-    oh.textContent = v==='here' ? 'From abroad' : 'Earned there'; document.querySelector('#tbl th[data-k="tax"]').textContent = v==='here'?'Income tax (earned)':'Income tax (abroad)'; };
+    oh.textContent = v==='here' ? 'From abroad' : 'Top rate if earned there'; document.getElementById('taxHdr').textContent = v==='here'?'Your tax (earned there)':'Your tax (income from abroad)'; };
   iH.onclick=()=>{ setInc('here'); save(); update(); }; iA.onclick=()=>{ setInc('abroad'); save(); update(); }; setInc(prefs.inc);
   const v2=document.getElementById('v2'), v3=document.getElementById('v3');
   const setView=v=>{ prefs.view=v; v2.classList.toggle('on',v==='2d'); v3.classList.toggle('on',v==='3d'); save(); update(); };

@@ -256,7 +256,9 @@
   "extras": "National tax only. Add a 2.1% reconstruction surtax on the national tax (through 2037), so the top national rate is 45.945%. Add a flat 10% local inhabitant tax on the prior year's income, plus a per-capita levy of about JPY 5,000. Top combined rate is about 55.945%.",
   "capital_gains": "Listed shares: 20.315% separate taxation (15.315% national + 5% local). Real estate: 20.315% if held more than 5 years, 39.63% if 5 years or less.",
   "dividends": "Listed company dividends: 20.315% final (separate taxation option). Alternatively aggregated with a dividend credit.",
-  "source": "https://taxsummaries.pwc.com/japan/individual/taxes-on-personal-income"
+  "source": "https://taxsummaries.pwc.com/japan/individual/taxes-on-personal-income",
+  "add_flat": 10,
+  "add_flat_label": "10% local inhabitant tax"
  },
  "Thailand": {
   "currency": "THB",
@@ -416,7 +418,9 @@
   "extras": "National IRPEF only. Add a regional surcharge of about 1.23% to 3.33% and a municipal surcharge of 0% to 0.9%, so the top marginal rate is about 47%. The middle rate was cut from 35% to 33% by the 2026 Budget.",
   "capital_gains": "26% substitute tax on financial assets (12.5% on government bonds). Real estate: gains on property held more than 5 years are exempt; otherwise IRPEF, or a 26% substitute tax.",
   "dividends": "26% final withholding",
-  "source": "https://taxsummaries.pwc.com/italy/individual/taxes-on-personal-income"
+  "source": "https://taxsummaries.pwc.com/italy/individual/taxes-on-personal-income",
+  "add_flat": 2.5,
+  "add_flat_label": "~2.5% regional + municipal surcharges"
  },
  "Spain": {
   "currency": "EUR",
