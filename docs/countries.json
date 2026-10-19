@@ -223,10 +223,10 @@
    "hdi_note": null,
    "tax": {
     "purchase": 2.0,
-    "foreign": 0,
+    "foreign": 20,
     "annual": 0.6,
-    "note": "provincial land transfer tax; federal ban on foreign purchase of homes in cities until 2027 (rural/recreational exempt); BC adds 20% for foreigners in some regions",
-    "total10": 8.0
+    "note": "provincial land transfer tax ~2%; foreign buyers: BC +20% (Metro Vancouver, Victoria, Fraser Valley, Okanagan, Nanaimo), Ontario +25% province-wide; BC speculation & vacancy tax 2%/yr for foreign owners in those areas; federal ban on foreigners buying homes until 2027 (rural areas exempt); federal 1% underused-housing tax reportedly repealed from 2025; non-residents: 25% withholding on rent and a s.116 certificate when selling",
+    "total10": 28.0
    },
    "income_tax": {
     "top": 53.5,
@@ -238,8 +238,9 @@
     "home": {
      "kind": "soft",
      "days": 0,
-     "note": "a year-round home is a significant tie: CRA can treat you as resident under 183 days if your ties elsewhere are weak."
-    }
+     "note": "a home in Canada is a significant residential tie: with weak ties elsewhere CRA can treat you as resident (worldwide income taxed) even under 183 days. A vacation home with strong ties abroad usually stays non-resident, but it's a real risk."
+    },
+    "note": "183 days (sojourner rule) or residential ties."
    },
    "climate_points": [
     [
@@ -2053,7 +2054,7 @@
     "purchase": 0.5,
     "foreign": 0,
     "annual": 0.4,
-    "note": "no stamp duty or capital-gains tax; council rates; foreigners mostly banned from buying existing homes",
+    "note": "no stamp duty or capital-gains tax (2-yr bright-line on homes); FOREIGNERS CANNOT BUY HOMES except Australians/Singaporeans or Active Investor Plus visa holders (one home worth NZ$5M+, law passed Dec 2025); rural/sensitive land needs Overseas Investment Office consent",
     "total10": 4.5
    },
    "income_tax": {
@@ -2066,8 +2067,9 @@
     "home": {
      "kind": "soft",
      "days": 0,
-     "note": "a 'permanent place of abode' in NZ makes you resident whatever the days."
-    }
+     "note": "a 'permanent place of abode' in NZ makes you resident whatever the days. IRD (IS 25/16): a holiday home used 2-3 months a year isn't one by itself, but ownership counts toward your ties and courts have found ownership alone enough. Investor-visa home buyers are being told to get a binding ruling."
+    },
+    "note": "183 days in any 12 months, or a permanent place of abode."
    },
    "climate_points": [
     [

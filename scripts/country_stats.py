@@ -29,7 +29,7 @@ HDI_PROXY = {"New Caledonia": ("France", "French territory, not in UN data: Fran
 # foreign buyers; annual = recurring property/wealth tax (% of market value per year).
 TAX = {
  "Japan":        dict(purchase=4.0, foreign=0,  annual=1.0,  note="acquisition + registration tax on assessed value; fixed-asset + city-planning tax ~1.7% of assessed value/yr"),
- "Canada":       dict(purchase=2.0, foreign=0,  annual=0.6,  note="provincial land transfer tax; federal ban on foreign purchase of homes in cities until 2027 (rural/recreational exempt); BC adds 20% for foreigners in some regions"),
+ "Canada":       dict(purchase=2.0, foreign=20, annual=0.6,  note="provincial land transfer tax ~2%; foreign buyers: BC +20% (Metro Vancouver, Victoria, Fraser Valley, Okanagan, Nanaimo), Ontario +25% province-wide; BC speculation & vacancy tax 2%/yr for foreign owners in those areas; federal ban on foreigners buying homes until 2027 (rural areas exempt); federal 1% underused-housing tax reportedly repealed from 2025; non-residents: 25% withholding on rent and a s.116 certificate when selling"),
  "USA":          dict(purchase=1.0, foreign=0,  annual=1.1,  note="state/county transfer tax ~0.5-1%; property tax ~1.1%/yr (MA)"),
  "Austria":      dict(purchase=4.6, foreign=0,  annual=0.1,  note="3.5% Grunderwerbsteuer + 1.1% land-register fee; Grundsteuer tiny; EU nationals treated as locals"),
  "Portugal":     dict(purchase=7.0, foreign=0,  annual=0.6,  note="IMT ~6% + 0.8% stamp duty; IMI 0.3-0.45% + AIMI above €600k"),
@@ -40,7 +40,7 @@ TAX = {
  "Romania":      dict(purchase=2.0, foreign=0,  annual=0.15, note="notary + registration; building tax ~0.1-0.2%/yr; non-EU buyers cannot own land directly"),
  "Brazil":       dict(purchase=3.5, foreign=0,  annual=0.5,  note="ITBI 2-3% + registry; IPTU/ITR; limits on foreign ownership of rural land"),
  "Indonesia":    dict(purchase=6.0, foreign=0,  annual=0.2,  note="BPHTB 5% + notary; foreigners only via Hak Pakai (right-of-use) or company"),
- "New Zealand":  dict(purchase=0.5, foreign=0,  annual=0.4,  note="no stamp duty or capital-gains tax; council rates; foreigners mostly banned from buying existing homes"),
+ "New Zealand":  dict(purchase=0.5, foreign=0,  annual=0.4,  note="no stamp duty or capital-gains tax (2-yr bright-line on homes); FOREIGNERS CANNOT BUY HOMES except Australians/Singaporeans or Active Investor Plus visa holders (one home worth NZ$5M+, law passed Dec 2025); rural/sensitive land needs Overseas Investment Office consent"),
  "Argentina":    dict(purchase=3.0, foreign=0,  annual=0.3,  note="provincial stamp tax + deed costs; rural land limits for foreigners"),
  "Turkey":       dict(purchase=4.0, foreign=0,  annual=0.3,  note="4% title-deed fee (often split); property tax 0.1-0.6%/yr"),
  "Switzerland":  dict(purchase=2.5, foreign=0,  annual=0.5,  note="cantonal transfer tax + notary; wealth + property tax; Lex Koller caps holiday-home sales to foreigners"),
@@ -150,7 +150,7 @@ INCOME = {
 # resident depending on your ties; "opt" = lets you CHOOSE residency (useful if low tax).
 RES = {
  "Japan":        dict(days=365, note="resident only if your domicile is in Japan or you've lived there a year; 90-day visa-free visits stay non-resident."),
- "Canada":       dict(days=183, home=dict(kind="soft", days=0, note="a year-round home is a significant tie: CRA can treat you as resident under 183 days if your ties elsewhere are weak.")),
+ "Canada":       dict(days=183, home=dict(kind="soft", days=0, note="a home in Canada is a significant residential tie: with weak ties elsewhere CRA can treat you as resident (worldwide income taxed) even under 183 days. A vacation home with strong ties abroad usually stays non-resident, but it's a real risk."), note="183 days (sojourner rule) or residential ties."),
  "USA":          dict(days=122, note="183-day test weighted over 3 years: coming every year, 122+ days/yr makes you resident (121 is safe). Closer-connection exception (Form 8840) can protect you up to 182 days. ESTA visitors max 90 days per visit; longer needs a B-2 visa."),
  "Austria":      dict(days=183, home=dict(kind="hard", days=70, note="any home you can use makes you resident. Second-home rule: if your centre of life has been abroad 5+ yrs, using the Austrian home on no more than 70 days a year keeps you non-resident (keep a day log).")),
  "Portugal":     dict(days=183, home=dict(kind="soft", days=0, note="a home kept as your habitual residence can make you resident under 183 days.")),
@@ -161,7 +161,7 @@ RES = {
  "Romania":      dict(days=183, home=dict(kind="soft", days=0, note="centre of vital interests in Romania makes you resident.")),
  "Brazil":       dict(days=183, note="183 days in 12 months; a permanent visa makes you resident from day one."),
  "Indonesia":    dict(days=183, note="183 days in 12 months."),
- "New Zealand":  dict(days=183, home=dict(kind="soft", days=0, note="a 'permanent place of abode' in NZ makes you resident whatever the days.")),
+ "New Zealand":  dict(days=183, home=dict(kind="soft", days=0, note="a 'permanent place of abode' in NZ makes you resident whatever the days. IRD (IS 25/16): a holiday home used 2-3 months a year isn't one by itself, but ownership counts toward your ties and courts have found ownership alone enough. Investor-visa home buyers are being told to get a binding ruling."), note="183 days in any 12 months, or a permanent place of abode."),
  "Argentina":    dict(days=365, note="resident after 12 months or with permanent residency."),
  "Turkey":       dict(days=183, home=dict(kind="soft", days=0, note="settling (domicile) in Turkey makes you resident.")),
  "Switzerland":  dict(days=90, home=dict(kind="soft", days=0, note="domicile with intent to stay makes you resident; a holiday home alone usually doesn't."), note="90 days without work (30 days if working)."),
