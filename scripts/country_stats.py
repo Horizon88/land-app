@@ -315,6 +315,20 @@ def main():
             land = [r["usd"] / r["ac"] for r in rows if (r.get("ac") or 0) > 0 and (r.get("usd") or 0) > 0]
             basis, skew = "estates incl. houses (few listings: not comparable)", True
         if not land: continue
+        # special land: oceanfront (≤1 km from the sea, or tagged beach/waterfront) and ski (≤2 km from a lift)
+        def price_set(sub, min_band=10):
+            band_ = [r["usd"] / r["ac"] for r in sub if 0.25 <= r["ac"] <= 50]
+            vals, skew_ = (band_, False) if len(band_) >= min_band else ([r["usd"] / r["ac"] for r in sub], True)
+            if len(vals) < 3: return None
+            q = statistics.quantiles(vals, n=4) if len(vals) >= 4 else [None, None, None]
+            return {"usd": round(statistics.median(vals)), "p25": q[0] and round(q[0]), "p75": q[2] and round(q[2]),
+                    "n": len(vals), "skew": skew_,
+                    "basis": "plots of 0.25-50 acres" if not skew_ else "all such plots (few, or mostly small: rough)"}
+        is_ocean = lambda r: (r.get("coast_km") is not None and r["coast_km"] <= 1) or r.get("v") in ("beachfront", "waterfront")
+        is_ski = lambda r: r.get("ski_km") is not None and r["ski_km"] <= 2
+        price_sets = {"ocean": price_set([r for r in allland if is_ocean(r)]),
+                      "ski": price_set([r for r in allland if is_ski(r)]),
+                      "either": price_set([r for r in allland if is_ocean(r) or is_ski(r)])}
         pts = sorted([r for r in rows if r.get("lat") is not None and r.get("lon") is not None], key=lambda r: r["lat"])
         samples = []
         for q in (0.2, 0.5, 0.8):
@@ -335,6 +349,7 @@ def main():
             "usd_per_acre": round(statistics.median(land)),
             "usd_per_acre_p25": round(statistics.quantiles(land, n=4)[0]) if len(land) >= 4 else None,
             "usd_per_acre_p75": round(statistics.quantiles(land, n=4)[2]) if len(land) >= 4 else None,
+            "price_sets": price_sets,
             "hdi": h, "hdi_note": hnote,
             "tax": dict(t, total10=round(t["purchase"] + t["foreign"] + 10 * t["annual"], 1)),
             "income_tax": INCOME[cf], "residency": RES[cf],

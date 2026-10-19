@@ -21,7 +21,7 @@
         "imgs": [],
         "ski_km": null,
         "ski_r": "",
-        "coast_km": null,
+        "coast_km": 0.49,
         "user_added": true,
         "source": "dol",
         "deed": "54240",
@@ -81,7 +81,7 @@
         "imgs": [],
         "ski_km": null,
         "ski_r": "",
-        "coast_km": null,
+        "coast_km": 0.41,
         "user_added": true,
         "source": "dol",
         "deed": "50861",
@@ -121,7 +121,7 @@
         "imgs": [],
         "ski_km": null,
         "ski_r": "",
-        "coast_km": null,
+        "coast_km": 0.49,
         "user_added": true,
         "source": "dol",
         "deed": "57183",
@@ -161,7 +161,7 @@
         "imgs": [],
         "ski_km": null,
         "ski_r": "",
-        "coast_km": null,
+        "coast_km": 0.49,
         "user_added": true,
         "source": "dol",
         "deed": "45591",
@@ -199,7 +199,7 @@
         "imgs": [],
         "ski_km": null,
         "ski_r": "",
-        "coast_km": null,
+        "coast_km": 0.57,
         "user_added": true,
         "source": "dol",
         "deed": "47124",
@@ -237,7 +237,7 @@
         "imgs": [],
         "ski_km": null,
         "ski_r": "",
-        "coast_km": null,
+        "coast_km": 0.73,
         "user_added": true,
         "source": "dol",
         "deed": "47125",
@@ -275,7 +275,7 @@
         "imgs": [],
         "ski_km": null,
         "ski_r": "",
-        "coast_km": null,
+        "coast_km": 1.41,
         "user_added": true,
         "source": "lazudi",
         "added": "2026-09-15",
@@ -315,7 +315,7 @@
         "usd_per_sqft": 839,
         "lat": 41.7100197,
         "lon": -71.3010294,
-        "coast_km": 0.0,
+        "coast_km": 0.21,
         "v": "waterfront",
         "t": "Single-family",
         "imgs": [
@@ -375,7 +375,7 @@
         "lon": 135.521515,
         "loc_approx": true,
         "v": "sea_view",
-        "coast_km": null,
+        "coast_km": 0.02,
         "ski_km": null,
         "ski_r": "",
         "imgs": [
@@ -468,7 +468,10 @@
         "view_near_km": null,
         "elev_m": 44,
         "prom_m": 5,
-        "view_score": 0
+        "view_score": 0,
+        "coast_km": null,
+        "ski_km": null,
+        "ski_r": ""
     },
     {
         "code": "GB-TBJSZD",
@@ -527,7 +530,10 @@
         "view_near_km": null,
         "elev_m": 92,
         "prom_m": -20,
-        "view_score": 0
+        "view_score": 0,
+        "coast_km": 12.19,
+        "ski_km": null,
+        "ski_r": ""
     },
     {
         "code": "FR-Q2ACMK",
@@ -590,7 +596,10 @@
         "view_near_km": null,
         "elev_m": 55,
         "prom_m": 7,
-        "view_score": 0
+        "view_score": 0,
+        "coast_km": null,
+        "ski_km": null,
+        "ski_r": ""
     },
     {
         "code": "GB-GEMDSZ",
@@ -612,7 +621,7 @@
         "lat": 55.738,
         "lon": -5.5961,
         "v": "sea_view",
-        "coast_km": 0.1,
+        "coast_km": 0.37,
         "imgs": [
             "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_01.jpg",
             "https://a474e529956d3f647bbe-176bf680c52b8eef039a9b1f404db0cb.ssl.cf3.rackcdn.com/production/122373/image/1660x1110_CSD253440_02.jpg",
@@ -651,7 +660,9 @@
         "view_near_km": 3.96,
         "elev_m": 20,
         "prom_m": -4,
-        "view_score": 29
+        "view_score": 29,
+        "ski_km": null,
+        "ski_r": ""
     },
     {
         "code": "GB-TC2R35",
@@ -700,7 +711,11 @@
         "view_near_km": null,
         "elev_m": 186,
         "prom_m": -23,
-        "view_score": 0
+        "view_score": 0,
+        "coast_km": 27.83,
+        "ski_km": 24.88,
+        "ski_r": "The Lecht",
+        "ski_lifts": 9
     },
     {
         "code": "GB-EWX385",
@@ -721,7 +736,7 @@
         "lat": 56.636414,
         "lon": -6.1775012,
         "v": "sea_view",
-        "coast_km": 0.3,
+        "coast_km": 1.15,
         "imgs": [
             "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_22_l_gal.jpg",
             "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_23_l_gal.jpg",
@@ -760,7 +775,9 @@
         "view_near_km": 1.35,
         "elev_m": 68,
         "prom_m": 31,
-        "view_score": 71
+        "view_score": 71,
+        "ski_km": null,
+        "ski_r": ""
     },
     {
         "code": "US-704MJB",
@@ -784,8 +801,8 @@
         "lat": 40.33788,
         "lon": -111.52782,
         "v": "",
-        "ski_km": 7.9,
-        "ski_r": "Sundance Mountain Resort",
+        "ski_km": 6.07,
+        "ski_r": "Sundance Resort",
         "imgs": [
             "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/1-fcbec6a9804fe419b791e3d8afe56350-l.jpg",
             "https://feed-images.rewhosting.com/pcbor/Photo/Property/20250908180451105500000000/2-a324302c31c5d92df79c816ddf7c3fc0-l.jpg",
@@ -823,7 +840,9 @@
         "view_near_km": null,
         "elev_m": 1710,
         "prom_m": -269,
-        "view_score": 10
+        "view_score": 10,
+        "coast_km": null,
+        "ski_lifts": 7
     },
     {
         "code": "ZA-V9K7R5",
@@ -873,7 +892,10 @@
         "view_near_km": 1.46,
         "elev_m": 172,
         "prom_m": 110,
-        "view_score": 55
+        "view_score": 55,
+        "coast_km": 1.27,
+        "ski_km": null,
+        "ski_r": ""
     },
     {
         "code": "FJ-FXDF2K",
@@ -897,7 +919,7 @@
         "lat": -16.7981528,
         "lon": 177.4569109,
         "v": "beachfront",
-        "coast_km": 0,
+        "coast_km": 0.61,
         "imgs": [
             "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_1.jpg",
             "https://bayleys-cdn.bayleys.co.nz/listing-images/5000415/5000415_2.jpg",
@@ -937,7 +959,9 @@
         "view_near_km": 0.29,
         "elev_m": 82,
         "prom_m": 82,
-        "view_score": 76
+        "view_score": 76,
+        "ski_km": null,
+        "ski_r": ""
     },
     {
         "code": "JP-G8VV3Q",
@@ -998,6 +1022,9 @@
         "view_near_km": 0.75,
         "elev_m": 111,
         "prom_m": 110,
-        "view_score": 55
+        "view_score": 55,
+        "coast_km": 0.41,
+        "ski_km": null,
+        "ski_r": ""
     }
 ]

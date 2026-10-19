@@ -1,6 +1,6 @@
 {
  "schema": "countries_v1",
- "built": "2026-10-18",
+ "built": "2026-10-19",
  "method": "Build docs/countries.json for the country ranking page (docs/countries.html).\n\nPer country:\n  - price per acre: median USD/acre of land listings in the app (falls back to\n    every listing with an acreage when a country has fewer than 5 land rows)\n  - quality of life: UN Human Development Index 2023 (HDR 2025 data file)\n  - climate: monthly normals 2016-2025 from the Open-Meteo archive (ERA5),\n    averaged over three sample points taken from where that country's listings\n    actually are (20th / 50th / 80th percentile of latitude)\n  - tax: estimated cost for a foreign individual buying a ~US$1M second home and\n    holding it 10 years: one-off purchase taxes + foreign-buyer surcharges + 10x\n    annual property/wealth tax, as % of price. Rough, hand-maintained, see TAX.\n\nUsage: python3 scripts/country_stats.py   (climate cached in scripts/geo/climate_cache.json)",
  "countries": {
   "Japan": {
@@ -11,6 +11,32 @@
    "usd_per_acre": 306344,
    "usd_per_acre_p25": 101932,
    "usd_per_acre_p75": 729932,
+   "price_sets": {
+    "ocean": {
+     "usd": 288878,
+     "p25": 101475,
+     "p75": 606800,
+     "n": 150,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": {
+     "usd": 125984,
+     "p25": 70310,
+     "p75": 1007153,
+     "n": 11,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "either": {
+     "usd": 273957,
+     "p25": 98737,
+     "p75": 609826,
+     "n": 161,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.925,
    "hdi_note": null,
    "tax": {
@@ -167,6 +193,32 @@
    "usd_per_acre": 54122,
    "usd_per_acre_p25": 19531,
    "usd_per_acre_p75": 232411,
+   "price_sets": {
+    "ocean": {
+     "usd": 53250,
+     "p25": 19494,
+     "p75": 211104,
+     "n": 1992,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": {
+     "usd": 453784,
+     "p25": 48196,
+     "p75": 1509157,
+     "n": 17,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "either": {
+     "usd": 53612,
+     "p25": 19684,
+     "p75": 213849,
+     "n": 2009,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.939,
    "hdi_note": null,
    "tax": {
@@ -341,6 +393,32 @@
    "usd_per_acre": 118277,
    "usd_per_acre_p25": 38333,
    "usd_per_acre_p75": 366185,
+   "price_sets": {
+    "ocean": {
+     "usd": 431081,
+     "p25": 152500,
+     "p75": 1211111,
+     "n": 375,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": {
+     "usd": 1620667,
+     "p25": 366753,
+     "p75": 4254375,
+     "n": 24,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "either": {
+     "usd": 446131,
+     "p25": 165392,
+     "p75": 1316667,
+     "n": 399,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.938,
    "hdi_note": null,
    "tax": {
@@ -495,6 +573,25 @@
    "usd_per_acre": 1991678,
    "usd_per_acre_p25": 974510,
    "usd_per_acre_p75": 5155096,
+   "price_sets": {
+    "ocean": null,
+    "ski": {
+     "usd": 5271150,
+     "p25": 1903525,
+     "p75": 10279218,
+     "n": 47,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "either": {
+     "usd": 5271150,
+     "p25": 1903525,
+     "p75": 10279218,
+     "n": 47,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.93,
    "hdi_note": null,
    "tax": {
@@ -649,6 +746,25 @@
    "usd_per_acre": 85573,
    "usd_per_acre_p25": 20475,
    "usd_per_acre_p75": 247273,
+   "price_sets": {
+    "ocean": {
+     "usd": 691991,
+     "p25": 204947,
+     "p75": 4367647,
+     "n": 19,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": null,
+    "either": {
+     "usd": 691991,
+     "p25": 204947,
+     "p75": 4367647,
+     "n": 19,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.89,
    "hdi_note": null,
    "tax": {
@@ -815,6 +931,25 @@
    "usd_per_acre": 107020,
    "usd_per_acre_p25": 32828,
    "usd_per_acre_p75": 356029,
+   "price_sets": {
+    "ocean": {
+     "usd": 301073,
+     "p25": 101396,
+     "p75": 800294,
+     "n": 60,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": null,
+    "either": {
+     "usd": 301073,
+     "p25": 101396,
+     "p75": 800294,
+     "n": 60,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.819,
    "hdi_note": null,
    "tax": {
@@ -981,6 +1116,25 @@
    "usd_per_acre": 437299,
    "usd_per_acre_p25": 170002,
    "usd_per_acre_p75": 909365,
+   "price_sets": {
+    "ocean": {
+     "usd": 691919,
+     "p25": 300104,
+     "p75": 1599544,
+     "n": 417,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": null,
+    "either": {
+     "usd": 691919,
+     "p25": 300104,
+     "p75": 1599544,
+     "n": 417,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.798,
    "hdi_note": null,
    "tax": {
@@ -1139,6 +1293,11 @@
    "usd_per_acre": 242805,
    "usd_per_acre_p25": 65398,
    "usd_per_acre_p75": 746290,
+   "price_sets": {
+    "ocean": null,
+    "ski": null,
+    "either": null
+   },
    "hdi": 0.878,
    "hdi_note": null,
    "tax": {
@@ -1291,6 +1450,25 @@
    "usd_per_acre": 96012,
    "usd_per_acre_p25": 47279,
    "usd_per_acre_p75": 153795,
+   "price_sets": {
+    "ocean": null,
+    "ski": {
+     "usd": 120944,
+     "p25": 72147,
+     "p75": 187710,
+     "n": 121,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "either": {
+     "usd": 120944,
+     "p25": 72147,
+     "p75": 187710,
+     "n": 121,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.906,
    "hdi_note": null,
    "tax": {
@@ -1410,6 +1588,11 @@
    "usd_per_acre": 183572,
    "usd_per_acre_p25": 81900,
    "usd_per_acre_p75": 393084,
+   "price_sets": {
+    "ocean": null,
+    "ski": null,
+    "either": null
+   },
    "hdi": 0.845,
    "hdi_note": null,
    "tax": {
@@ -1546,6 +1729,25 @@
    "usd_per_acre": 375758,
    "usd_per_acre_p25": 130642,
    "usd_per_acre_p75": 1235504,
+   "price_sets": {
+    "ocean": {
+     "usd": 766346,
+     "p25": 299653,
+     "p75": 1560911,
+     "n": 63,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": null,
+    "either": {
+     "usd": 766346,
+     "p25": 299653,
+     "p75": 1560911,
+     "n": 63,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.786,
    "hdi_note": null,
    "tax": {
@@ -1661,6 +1863,25 @@
    "usd_per_acre": 353764,
    "usd_per_acre_p25": 159241,
    "usd_per_acre_p75": 910361,
+   "price_sets": {
+    "ocean": {
+     "usd": 523027,
+     "p25": 175812,
+     "p75": 2069766,
+     "n": 104,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": null,
+    "either": {
+     "usd": 523027,
+     "p25": 175812,
+     "p75": 2069766,
+     "n": 104,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.728,
    "hdi_note": null,
    "tax": {
@@ -1807,6 +2028,25 @@
    "usd_per_acre": 193065,
    "usd_per_acre_p25": 59405,
    "usd_per_acre_p75": 640800,
+   "price_sets": {
+    "ocean": {
+     "usd": 142661,
+     "p25": 34859,
+     "p75": 749899,
+     "n": 96,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": null,
+    "either": {
+     "usd": 150390,
+     "p25": 35010,
+     "p75": 739762,
+     "n": 98,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.938,
    "hdi_note": null,
    "tax": {
@@ -1957,6 +2197,25 @@
    "usd_per_acre": 215033,
    "usd_per_acre_p25": 104824,
    "usd_per_acre_p75": 402588,
+   "price_sets": {
+    "ocean": {
+     "usd": 887880,
+     "p25": 575595,
+     "p75": 3725038,
+     "n": 32,
+     "skew": true,
+     "basis": "all such plots (few, or mostly small: rough)"
+    },
+    "ski": null,
+    "either": {
+     "usd": 887880,
+     "p25": 575595,
+     "p75": 3725038,
+     "n": 32,
+     "skew": true,
+     "basis": "all such plots (few, or mostly small: rough)"
+    }
+   },
    "hdi": 0.865,
    "hdi_note": null,
    "tax": {
@@ -2068,6 +2327,11 @@
    "usd_per_acre": 80376,
    "usd_per_acre_p25": 33733,
    "usd_per_acre_p75": 237953,
+   "price_sets": {
+    "ocean": null,
+    "ski": null,
+    "either": null
+   },
    "hdi": 0.853,
    "hdi_note": null,
    "tax": {
@@ -2187,6 +2451,25 @@
    "usd_per_acre": 22012460,
    "usd_per_acre_p25": 14253720,
    "usd_per_acre_p75": 40633024,
+   "price_sets": {
+    "ocean": null,
+    "ski": {
+     "usd": 23964060,
+     "p25": 15590000,
+     "p75": 43652013,
+     "n": 235,
+     "skew": true,
+     "basis": "all such plots (few, or mostly small: rough)"
+    },
+    "either": {
+     "usd": 23964060,
+     "p25": 15590000,
+     "p75": 43652013,
+     "n": 235,
+     "skew": true,
+     "basis": "all such plots (few, or mostly small: rough)"
+    }
+   },
    "hdi": 0.97,
    "hdi_note": null,
    "tax": {
@@ -2307,6 +2590,25 @@
    "usd_per_acre": 1135602,
    "usd_per_acre_p25": 210087,
    "usd_per_acre_p75": 3910000,
+   "price_sets": {
+    "ocean": {
+     "usd": 1135602,
+     "p25": 210087,
+     "p75": 3910000,
+     "n": 76,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": null,
+    "either": {
+     "usd": 1135602,
+     "p25": 210087,
+     "p75": 3910000,
+     "n": 76,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.731,
    "hdi_note": null,
    "tax": {
@@ -2478,6 +2780,11 @@
    "usd_per_acre": 6732000,
    "usd_per_acre_p25": 4680000,
    "usd_per_acre_p75": 9198000,
+   "price_sets": {
+    "ocean": null,
+    "ski": null,
+    "either": null
+   },
    "hdi": 0.844,
    "hdi_note": null,
    "tax": {
@@ -2606,6 +2913,25 @@
    "usd_per_acre": 2485484,
    "usd_per_acre_p25": 2182936,
    "usd_per_acre_p75": 2910584,
+   "price_sets": {
+    "ocean": {
+     "usd": 2485484,
+     "p25": 2182936,
+     "p75": 2910584,
+     "n": 35,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": null,
+    "either": {
+     "usd": 2485484,
+     "p25": 2182936,
+     "p75": 2910584,
+     "n": 35,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.92,
    "hdi_note": "French territory, not in UN data: France's HDI used as a stand-in",
    "tax": {
@@ -2721,6 +3047,25 @@
    "usd_per_acre": 1754320,
    "usd_per_acre_p25": 447601,
    "usd_per_acre_p75": 4139006,
+   "price_sets": {
+    "ocean": {
+     "usd": 1754320,
+     "p25": 447601,
+     "p75": 4139006,
+     "n": 20,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    },
+    "ski": null,
+    "either": {
+     "usd": 1754320,
+     "p25": 447601,
+     "p75": 4139006,
+     "n": 20,
+     "skew": false,
+     "basis": "plots of 0.25-50 acres"
+    }
+   },
    "hdi": 0.621,
    "hdi_note": null,
    "tax": {
@@ -2828,6 +3173,25 @@
    "usd_per_acre": 959742,
    "usd_per_acre_p25": 915434,
    "usd_per_acre_p75": 1198115,
+   "price_sets": {
+    "ocean": {
+     "usd": 1020025,
+     "p25": 959066,
+     "p75": 1253011,
+     "n": 8,
+     "skew": true,
+     "basis": "all such plots (few, or mostly small: rough)"
+    },
+    "ski": null,
+    "either": {
+     "usd": 1020025,
+     "p25": 959066,
+     "p75": 1253011,
+     "n": 8,
+     "skew": true,
+     "basis": "all such plots (few, or mostly small: rough)"
+    }
+   },
    "hdi": 0.791,
    "hdi_note": null,
    "tax": {
@@ -2935,6 +3299,25 @@
    "usd_per_acre": 27059034,
    "usd_per_acre_p25": 5977098,
    "usd_per_acre_p75": 52036607,
+   "price_sets": {
+    "ocean": {
+     "usd": 27059034,
+     "p25": 5977098,
+     "p75": 52036607,
+     "n": 4,
+     "skew": true,
+     "basis": "all such plots (few, or mostly small: rough)"
+    },
+    "ski": null,
+    "either": {
+     "usd": 27059034,
+     "p25": 5977098,
+     "p75": 52036607,
+     "n": 4,
+     "skew": true,
+     "basis": "all such plots (few, or mostly small: rough)"
+    }
+   },
    "hdi": 0.958,
    "hdi_note": null,
    "tax": {
@@ -3085,6 +3468,11 @@
    "usd_per_acre": 15276,
    "usd_per_acre_p25": 3293,
    "usd_per_acre_p75": 196980,
+   "price_sets": {
+    "ocean": null,
+    "ski": null,
+    "either": null
+   },
    "hdi": 0.946,
    "hdi_note": null,
    "tax": {
@@ -3245,6 +3633,11 @@
    "usd_per_acre": 50525,
    "usd_per_acre_p25": null,
    "usd_per_acre_p75": null,
+   "price_sets": {
+    "ocean": null,
+    "ski": null,
+    "either": null
+   },
    "hdi": 0.92,
    "hdi_note": null,
    "tax": {
@@ -3391,6 +3784,11 @@
    "usd_per_acre": 500000,
    "usd_per_acre_p25": null,
    "usd_per_acre_p75": null,
+   "price_sets": {
+    "ocean": null,
+    "ski": null,
+    "either": null
+   },
    "hdi": 0.741,
    "hdi_note": null,
    "tax": {

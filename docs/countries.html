@@ -133,6 +133,11 @@
     <label class="sub" style="display:flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="snow"> ⛷ snowy months count as good</label>
   </div>
   <div class="ctl">
+    <span class="lbl">Land price based on</span>
+    <div class="seg" id="landSeg"><button data-l="either">🌊 or ⛷ Either</button><button data-l="ocean">🌊 Oceanfront</button><button data-l="ski">⛷ Ski</button><button data-l="all">All land</button></div>
+    <span class="sub">oceanfront = within 1 km of the sea · ski = within 2 km of a lift</span>
+  </div>
+  <div class="ctl">
     <label for="days">Time there each year</label>
     <div class="stay"><input id="days" type="range" min="0" max="365" step="1"><output id="daysLbl" for="days"></output></div>
     <div class="presets" id="dayPresets">
@@ -190,6 +195,7 @@
 
   <section class="card method">
     <h3>How this is scored</h3>
+    <p><b>Land type</b>: by default the price is for <b>oceanfront or ski land</b> only: plots within 1 km of the ocean (or tagged beachfront/waterfront) or within 2 km of a ski lift at a ski area with 3+ lifts (OpenStreetMap/OpenSkiMap). Distances are recomputed for every listing from a world coastline and lift map. Switch to oceanfront, ski, or all land. Countries with no such plots in the app sit in the "no data" strip.</p>
     <p><b>Price per acre</b> (cheaper is higher on the chart): median of the land listings in your app with plots of ¼–50 acres, so tiny building plots don't skew it (the middle half is shown on hover). Countries with fewer than 20 such plots fall back to all their listings and are drawn dashed: treat their height as rough.</p>
     <p><b>Weather</b>: daily data (2016–2025, Open-Meteo/ERA5; 2021–2025 for countries added without listings, at their main sea and ski areas) at up to three spots where that country's listings actually are, averaged for the months you pick. Each month scores daytime highs (best 20–27 °C), rainy days and sunshine. With ⛷ on, snowy months (high ≤ 5 °C, 4+ snow days) score on snow instead of warmth.</p>
     <p><b>Quality of life</b>: UN Human Development Index 2023 (health, education, income).</p>
@@ -209,14 +215,14 @@
 (async function(){
   const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const PREF_KEY='country_rank_prefs_v1';
-  let prefs={from:0,to:11,w:50,snow:false,view:'2d',inc:'abroad',days:120,home:false,income:150000,ppYou:'',ppPartner:'',visaOnly:false};
+  let prefs={from:0,to:11,w:50,snow:false,view:'2d',inc:'abroad',days:120,home:false,income:150000,ppYou:'',ppPartner:'',visaOnly:false,land:'either'};
   try{ Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY)||'{}')); }catch(e){}
   const save=()=>{ try{ localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); }catch(e){} };
 
   const data=await (await fetch('countries.json',{cache:'no-cache'})).json();
   let VISA={passports:{},eta_days:{}}; try{ VISA=await (await fetch('visas.json',{cache:'no-cache'})).json(); }catch(e){}
   document.getElementById('built').textContent=`${Object.keys(data.countries).length} countries · built ${data.built}`;
-  const C=Object.entries(data.countries).map(([cf,c])=>({cf,...c,noPrice:c.usd_per_acre==null})).filter(c=>c.months);
+  const C=Object.entries(data.countries).map(([cf,c])=>({cf,...c})).filter(c=>c.months);
 
   // ---------- month bar: click a start month, then an end month (wraps past Dec) ----------
   const mEl=document.getElementById('months');
@@ -248,6 +254,16 @@
   ['ppYou','ppPartner'].forEach(id=>{ const sel=document.getElementById(id);
     sel.innerHTML='<option value="">—</option>'+PP.map(p=>`<option>${p}</option>`).join(''); sel.value=prefs[id]||'';
     sel.onchange=()=>{ prefs[id]=sel.value; save(); update(); }; });
+  const LAND_LBL={either:'oceanfront or ski land',ocean:'oceanfront land',ski:'ski land',all:'all land'};
+  const paintLand=()=>document.querySelectorAll('#landSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===prefs.land));
+  document.querySelectorAll('#landSeg button').forEach(b=>b.onclick=()=>{ prefs.land=b.dataset.l; paintLand(); save(); update(); });
+  paintLand();
+  // price for the selected land type (falls back to the no-listings strip when a country has none)
+  function landPrice(c){
+    if(prefs.land==='all') return c.usd_per_acre==null ? null :
+      {usd:c.usd_per_acre, p25:c.usd_per_acre_p25, p75:c.usd_per_acre_p75, n:c.n_price, basis:c.price_basis, skew:c.price_skew};
+    return (c.price_sets||{})[prefs.land]||null;
+  }
   const voEl=document.getElementById('visaOnly'); voEl.checked=prefs.visaOnly; voEl.onchange=()=>{ prefs.visaOnly=voEl.checked; save(); update(); };
   function visaFor(pp, cf){
     if(!pp) return null;
@@ -328,7 +344,10 @@
       const vis=passports().map(([who,pp])=>({who,pp,...visaFor(pp,c.cf)}));
       const visaOk = vis.length ? vis.every(v=>v.easy) : true;
       const visaDays = vis.length && visaOk ? Math.min(...vis.map(v=>v.days??0)) : null;
-      return {...c, tax_obj:c.tax, it, rs, eff, resk:RES_ORDER[rs.k], wx, q, x: w*q+(1-w)*wx, upa:c.usd_per_acre,
+      const lp=landPrice(c);
+      return {...c, tax_obj:c.tax, it, rs, eff, resk:RES_ORDER[rs.k], wx, q, x: w*q+(1-w)*wx,
+        upa: lp?lp.usd:null, noPrice: !lp, price_skew: lp?lp.skew:true, n_price: lp?lp.n:0, price_basis: lp?lp.basis:'',
+        usd_per_acre_p25: lp?lp.p25:null, usd_per_acre_p75: lp?lp.p75:null,
         vis, visaOk, visaDays, visaK: vis.length ? (visaOk ? 2 : vis.some(v=>v.easy) ? 1 : 0) : -1,
         tax: Math.round(eff.pct*10)/10, taxUsd: Math.round(prefs.income*eff.pct/100), freeDays: rs.thr-1,
         inc_other: here ? ((rs.k==='res'||rs.k==='risk')?it.abroad:0) : it.top,
@@ -381,9 +400,9 @@
     for(let v=xmin;v<=xmax;v+=10){ const x=X(v); el('line',{x1:x,x2:x,y1:m.t,y2:H-46,class:'gridline'},g);
       const t=el('text',{x,y:H-46+16,'text-anchor':'middle'},g); t.textContent=v; }
     if(hasBand){ el('line',{x1:m.l,x2:W-m.r,y1:H-m.b+6,y2:H-m.b+6,stroke:'var(--border)','stroke-dasharray':'4 4'},g);
-      const bl=el('text',{x:m.l-8,y:bandY+4,'text-anchor':'end'},g); bl.textContent='no listings'; }
+      const bl=el('text',{x:m.l-8,y:bandY+4,'text-anchor':'end'},g); bl.textContent='no data'; }
     const xt=el('text',{x:(m.l+W-m.r)/2,y:H-8,'text-anchor':'middle',class:'axis-title'},svg); xt.textContent='Quality of life + weather →';
-    const yt=el('text',{x:14,y:(m.t+H-m.b)/2,transform:`rotate(-90 14 ${(m.t+H-m.b)/2})`,'text-anchor':'middle',class:'axis-title'},svg); yt.textContent='← Median price per acre (USD, log) · cheaper higher';
+    const yt=el('text',{x:14,y:(m.t+H-m.b)/2,transform:`rotate(-90 14 ${(m.t+H-m.b)/2})`,'text-anchor':'middle',class:'axis-title'},svg); yt.textContent=`← Median price per acre of ${LAND_LBL[prefs.land]} (USD, log) · cheaper higher`;
     const z=el('text',{x:W-m.r-6,y:m.t+14,'text-anchor':'end',class:'zone'},svg); z.textContent='sweet spot: cheap, good life ↗';
     const smin=Math.min(...rows.map(r=>r.score)), smax=Math.max(...rows.map(r=>r.score));
     const layer=el('g',{},svg), labels=el('g',{class:'labels'}), placed=[];
@@ -418,7 +437,7 @@
   function tipHtml(r){
     const ms=selMonths(), span=ms.length===12?'all year':`${MON[ms[0]]}–${MON[ms[ms.length-1]]}`;
     return `<b>#${r.rank} ${r.cf}</b> <span class="k">score ${r.score.toFixed(0)}</span><br>
-      ${r.noPrice?`<span class="k">$/acre: no land listings in the app yet</span><br>`:`<span class="k">$/acre</span> <span class="n">${money(r.upa)}</span>${r.usd_per_acre_p25?` <span class="k">(middle half ${money(r.usd_per_acre_p25)}–${money(r.usd_per_acre_p75)})</span>`:''}<br>
+      ${r.noPrice?`<span class="k">$/acre: no ${LAND_LBL[prefs.land]} listings in the app yet</span><br>`:`<span class="k">$/acre (${LAND_LBL[prefs.land]})</span> <span class="n">${money(r.upa)}</span>${r.usd_per_acre_p25?` <span class="k">(middle half ${money(r.usd_per_acre_p25)}–${money(r.usd_per_acre_p75)})</span>`:''}<br>
       <span class="k">based on</span> ${r.n_price} ${r.price_basis}<br>`}
       <span class="k">resident after ${(r.residency?.days??183)>=365?'a year':daysTxt(r.residency?.days??183)} · at ${prefs.days} days/yr${prefs.home?' with a home':''}:</span> <b>${r.rs.label.slice(2)}</b> <span class="k">(${r.rs.why})</span><br>
       ${r.rs.rule?`<span class="k">${r.rs.rule}</span><br>`:''}${r.residency?.note?`<span class="k">${r.residency.note}</span><br>`:''}
@@ -516,7 +535,7 @@
       <td>${r.rank}</td><td><b>${r.cf}</b>${r.price_skew?' <span class="pill" title="price per acre not comparable: few listings or only small plots">≈ price</span>':''}</td>
       <td>${r.score.toFixed(0)}<span class="bar" style="width:${(r.score*0.6).toFixed(0)}px"></span></td>
       <td>${r.x.toFixed(0)}</td><td>${r.wx.toFixed(0)}</td><td>${r.hdi??'n/a'}</td>
-      <td>${r.noPrice?'<span class="k" style="color:var(--txt-mute)">no listings</span>':money(r.upa)}</td>
+      <td>${r.noPrice?'<span class="k" style="color:var(--txt-mute)">no data</span>':money(r.upa)}</td>
       <td>${r.vis.length?r.vis.map(v=>`<span class="${v.cls}" title="${v.who}: ${v.pp}">${v.label}</span>`).join('<br>'):'<span class="sub">pick passports</span>'}</td>
       <td>${(r.residency?.days??183)>=365&&!(prefs.home&&r.residency?.home?.kind==='hard')?'<b>under 1 yr</b><br><span class="sub">unless you move there</span>':(r.freeDays<=0?`<b>none</b><br><span class="sub">any stay, with a home</span>`:`<b>${r.freeDays} days</b><br><span class="sub">${months(r.freeDays)}</span>`)}</td>
       <td><span class="res s-${r.rs.k}" data-thr="${r.rs.thr}" title="${(r.rs.why+'. '+(r.rs.rule||'')+' '+(r.residency?.note||'')).replace(/"/g,'&quot;')}">${r.rs.label}</span><br><span class="sub" title="${r.risk.label}">${r.risk.icon} ${r.risk.lvl==='safe'?'safe':r.risk.lvl==='watch'?'watch':'high tax'}</span></td><td title="${r.eff.why}"><b>${r.tax}%</b><br><span class="sub">${r.taxUsd?'≈ US$'+r.taxUsd.toLocaleString()+'/yr':'nothing'}</span></td><td>${r.inc_other}%</td><td class="note">${r.it.note}${r.residency?.note?` <br><i>Residency:</i> ${r.residency.note}`:''}${r.residency?.home?` <br><i>With a home:</i> ${r.residency.home.note}`:''}</td></tr>`).join('');
