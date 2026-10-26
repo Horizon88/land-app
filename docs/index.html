@@ -1313,11 +1313,14 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
 
   // ---- map ----
   const map = L.map('map',{worldCopyJump:true}).setView([20,100],3);
-  const baseDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO', maxZoom:19, subdomains:'abcd'});
+  // CARTO's free tiles now return 'API key required' placeholders; Esri's dark canvas needs no key
+  const baseDark = L.layerGroup([
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri, HERE, Garmin, © OpenStreetMap', maxZoom:16}),
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{maxZoom:16})]);
   const baseSat  = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'ESRI World Imagery', maxZoom:19});
   const baseTerrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:'© OpenTopoMap · SRTM', maxZoom:17, subdomains:'abc'});
   baseDark.addTo(map);
-  L.control.layers({'Dark (CARTO)': baseDark, 'Satellite 🌳 (ESRI)': baseSat, 'Topo · forest shade': baseTerrain}, null, {position:'topright', collapsed:false}).addTo(map);
+  L.control.layers({'Dark (Esri)': baseDark, 'Satellite 🌳 (ESRI)': baseSat, 'Topo · forest shade': baseTerrain}, null, {position:'topright', collapsed:false}).addTo(map);
   const cluster = L.markerClusterGroup({maxClusterRadius:40, chunkedLoading:true});
   map.addLayer(cluster);
 
@@ -1696,7 +1699,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       <h3>${r.code?`<code style="font-size:13px;opacity:.6;margin-right:8px">${r.code}</code>`:''}${r.rg} ${r.a?' · '+r.a:''}</h3>
       <div class="sub">${r.v||'no view'}${r.view_verified===true?' <span style="color:#7ce38b">✓ verified</span>':r.view_verified===false?' <span style="color:#ff8080">✗ unverified</span>':''} · ${r.t||'title unspecified'} · src: ${r.cur||''}</div>
       ${flag}${arch}
-      ${(r.imgs&&r.imgs.length)?`<div class="photo-strip" data-imgs="${encodeURIComponent(JSON.stringify(r.imgs.slice(0,8)))}">${r.imgs.slice(0,8).map((u,i)=>`<img src="${u}" data-i="${i}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" title="Click to enlarge">`).join('')}</div>`:''}
+      ${photosOf(r).length?`<div class="photo-strip" data-imgs="${encodeURIComponent(JSON.stringify(photosOf(r)))}">${photosOf(r).map((u,i)=>`<img src="${u}" data-i="${i}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" title="${u.includes('arcgisonline')?'Satellite view (click to enlarge)':'Click to enlarge'}">`).join('')}</div>${(r.imgs&&r.imgs.length)?'':'<div class="sub" style="margin:-6px 0 10px">🛰 no listing photos yet: satellite views of the spot</div>'}`:''}
       ${PRICE_WATCH[r.u]?`<div class="detail-flag" style="background:#10202a;color:#9fd4ff;border-color:#2a5a70">📈 <b>Price watch</b>${PRICE_WATCH[r.u].context?` — ${PRICE_WATCH[r.u].context}`:''}<table style="margin-top:6px;font-size:12px;border-collapse:collapse">${PRICE_WATCH[r.u].history.map(x=>`<tr><td style="padding:1px 10px 1px 0;opacity:.75">${x.date}</td><td style="padding:1px 10px 1px 0">${x.event}</td><td style="text-align:right"><b>${x.price?(PRICE_WATCH[r.u].cur==='JPY'?'¥':'$')+x.price.toLocaleString():''}</b></td></tr>`).join('')}</table><div style="font-size:11px;opacity:.6;margin-top:4px">last checked ${PRICE_WATCH[r.u].last_checked||'—'}</div></div>`:''}
       ${REVIEWS[r.u]?`<div class="detail-flag" style="background:#10202a;color:#9fd4ff;border-color:#2a5a70">🧐 <b>Claude's photo review${REVIEWS[r.u].thumb==='up'?' 👍':REVIEWS[r.u].thumb==='down'?' 👎':''}</b> — ${REVIEWS[r.u].verdict}${REVIEWS[r.u].date?` <span style="opacity:.6">(${REVIEWS[r.u].date})</span>`:''}</div>`:''}
       ${r.deal&&r.deal.length?`<div class="detail-flag" style="background:#3a1a1a;color:#ff9090;border-color:#702030">⛔ <b>Deal-killer${r.deal.length>1?'s':''}</b>: ${r.deal.join(' · ')}</div>`:''}
@@ -2102,8 +2105,16 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
   };
   document.getElementById('outreachClose').onclick=()=>document.getElementById('outreachBg').classList.remove('show');
   document.getElementById('outreachBg').onclick=(e)=>{ if(e.target.id==='outreachBg') document.getElementById('outreachBg').classList.remove('show'); };
+  // satellite views centred on the plot (ESRI World Imagery): close-up (~350 m) and context (~1.6 km)
+  function aerialImgs(r){
+    if(r.lat==null || r.lon==null || r.loc_approx) return [];
+    const mk=(wKm,hKm,px,py)=>{ const dx=wKm/2/(111.32*Math.cos(r.lat*Math.PI/180)), dy=hKm/2/110.57;
+      return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=${(r.lon-dx).toFixed(5)},${(r.lat-dy).toFixed(5)},${(r.lon+dx).toFixed(5)},${(r.lat+dy).toFixed(5)}&bboxSR=4326&imageSR=3857&size=${px},${py}&format=jpg&f=image`; };
+    return [mk(0.35,0.22,960,600), mk(1.6,1.0,960,600)];
+  }
+  const photosOf = r => [...((r.imgs||[]).slice(0,8)), ...aerialImgs(r)];
   function slCard(r, isPick, why){
-    const img=(r.imgs && r.imgs[0]) || r.img || '';
+    const img=(r.imgs && r.imgs[0]) || r.img || aerialImgs(r)[0] || '';
     const whyTxt=why && why.length ? `<div class="why">${why.join(' · ')}</div>` : '';
     const action=isPick
       ? `<button class="btn" data-unpromote="${encodeURIComponent(r.u)}">remove</button>`
@@ -3610,7 +3621,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       document.getElementById('triClose').onclick=()=>{ triageBg.classList.remove('show'); render(); };
       return;
     }
-    const r=tq[ti]; const imgs=r.imgs||[]; const img=imgs.length?imgs[tphoto%imgs.length]:'';
+    const r=tq[ti]; const imgs=photosOf(r); const img=imgs.length?imgs[tphoto%imgs.length]:'';
     const size = r.tp==='apartment' ? `${r.layout||''} ${r.m2} m²` : r.tp==='house' ? `${r.beds?r.beds+' bd · ':''}${r.living_m2||r.m2} m² living${r.plot_m2?` · ${r.plot_m2} m² plot`:''}` : `${r.ac} ac (${(r.m2||0).toLocaleString()} m²)`;
     const rv=REVIEWS[r.u];
     triageCard.innerHTML=`
