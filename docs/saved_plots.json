@@ -1026,5 +1026,44 @@
         "coast_km": 0.41,
         "ski_km": null,
         "ski_r": ""
+    },
+    {
+        "code": "CR-A1BG2R",
+        "tp": "land",
+        "cf": "Costa Rica",
+        "rg": "Costa Rica (location not public)",
+        "a": "Costa Rica: exact location not public",
+        "name": "296.5-acre (120 ha) Costa Rica farm with river and solar-powered home: eco-resort potential",
+        "t": "farm + house",
+        "ac": 296.5,
+        "m2": 1199894,
+        "plot_m2": 1199894,
+        "usd": 800000,
+        "cur": "USD",
+        "lp": "800000",
+        "upm": 0.67,
+        "lat": null,
+        "lon": null,
+        "v": "",
+        "imgs": [
+            "https://substackcdn.com/image/fetch/$s_!GNSO!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd5f11174-ee24-4a2a-96fb-4696021307f6_1788x1339.png"
+        ],
+        "u": "https://www.landglobally.com/p/2965-acres-in-costa-rica-with-river",
+        "r": 70,
+        "rb": "src:manual-landglobally",
+        "user_added": true,
+        "added": "2026-10-26",
+        "perks": [
+            "river through the property, tropical wildlife",
+            "solar-powered wooden house on a hill",
+            "~US$2,700/acre: very cheap for Costa Rica"
+        ],
+        "warn": [
+            "original listing not found: details are in LandGlobally's paid newsletter post; ask them for the listing/agent (they don't broker)",
+            "location unknown, so no map pin, distances or view score",
+            "check: titled land vs. possession rights, water concession for the river, access road, and any forest-protection restrictions"
+        ],
+        "foreign_note": "Costa Rica: foreigners can own titled land like citizens (the 200 m beach zone is the exception).",
+        "source": "Instagram/Substack @landglobally (paid post, 23 Oct 2026)"
     }
 ]
