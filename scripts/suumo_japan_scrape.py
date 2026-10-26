@@ -11,6 +11,7 @@ pool, then geocoded by address with the national GSI address-search API
 Emits /tmp/suumo_japan.json for suumo_japan_merge.py.
 
 Usage: python3 suumo_japan_scrape.py [kinds]   e.g. "land,house,apartment"
+       CITIES_FILE=cities.json python3 suumo_japan_scrape.py land,house   (deep crawl of chosen cities)
 """
 import json, os, re, subprocess, sys, threading, time, urllib.parse
 from concurrent.futures import ThreadPoolExecutor
@@ -128,7 +129,10 @@ def city_slugs(kind, pref):
 
 def main():
     tasks = []
-    for kind in KINDS:
+    if os.environ.get("CITIES_FILE"):      # deep mode: [[kind, pref, city, pages], ...]
+        tasks = [tuple(t) for t in json.load(open(os.environ["CITIES_FILE"])) if t[0] in KINDS]
+        print(f"deep mode: {len(tasks)} city tasks from {os.environ['CITIES_FILE']}", file=sys.stderr)
+    for kind in ([] if tasks else KINDS):
         prefs = ["tokyo"] if kind == "apartment" else PREFS
         for pref in prefs:
             for city in city_slugs(kind, pref):

@@ -326,6 +326,11 @@ def main():
                     "basis": "plots of 0.25-50 acres" if not skew_ else "all such plots (few, or mostly small: rough)"}
         is_ocean = lambda r: (r.get("coast_km") is not None and r["coast_km"] <= 1) or r.get("v") in ("beachfront", "waterfront")
         is_ski = lambda r: r.get("ski_km") is not None and r["ski_km"] <= 2
+        # every oceanfront / ski plot or home, for the budget slider: [usd, acres, house?1:0, ocean, ski]
+        special = [[int(r["usd"]), round(r.get("ac") or 0, 3), 1 if r.get("tp") in ("house", "villa") else 0,
+                    1 if is_ocean(r) else 0, 1 if is_ski(r) else 0]
+                   for r in rows if r.get("usd") and r.get("tp") in (None, "land", "house", "villa")
+                   and (is_ocean(r) or is_ski(r))]
         price_sets = {"ocean": price_set([r for r in allland if is_ocean(r)]),
                       "ski": price_set([r for r in allland if is_ski(r)]),
                       "either": price_set([r for r in allland if is_ocean(r) or is_ski(r)])}
@@ -349,7 +354,7 @@ def main():
             "usd_per_acre": round(statistics.median(land)),
             "usd_per_acre_p25": round(statistics.quantiles(land, n=4)[0]) if len(land) >= 4 else None,
             "usd_per_acre_p75": round(statistics.quantiles(land, n=4)[2]) if len(land) >= 4 else None,
-            "price_sets": price_sets,
+            "price_sets": price_sets, "special": sorted(special),
             "hdi": h, "hdi_note": hnote,
             "tax": dict(t, total10=round(t["purchase"] + t["foreign"] + 10 * t["annual"], 1)),
             "income_tax": INCOME[cf], "residency": RES[cf],
@@ -374,7 +379,7 @@ def main():
         b = bands.get(cf)
         if b:
             c["bands"] = dict(b, usd_per_unit=FX_USD.get(b.get("currency")))
-    json.dump(out, open(os.path.join(ROOT, "docs", "countries.json"), "w"), ensure_ascii=False, indent=1)
+    json.dump(out, open(os.path.join(ROOT, "docs", "countries.json"), "w"), ensure_ascii=False, separators=(",", ":"))
     print("wrote docs/countries.json:", len(out["countries"]), "countries", file=sys.stderr)
 
 if __name__ == "__main__":

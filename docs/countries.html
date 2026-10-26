@@ -96,7 +96,8 @@
   select.pp{background:var(--panel2);border:1px solid var(--border);color:var(--txt);border-radius:6px;padding:4px 6px;font:inherit;font-size:12px;max-width:150px}
   .v-ok{color:var(--good)} .v-mid{color:#ffd166} .v-no{color:var(--danger,#ff8080)}
   #visaCard{display:none}
-  .bub.novisa{opacity:.13}
+  .bub.novisa,.bub.nobudget{opacity:.13}
+  #homeBanner{padding:8px 16px;background:var(--panel2);border-bottom:1px solid var(--border);font-size:13px;display:none}
   .method{color:var(--txt-dim);font-size:12px;line-height:1.6;max-width:75ch}
   .method h3{color:var(--txt);font-size:13px;margin:0 0 6px}
   .method p+p{margin-top:6px}
@@ -136,6 +137,8 @@
     <span class="lbl">Land price based on</span>
     <div class="seg" id="landSeg"><button data-l="either">🌊 or ⛷ Either</button><button data-l="ocean">🌊 Oceanfront</button><button data-l="ski">⛷ Ski</button><button data-l="all">All land</button></div>
     <span class="sub">oceanfront = within 1 km of the sea · ski = within 2 km of a lift</span>
+    <label for="budget" class="lbl" style="margin-top:6px">Budget</label>
+    <div class="stay"><input id="budget" type="range" min="0" max="100" step="1"><output id="budgetLbl" for="budget"></output></div>
   </div>
   <div class="ctl">
     <label for="days">Time there each year</label>
@@ -144,6 +147,7 @@
       <button class="chip" data-d="60">2 mo</button><button class="chip" data-d="90">3 mo</button><button class="chip" data-d="120">4 mo</button><button class="chip" data-d="183">6 mo</button><button class="chip" data-d="365">Live there</button>
     </div>
     <label class="sub" style="display:flex;gap:6px;align-items:center;cursor:pointer" title="A house or flat you can stay in. Bare land usually doesn't count."><input type="checkbox" id="home"> 🏡 I own a home there</label>
+    <label class="sub" style="display:flex;gap:6px;align-items:center">Tax-resident now in <select id="taxHome" class="pp"></select></label>
     <label class="sub" style="display:flex;gap:6px;align-items:center">Your income US$ <input id="income" type="number" min="0" step="10000" style="width:110px;background:var(--panel2);border:1px solid var(--border);color:var(--txt);border-radius:6px;padding:3px 6px;font:inherit"> /yr</label>
   </div>
   <div class="ctl">
@@ -162,6 +166,7 @@
   </div>
 </div>
 
+<div id="homeBanner"></div>
 <main>
   <section class="card">
     <div id="chart" aria-label="Bubble chart: x quality of life and weather, y price per acre, bubble size low income tax"><div id="tip" role="tooltip"></div></div>
@@ -169,7 +174,7 @@
     <div class="legend">
       <span>↔ <b style="color:var(--txt)">quality of life + weather</b> (better →)</span>
       <span>↕ <b style="color:var(--txt)">median price per acre</b> (log scale, <b style="color:var(--txt)">cheaper ↑</b>)</span>
-      <span><svg width="64" height="26" aria-hidden="true"><circle cx="9" cy="13" r="3" fill="var(--txt-dim)"/><circle cx="40" cy="13" r="9" fill="var(--txt-dim)"/></svg> bubble size: <b style="color:var(--txt)">big = low income tax</b>, tiny = high</span>
+      <span><svg width="64" height="26" aria-hidden="true"><circle cx="9" cy="13" r="3" fill="var(--txt-dim)"/><circle cx="40" cy="13" r="9" fill="var(--txt-dim)"/></svg> bubble size: <b style="color:var(--txt)">big = low income tax</b> (extra tax on top of your home country, if you pick one), tiny = high</span>
       <span>colour: tax risk at your settings
         <svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="var(--risk-safe)"/></svg> safe
         <svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="var(--risk-watch)"/></svg> watch (close to the line, home rules, or 5–20%)
@@ -188,7 +193,7 @@
       <table id="tbl"><thead><tr>
         <th data-k="rank">#</th><th data-k="cf">Country</th><th data-k="score">Score</th>
         <th data-k="x">Life + weather</th><th data-k="wx">Weather (months)</th><th data-k="hdi">QoL (HDI)</th>
-        <th data-k="upa">$/acre</th><th data-k="visaK">Visa</th><th data-k="freeDays">Tax-free stay</th><th data-k="riskK">You'd be</th><th data-k="tax" id="taxHdr">Your tax</th><th data-k="inc_other" id="otherHdr">From abroad</th><th class="note">Income tax &amp; residency notes</th>
+        <th data-k="upa">$/acre</th><th data-k="budN">In budget</th><th data-k="visaK">Visa</th><th data-k="freeDays">Tax-free stay</th><th data-k="riskK">You'd be</th><th data-k="tax" id="taxHdr">Your tax</th><th data-k="inc_other" id="otherHdr">From abroad</th><th class="note">Income tax &amp; residency notes</th>
       </tr></thead><tbody></tbody></table>
     </div>
   </section>
@@ -202,6 +207,8 @@
     <p><b>Income tax</b> (bubble size): the top personal rate if you live there, either on income earned in that country or, with 🌍, on income from abroad (investments, remote work). 0% = territorial or foreign income exempt. Many countries give new arrivals a few tax-free years on foreign income (UK, NZ, Japan, Chile, Indonesia, Portugal's IFICI); those are in the notes, the chart uses the long-run rate. Rough figures for 2026: confirm with a tax adviser, and note US citizens owe US tax wherever they live.</p>
     <p><b>Your tax</b> (bubble size, table): what you'd pay at your days, home and income. Not tax-resident → 0% on income from abroad. Resident → 0% where foreign income is exempt, the flat investment rate where one exists, otherwise the country's bands (Japan +10% local tax, Italy +~2.5%; US federal only, no state tax). Income earned in a country is taxed there either way.</p>
     <p><b>Visas</b>: pick your passport and your partner's to see each country's entry rule (open Passport Index dataset). "Only where everyone goes visa-free" fades the rest. The 🛂 Visas tab lists the longest visa-free visit next to the tax-free stay. Visa-free limits are per visit; Schengen allows 90 days in any 180 across the zone for non-EU passports.</p>
+    <p><b>Tax-resident now in</b> (default None): if you pick a country, it keeps taxing your worldwide income wherever you travel, until you formally move your tax home. A destination then only adds tax if it also makes you resident; with tax credits you pay about the higher of the two rates, and if both countries claim you a tax treaty decides. Bubble size then shows that extra tax.</p>
+    <p><b>Budget</b>: counts the oceanfront / ski plots and homes in the app at or under your budget; countries with none fade out.</p>
     <p><b>Tax residency</b>: with the days slider and the 🏡 box, each country's rules decide whether you'd be tax-resident. If you're not, it doesn't tax your income from abroad (🌍 bubble = 0%); income earned inside a country is taxed there either way. Tests that average over several years (USA, Ireland, Norway, Mauritius) are shown as the per-year figure if you come every year. A home can make you resident with far fewer days (Germany: any day; Austria: over 70 days; UK: from 121 days), and a treaty between two countries can override this. The rules are summarised in the table; confirm with an adviser before relying on a day count.</p>
     <p><b>Property purchase tax</b> (hover only): what a foreign buyer of a ~US$1M second home pays over 10 years: purchase taxes + foreign-buyer surcharges + 10 years of annual property/wealth tax, as a % of the price. Rules vary by region inside countries, so treat it as a guide and confirm locally. Foreign-ownership bans are in the notes; they aren't taxes but can rule a country out.</p>
     <p><b>Colour</b> = tax risk at your days, home and income: 🟢 not resident or little tax · 🟡 within 20 days of becoming resident, a home that may make you resident, or 5–20% tax · 🔴 20% or more.</p>
@@ -215,7 +222,7 @@
 (async function(){
   const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const PREF_KEY='country_rank_prefs_v1';
-  let prefs={from:0,to:11,w:50,snow:false,view:'2d',inc:'abroad',days:120,home:false,income:150000,ppYou:'',ppPartner:'',visaOnly:false,land:'either'};
+  let prefs={from:0,to:11,w:50,snow:false,view:'2d',inc:'abroad',days:120,home:false,income:150000,ppYou:'',ppPartner:'',visaOnly:false,land:'either',taxHome:'',budgetPos:100};
   try{ Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY)||'{}')); }catch(e){}
   const save=()=>{ try{ localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); }catch(e){} };
 
@@ -278,6 +285,23 @@
     return {easy:false, label:'✗ visa required', cls:'v-no', days:null};
   }
   const passports=()=>[['You',prefs.ppYou],['Partner',prefs.ppPartner]].filter(x=>x[1]);
+  // current tax residence (none by default)
+  const thEl=document.getElementById('taxHome');
+  thEl.innerHTML='<option value="">None</option>'+C.map(c=>c.cf).sort().map(c=>`<option>${c}</option>`).join('');
+  thEl.value=prefs.taxHome||''; thEl.onchange=()=>{ prefs.taxHome=thEl.value; save(); update(); };
+  // budget slider: log scale $25k .. $20M, far right = no limit
+  const bEl=document.getElementById('budget'), bLbl=document.getElementById('budgetLbl');
+  const budgetUsd=()=> prefs.budgetPos>=100 ? Infinity : Math.round(25000*Math.pow(800, prefs.budgetPos/99)/5000)*5000;
+  const paintBudget=()=>{ bEl.value=prefs.budgetPos; const b=budgetUsd(); bLbl.textContent= b===Infinity?'no limit':'up to '+money(b); };
+  bEl.oninput=()=>{ prefs.budgetPos=+bEl.value; paintBudget(); save(); update(); };
+  function inBudget(c){
+    const b=budgetUsd(), L=prefs.land, sp=c.special||[];
+    let plots=0, homes=0;
+    for(const [usd,ac,house,oc,sk] of sp){ if(usd>b) continue;
+      if(L==='ocean'&&!oc) continue; if(L==='ski'&&!sk) continue;
+      if(house) homes++; else plots++; }
+    return {plots, homes, n:plots+homes};
+  }
   paintDays();
   const wEl=document.getElementById('w'), snowEl=document.getElementById('snow');
   wEl.value=prefs.w; snowEl.checked=prefs.snow;
@@ -309,7 +333,9 @@
   // how dangerous is your tax position here? green / amber / red, always with a reason
   function danger(r){
     const d=prefs.days, thr=r.rs.thr, gap=thr-d, near = thr<366 && gap>0 && gap<=20, res=r.rs.k==='res';
+    if(prefs.taxHome===r.cf) return {lvl:r.taxTotal>=20?'danger':r.taxTotal>5?'watch':'safe', icon:r.taxTotal>=20?'🔴':r.taxTotal>5?'🟡':'🟢', label:`your tax home: ${r.taxTotal}%`};
     if(r.tax>=20) return {lvl:'danger', icon:'🔴', label: res||prefs.inc==='here' ? `high tax: ${r.tax}%${prefs.inc==='here'?' on income earned there':', you\'re tax-resident'}` : `high tax: ${r.tax}%`};
+    if(r.dual && prefs.taxHome && prefs.taxHome!==r.cf) return {lvl:'watch', icon:'🟡', label:`resident here AND in ${prefs.taxHome}: a tax treaty decides`};
     if(r.rs.k==='risk') return {lvl:'watch', icon:'🟡', label:'a home there may make you resident'};
     if(near) return {lvl:'watch', icon:'🟡', label:`only ${gap} day${gap>1?'s':''} from becoming tax-resident`};
     if(res && r.tax>5) return {lvl:'watch', icon:'🟡', label:`resident, moderate tax: ${r.tax}%`};
@@ -339,8 +365,19 @@
       const avg=k=>sel.reduce((s,m)=>s+m[k],0)/sel.length;
       const wx=sel.reduce((s,m)=>s+monthScore(m),0)/sel.length;
       const q=c.hdi!=null ? clamp((c.hdi-0.6)/(0.98-0.6),0,1)*100 : 50;
-      const it=c.income_tax, here=prefs.inc==='here', rs=residency(c);
-      const eff=effective(c, rs, it), R0=c.residency||{days:183};
+      const it=c.income_tax, here=prefs.inc==='here';
+      const rs = prefs.taxHome===c.cf ? {k:'res', label:'● your tax home', thr:0, why:'you are tax-resident here now', rule:''} : residency(c);
+      let eff=effective(c, rs, it); const R0=c.residency||{days:183};
+      // home-country tax residence: you stay taxed at home; a destination only adds tax if it also claims you
+      let homePct=0, total=eff.pct, extra=eff.pct, dual=false;
+      if(prefs.taxHome){
+        const H=C.find(x=>x.cf===prefs.taxHome);
+        if(H===c){ eff=effective(c,{k:'res'},it); eff={...eff, why:'your current tax home: '+eff.why}; total=extra=eff.pct; }
+        else { homePct=H?effective(H,{k:'res'},H.income_tax).pct:0;
+          const dest=eff.pct; total=Math.max(homePct,dest); extra=Math.max(0,total-homePct); dual=(rs.k==='res'||rs.k==='risk');
+          eff={...eff, why: dest>0 ? `${eff.why}; you're also taxed in ${prefs.taxHome} (${homePct.toFixed(1)}%), so with tax credits you pay about the higher rate${dual?' and both countries may claim you (a tax treaty decides)':''}` : `nothing extra here; ${prefs.taxHome} taxes you at ~${homePct.toFixed(1)}% wherever you are`}; }
+      }
+      const bud=inBudget(c);
       const vis=passports().map(([who,pp])=>({who,pp,...visaFor(pp,c.cf)}));
       const visaOk = vis.length ? vis.every(v=>v.easy) : true;
       const visaDays = vis.length && visaOk ? Math.min(...vis.map(v=>v.days??0)) : null;
@@ -349,7 +386,8 @@
         upa: lp?lp.usd:null, noPrice: !lp, price_skew: lp?lp.skew:true, n_price: lp?lp.n:0, price_basis: lp?lp.basis:'',
         usd_per_acre_p25: lp?lp.p25:null, usd_per_acre_p75: lp?lp.p75:null,
         vis, visaOk, visaDays, visaK: vis.length ? (visaOk ? 2 : vis.some(v=>v.easy) ? 1 : 0) : -1,
-        tax: Math.round(eff.pct*10)/10, taxUsd: Math.round(prefs.income*eff.pct/100), freeDays: rs.thr-1,
+        tax: Math.round((prefs.taxHome?extra:total)*10)/10, taxTotal: Math.round(total*10)/10, homePct, dual, bud, budN: bud.n,
+        taxUsd: Math.round(prefs.income*total/100), freeDays: rs.thr-1,
         inc_other: here ? ((rs.k==='res'||rs.k==='risk')?it.abroad:0) : it.top,
         tmax:avg('tmax'), wet:avg('wet'), sun:avg('sun'), snowd:avg('snow')};
     });
@@ -421,7 +459,7 @@
     const spots={}; [...rows].sort((a,b)=>a.rank-b.rank).forEach(r=>spots[r.cf]= hiddenV(r) ? null : labelSpot(r));
     [...rows].sort((a,b)=>R(b)-R(a)).forEach(r=>{   // big bubbles behind small ones
       const cx=X(r.x), cy=Yr(r), rr=R(r);
-      const b=el('g',{class:'bub'+(r.price_skew?' few':'')+(hiddenV(r)?' novisa':''),tabindex:0,'aria-label':`${r.cf}: rank ${r.rank}`},layer);
+      const b=el('g',{class:'bub'+(r.price_skew?' few':'')+(hiddenV(r)?' novisa':'')+(budgetUsd()!==Infinity&&!r.budN?' nobudget':''),tabindex:0,'aria-label':`${r.cf}: rank ${r.rank}`},layer);
       el('circle',{cx,cy,r:rr,fill:`var(--risk-${r.risk.lvl})`,'fill-opacity':r.noPrice?.5:.85},b);
       const sp=spots[r.cf]; const t=el('text',sp?{x:sp.x+sp.w/2,y:sp.y+sp.h-2,'text-anchor':'middle',class:'lab'}:{display:'none'},labels); t.textContent=r.cf; b._lab=t;
       const show=()=>{ svg.classList.add('dim'); b.classList.add('hot'); b._lab.classList.add('hot'); tip.innerHTML=tipHtml(r); tip.style.opacity=1;
@@ -444,7 +482,8 @@
       <span class="k">weather ${span}</span> <span class="n">${r.wx.toFixed(0)}/100</span>: highs ${r.tmax.toFixed(0)} °C · ${r.wet.toFixed(0)} rainy d/mo · ${r.sun.toFixed(1)} h sun/d${r.snowd>=1?` · ${r.snowd.toFixed(0)} snow d/mo`:''}<br>
       <span class="k">quality of life</span> HDI ${r.hdi??'n/a'}${r.hdi_note?` <span class="k">(${r.hdi_note})</span>`:''}<br>
       <span>${r.risk.icon} <b>${r.risk.label}</b></span><br>
-      <span class="k">your tax</span> <b>${r.tax}%</b> <span class="k">${r.taxUsd?'(≈ US$'+r.taxUsd.toLocaleString()+'/yr) ':''}· ${r.eff.why}</span><br>
+      ${budgetUsd()!==Infinity?`<span class="k">in your budget:</span> <b>${r.bud.plots}</b> plots · <b>${r.bud.homes}</b> homes (${LAND_LBL[prefs.land]})<br>`:''}
+      <span class="k">your tax</span> <b>${r.taxTotal}%</b>${prefs.taxHome&&prefs.taxHome!==r.cf?` <span class="k">(${r.homePct.toFixed(1)}% at home + ${r.tax}% extra here)</span>`:''} <span class="k">${r.taxUsd?'(≈ US$'+r.taxUsd.toLocaleString()+'/yr) ':''}· ${r.eff.why}</span><br>
       <span class="k">tax-free stay: up to</span> ${(r.residency?.days??183)>=365&&!(prefs.home&&r.residency?.home?.kind==='hard')?'any visit under a year':r.freeDays<=0?'none (any stay, with a home)':daysTxt(r.freeDays)}<br>
       ${r.vis.length?`<span class="k">visa:</span> ${r.vis.map(v=>`${v.who} <span class="${v.cls}">${v.label}</span>`).join(' · ')}<br>`:''}
       <span class="k">rates</span> <span class="n">${r.it.top}%</span> <span class="k">earned there ·</span> <span class="n">${(r.rs.k==='res'||r.rs.k==='risk')?r.it.abroad+'%':'0% (not resident'+(r.it.abroad?`; ${r.it.abroad}% if resident`:'')+')'}</span> <span class="k">on income from abroad</span><br>
@@ -536,9 +575,10 @@
       <td>${r.score.toFixed(0)}<span class="bar" style="width:${(r.score*0.6).toFixed(0)}px"></span></td>
       <td>${r.x.toFixed(0)}</td><td>${r.wx.toFixed(0)}</td><td>${r.hdi??'n/a'}</td>
       <td>${r.noPrice?'<span class="k" style="color:var(--txt-mute)">no data</span>':money(r.upa)}</td>
+      <td><b>${r.bud.n}</b><br><span class="sub">${r.bud.plots} plots · ${r.bud.homes} homes</span></td>
       <td>${r.vis.length?r.vis.map(v=>`<span class="${v.cls}" title="${v.who}: ${v.pp}">${v.label}</span>`).join('<br>'):'<span class="sub">pick passports</span>'}</td>
-      <td>${(r.residency?.days??183)>=365&&!(prefs.home&&r.residency?.home?.kind==='hard')?'<b>under 1 yr</b><br><span class="sub">unless you move there</span>':(r.freeDays<=0?`<b>none</b><br><span class="sub">any stay, with a home</span>`:`<b>${r.freeDays} days</b><br><span class="sub">${months(r.freeDays)}</span>`)}</td>
-      <td><span class="res s-${r.rs.k}" data-thr="${r.rs.thr}" title="${(r.rs.why+'. '+(r.rs.rule||'')+' '+(r.residency?.note||'')).replace(/"/g,'&quot;')}">${r.rs.label}</span><br><span class="sub" title="${r.risk.label}">${r.risk.icon} ${r.risk.lvl==='safe'?'safe':r.risk.lvl==='watch'?'watch':'high tax'}</span></td><td title="${r.eff.why}"><b>${r.tax}%</b><br><span class="sub">${r.taxUsd?'≈ US$'+r.taxUsd.toLocaleString()+'/yr':'nothing'}</span></td><td>${r.inc_other}%</td><td class="note">${r.it.note}${r.residency?.note?` <br><i>Residency:</i> ${r.residency.note}`:''}${r.residency?.home?` <br><i>With a home:</i> ${r.residency.home.note}`:''}</td></tr>`).join('');
+      <td>${(r.residency?.days??183)>=365&&!(prefs.home&&r.residency?.home?.kind==='hard')?'<b>under 1 yr</b><br><span class="sub">unless you move there</span>':(prefs.taxHome===r.cf?`<b>—</b><br><span class="sub">your tax home</span>`:r.freeDays<=0?`<b>none</b><br><span class="sub">any stay, with a home</span>`:`<b>${r.freeDays} days</b><br><span class="sub">${months(r.freeDays)}</span>`)}</td>
+      <td><span class="res s-${r.rs.k}" data-thr="${r.rs.thr}" title="${(r.rs.why+'. '+(r.rs.rule||'')+' '+(r.residency?.note||'')).replace(/"/g,'&quot;')}">${r.rs.label}</span><br><span class="sub" title="${r.risk.label}">${r.risk.icon} ${r.risk.lvl==='safe'?'safe':r.risk.lvl==='watch'?'watch':'high tax'}</span></td><td title="${r.eff.why}"><b>${r.taxTotal}%</b>${prefs.taxHome&&prefs.taxHome!==r.cf?`<br><span class="sub">+${r.tax}% extra here</span>`:''}<br><span class="sub">${r.taxUsd?'≈ US$'+r.taxUsd.toLocaleString()+'/yr':'nothing'}</span></td><td>${r.inc_other}%</td><td class="note">${r.it.note}${r.residency?.note?` <br><i>Residency:</i> ${r.residency.note}`:''}${r.residency?.home?` <br><i>With a home:</i> ${r.residency.home.note}`:''}</td></tr>`).join('');
   }
 
   document.querySelector('#tbl tbody').addEventListener('click',e=>{ const tr=e.target.closest('tr[data-cf]'); if(tr) openDetail(ROWS.find(x=>x.cf===tr.dataset.cf)); });
@@ -562,6 +602,11 @@
   }
   function update(){
     const {rows,tmax}=compute(); ROWS=rows;
+    const hb=document.getElementById('homeBanner');
+    if(prefs.taxHome){ const h=rows.find(r=>r.cf===prefs.taxHome);
+      hb.style.display='block';
+      hb.innerHTML=`🏠 You're tax-resident in <b>${prefs.taxHome}</b>: about <b>${h?h.taxTotal:'?'}%</b> (≈ US$${h?h.taxUsd.toLocaleString():'?'}/yr) on US$${prefs.income.toLocaleString()} ${prefs.inc==='abroad'?'from abroad':'earned there'}, wherever you travel. Other countries only add tax if they also make you resident; bubbles show that extra.`;
+    } else hb.style.display='none';
     document.getElementById('wLbl').textContent = prefs.w===50?'equal weight':prefs.w>50?`${prefs.w}% life, ${100-prefs.w}% weather`:`${100-prefs.w}% weather, ${prefs.w}% life`;
     const vc=document.getElementById('visaCard'), cc=chart.closest('.card');
     vc.style.display = prefs.view==='visa' ? 'block' : 'none'; cc.style.display = prefs.view==='visa' ? 'none' : 'block';
@@ -580,7 +625,7 @@
   v2.onclick=()=>setView('2d'); v3.onclick=()=>setView('3d'); vV.onclick=()=>setView('visa');
   paintView();
   window.addEventListener('resize',()=>{ if(prefs.view==='2d') update(); });
-  paintMonths(); update();
+  paintBudget(); paintMonths(); update();
 })();
 </script>
 </body>
