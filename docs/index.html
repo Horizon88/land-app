@@ -310,7 +310,7 @@
   <span class="right">
     <label style="cursor:pointer"><input type="checkbox" id="showArch"> show archived (<span id="archN">0</span>)</label>
     <button class="btn" id="toggleInsights" title="What your archived listings have in common">📊 Archive patterns</button>
-    <button class="btn" id="copyArchBtn" title="Copy your archives so they can be saved permanently in the repo">📋 Copy archive list</button>
+    <button class="btn" id="copyArchBtn" title="Copy your archives so they can be saved permanently in the repo">📋 Copy archives + stars</button>
     <button class="btn" id="exportBtn">⬇ export archives</button>
     <button class="btn" id="importBtn">⬆ import</button>
     <input type="file" id="importFile" accept=".json" style="display:none">
@@ -814,6 +814,10 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     if(ar.ok){ const j = await ar.json();
       Object.entries(j.archives||{}).forEach(([u,a])=>{ if(!unarchOverrides.has(u) && !archives[u]) archives[u] = Object.assign({repo:true}, a); }); }
   } catch(e){}
+  // permanent swipe / promote decisions (docs/decisions.json, synced from Plot Swipe by Claude)
+  let DECISIONS = {keep:{}, skip:{}, maybe:{}};
+  try { const dr = await fetch('decisions.json', {cache:'no-cache'}); if(dr.ok){ const j=await dr.json(); DECISIONS = {keep:j.keep||{}, skip:j.skip||{}, maybe:j.maybe||{}}; } } catch(e){}
+  Object.entries(DECISIONS.skip).forEach(([u,a])=>{ if(!unarchOverrides.has(u) && !archives[u]) archives[u] = {repo:true, code:a.code||'', tags:['swipe-skip'], reason:'skipped in Plot Swipe', ts:a.ts||0}; });
   // Claude's photo reviews of finalists (docs/reviews.json, committed)
   let REVIEWS = {};
   try { const rv = await fetch('reviews.json', {cache:'no-cache'}); if(rv.ok) REVIEWS = (await rv.json()).reviews || {}; } catch(e){}
@@ -1866,8 +1870,12 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
   // ---- shortlist (localStorage) ----
   const SL_KEY = 'shortlist_v1';
   function loadShortlist(){ try { return JSON.parse(localStorage.getItem(SL_KEY) || '{}'); } catch(e){ return {}; } }
-  function saveShortlist(s){ localStorage.setItem(SL_KEY, JSON.stringify(s)); }
+  function saveShortlist(s){ try { localStorage.setItem(SL_KEY, JSON.stringify(s)); } catch(e){ /* storage blocked: stars stay for this visit; Plot Swipe or 📋 Copy archives + stars makes them permanent */ } }
   let shortlist = loadShortlist();
+  const UNSTAR_KEY='unstarred_overrides_v1';
+  const unstarred = (()=>{ try { return new Set(JSON.parse(localStorage.getItem(UNSTAR_KEY)||'[]')); } catch(e){ return new Set(); } })();
+  function unstar(u){ if(shortlist[u]&&shortlist[u].repo){ unstarred.add(u); try{ localStorage.setItem(UNSTAR_KEY, JSON.stringify([...unstarred])); }catch(e){} } delete shortlist[u]; saveShortlist(shortlist); }
+  Object.entries(DECISIONS.keep).forEach(([u,a])=>{ if(!shortlist[u] && !unstarred.has(u)) shortlist[u] = {tags:a.tags||['swipe-keep'], reason:a.reason||'', ts:a.ts||0, repo:true}; });
 
   // promote modal
   const promoteBg = document.getElementById('promoteBg');
@@ -2002,7 +2010,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
           ${tags.length?`<div class="wtags">${tags.slice(0,3).map(t=>`<span class="wtag">${t}</span>`).join('')}</div>`:''}
         </div>`; }).join('')}</div>`;
     strip.querySelectorAll('[data-wdetail]').forEach(el=>el.onclick=(e)=>{ if(e.target.classList.contains('wx'))return; const u=decodeURIComponent(el.dataset.wdetail); const r=DATA.find(x=>x.u===u); if(r) openDetail(r); });
-    strip.querySelectorAll('[data-wremove]').forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); delete shortlist[decodeURIComponent(el.dataset.wremove)]; saveShortlist(shortlist); refreshShortlistChip(); });
+    strip.querySelectorAll('[data-wremove]').forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); unstar(decodeURIComponent(el.dataset.wremove)); refreshShortlistChip(); });
     document.getElementById('draftAllBtn').onclick=()=>window.__draftAllOffers();
     document.getElementById('winnersHide').onclick=()=>{ try{ localStorage.setItem('winners_hidden','1'); }catch(e){} renderWinners(); };
   }
@@ -2167,7 +2175,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       el.onclick=(e)=>{ e.stopPropagation(); shortlistBg.classList.remove('show'); openPromote(decodeURIComponent(el.dataset.promote)); };
     });
     shortlistBody.querySelectorAll('[data-unpromote]').forEach(el=>{
-      el.onclick=(e)=>{ e.stopPropagation(); delete shortlist[decodeURIComponent(el.dataset.unpromote)]; saveShortlist(shortlist); refreshShortlistChip(); openShortlistView(); render(); };
+      el.onclick=(e)=>{ e.stopPropagation(); unstar(decodeURIComponent(el.dataset.unpromote)); refreshShortlistChip(); openShortlistView(); render(); };
     });
     shortlistBg.classList.add('show');
   }
@@ -3542,12 +3550,14 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     // local (not-yet-permanent) archives, in docs/archived.json format
     const local = {};
     Object.entries(archives).forEach(([u,a])=>{ if(!a.repo){ const row=DATA.find(x=>x.u===u); local[u]={code:a.code||(row&&row.code)||'', tags:a.tags||[], reason:a.reason||'', ts:a.ts||Date.now()}; } });
-    const txt = JSON.stringify({archives:local}, null, 1);
-    const n = Object.keys(local).length;
+    const stars = {};
+    Object.entries(shortlist).forEach(([u,a])=>{ if(!a.repo){ const row=DATA.find(x=>x.u===u); stars[u]={code:(row&&row.code)||'', tags:a.tags||[], reason:a.reason||'', ts:a.ts||Date.now()}; } });
+    const txt = JSON.stringify({archives:local, stars}, null, 1);
+    const n = Object.keys(local).length + Object.keys(stars).length;
     const btn = e.currentTarget;
-    try { await navigator.clipboard.writeText(txt); btn.textContent = `✓ Copied ${n} — paste to Claude to save permanently`; }
+    try { await navigator.clipboard.writeText(txt); btn.textContent = `✓ Copied ${Object.keys(local).length} archives + ${Object.keys(stars).length} stars: paste to Claude to save permanently`; }
     catch(err){ prompt(`Copy these ${n} archives and paste them to Claude:`, txt); }
-    setTimeout(()=>{ btn.textContent='📋 Copy archive list'; }, 4000);
+    setTimeout(()=>{ btn.textContent='📋 Copy archives + stars'; }, 4000);
   };
   document.getElementById('exportBtn').onclick=()=>{
     const out={schema:'archives_v1',exported:new Date().toISOString(),archives};

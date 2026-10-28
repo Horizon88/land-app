@@ -55,11 +55,15 @@ def parse(page, kind):
             if a:
                 m2 = float(a.group(1).replace(",", "")); break
         beds = next((int(re.search(r"\d+", d).group()) for d in details if re.search(r"\d+\s*(?:bed|hab|dorm)", d, re.I)), None)
-        img = re.search(r'data-src="(https://photos\.encuentra24\.com/[^"]+)"', t)
+        # photos sit in data-src (lazy) or src depending on how the page was served; keep up to 3
+        imgs = []
+        for u in re.findall(r'"(https://photos\.encuentra24\.com/(?!video/)[^"\s]+)"', t):
+            if u not in imgs: imgs.append(u)
+        img = imgs[0] if imgs else None
         out.append({"id": m.group(2), "url": "https://www.encuentra24.com" + m.group(1), "kind": kind,
                     "title": field(t, "title"), "location": field(t, "location"), "desc": field(t, "short-description"),
                     "usd": round(usd), "cur": "USD" if pm.group(1) == "$" else "CRC", "amount": amount,
-                    "m2": m2, "beds": beds, "details": details, "img": img.group(1) if img else None})
+                    "m2": m2, "beds": beds, "details": details, "img": img, "imgs": imgs[:3]})
     return out
 
 def main(max_pages):

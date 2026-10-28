@@ -55,7 +55,7 @@ def main():
         if RIVER.search(txt): score += 4; rb.append("river+4")
         base = {"cf": "Costa Rica", "rg": r.get("location") or "", "a": r.get("location") or "", "usd": r["usd"],
                 "cur": r["cur"], "lp": str(int(r["amount"])), "lat": g[0], "lon": g[1], "loc_approx": True,
-                "v": v, "el": "", "u": r["url"], "imgs": [r["img"]] if r.get("img") else [],
+                "v": v, "el": "", "u": r["url"], "imgs": r.get("imgs") or ([r["img"]] if r.get("img") else []),
                 "name": (r.get("title") or "")[:180], "desc": (r.get("desc") or "")[:400], "foreign_note": FOREIGN}
         if r["kind"] in ("land", "farm"):
             if m2 < 100: continue

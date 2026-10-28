@@ -1065,5 +1065,46 @@
         ],
         "foreign_note": "Costa Rica: foreigners can own titled land like citizens (the 200 m beach zone is the exception).",
         "source": "Instagram/Substack @landglobally (paid post, 23 Oct 2026)"
+    },
+    {
+        "code": "ZA-X9HDRT",
+        "tp": "house",
+        "cf": "South Africa",
+        "rg": "KwaZulu-Natal",
+        "a": "Thanda Safari (Royal Thanda Club), near Hluhluwe",
+        "name": "Villa Thandawena, Thanda Safari: 5-suite safari villa in a 40,000-acre Big Five reserve, helicopter included",
+        "t": "Royal Residence villa on a freehold plot · ~11,700 sq ft",
+        "beds": 5,
+        "sqft_living": 11700,
+        "living_m2": 1087,
+        "usd": 15000000,
+        "cur": "USD",
+        "lp": "15000000",
+        "lat": -27.917,
+        "lon": 32.067,
+        "loc_approx": true,
+        "v": "",
+        "imgs": [
+            "img/ZA-X9HDRT-2.jpg",
+            "img/ZA-X9HDRT-3.jpg"
+        ],
+        "u": "https://www.instagram.com/p/Desw9szEwlN/",
+        "r": 70,
+        "rb": "src:manual-instagram",
+        "user_added": true,
+        "added": "2026-10-28",
+        "perks": [
+            "inside a ~40,000-acre private Big Five reserve (lions, leopards, elephants, rhinos, buffalo)",
+            "infinity pool, fire-pit lounge, spa, sauna, gym, yoga deck, wine cellar",
+            "Airbus H130 B4 helicopter included; King Shaka (Durban) airport 45-60 min by air",
+            "freehold title; ownership brings Royal Thanda Club membership"
+        ],
+        "warn": [
+            "also rented out as part of Jumeirah Thanda Safari: ask how the rental arrangement and reserve levies work",
+            "the Instagram images were digitally edited (per the post)",
+            "map pin is the reserve, not the villa"
+        ],
+        "foreign_note": "South Africa: no restriction on foreign buyers; transfer duty up to 13% above ~R12M; register foreign funds with the Reserve Bank.",
+        "source": "Forbes Global Properties South Africa · Keegan Steyn · Instagram @thetrillionairelife"
     }
 ]
