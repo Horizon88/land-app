@@ -1105,6 +1105,71 @@
             "map pin is the reserve, not the villa"
         ],
         "foreign_note": "South Africa: no restriction on foreign buyers; transfer duty up to 13% above ~R12M; register foreign funds with the Reserve Bank.",
-        "source": "Forbes Global Properties South Africa · Keegan Steyn · Instagram @thetrillionairelife"
+        "source": "Forbes Global Properties South Africa · Keegan Steyn · Instagram @thetrillionairelife",
+        "view_deg": 0,
+        "view_near_km": null,
+        "elev_m": 306,
+        "prom_m": -2,
+        "view_score": 0
+    },
+    {
+        "code": "JP-CWKBEE",
+        "tp": "house",
+        "cf": "Japan",
+        "rg": "Shizuoka",
+        "a": "Kamitaga, Atami",
+        "name": "Atami hillside retreat: designer single-storey 4LDK with sea and mountain views, 933 m² land",
+        "t": "中古一戸建て · 4LDK · built 1992",
+        "ac": 0.231,
+        "m2": 933,
+        "plot_m2": 933,
+        "living_m2": 228.7,
+        "beds": 4,
+        "year_built": 1992,
+        "usd": 582400,
+        "cur": "JPY",
+        "lp": "91000000",
+        "upm": 624.0,
+        "lat": 35.067616,
+        "lon": 139.054459,
+        "loc_approx": true,
+        "v": "sea_view",
+        "imgs": [
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0001.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0003.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0004.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0005.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0010.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0011.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0012.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0013.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0016.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0017.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0018.jpg&w=1024&h=768",
+            "https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F050%2FN010000%2Fimg%2F781%2F21299781%2F21299781_0019.jpg&w=1024&h=768"
+        ],
+        "u": "https://suumo.jp/chukoikkodate/shizuoka/sc_atami/nc_21299781/",
+        "r": 75,
+        "rb": "src:manual-suumo",
+        "user_added": true,
+        "added": "2026-10-29",
+        "perks": [
+            "🌊 sea and mountain views from an elevated hillside",
+            "designer Japanese-modern 'natural resort' house: fireplace, big-screen theatre, guest rooms",
+            "933 m² plot, south-facing road 40 m frontage, wide balcony",
+            "freehold; Atami Station by bus (35 min) + 9 min walk"
+        ],
+        "warn": [
+            "sold as-is with boundaries not marked (境界非明示・現況有姿): get a survey before buying",
+            "built 1992: check for earthquake retrofits and hot-spring / hillside drainage",
+            "shops ~4 km away: car needed"
+        ],
+        "foreign_note": "Japan: no restriction on foreign buyers owning land or houses.",
+        "source": "SUUMO · 伊豆太陽ホーム(株)熱海支店, 0120-860679 (agent 青野哲也) · Instagram @japanhomehoshi",
+        "view_deg": 5,
+        "view_near_km": 6.38,
+        "elev_m": 227,
+        "prom_m": -142,
+        "view_score": 21
     }
 ]

@@ -74,6 +74,21 @@
     }
    ],
    "context": "SUUMO listing; photos taken July 2026."
+  },
+  "https://suumo.jp/chukoikkodate/shizuoka/sc_atami/nc_21299781/": {
+   "code": "JP-CWKBEE",
+   "label": "Atami Kamitaga hillside house",
+   "cur": "JPY",
+   "added": "2026-10-29",
+   "last_checked": "2026-10-29",
+   "history": [
+    {
+     "date": "2026-10-29",
+     "price": 91000000,
+     "event": "Listed"
+    }
+   ],
+   "context": "SUUMO; agent Izu Taiyo Home Atami (0120-860679)."
   }
  }
 }
