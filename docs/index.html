@@ -1200,6 +1200,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       match:r=>r.cf==='Austria' && r.tp!=='apartment' && homeScale(r) && (r.loc_approx ? (le(r.ski_km,2) && (r.perks||[]).some(p=>/ski-in|piste/.test(p))) : le(r.ski_km,0.5)) },
     at_lake: { label:'🏞 Austria lakeside', desc:'Austrian land and homes ≤500 m from a lake — Zeller See, Wörthersee, Wolfgangsee, Attersee… (town-centre pins only if the listing mentions lake view / access)',
       match:r=>r.cf==='Austria' && r.tp!=='apartment' && homeScale(r) && (r.loc_approx ? (le(r.lake_km,3) && (r.perks||[]).some(p=>/lake/.test(p))) : le(r.lake_km,0.5)) },
+    central_america: { label:'🌊💧 Central America', desc:'Central American plots with at least 2 of 3: big land (10+ acres), a Pacific Ocean view, a waterfall. All three first, then by view score.',
+      match:r=>{ if(!r.ca_signals||r.ca_signals.length<2) return false; r.ca_rank=r.ca_signals.length*100+(r.view_score||0); return true; } },
     best_view: { label:'🌅 Best views', desc:'Measured from terrain: how much open water is visible from the plot (viewshed over elevation data), plus view words in the listing and photo reviews. Score ≥60.',
       match:r=>(r.view_score||0)>=60 },
     your_picks: { label:'📌 Your picks', desc:'Listings you sent in yourself (links, Instagram finds), newest first',
@@ -1223,7 +1225,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     if(state.gems) leaveGems();
     if(state.region){ const t=document.querySelector(`#stats .chip[data-rt="${state.region}"]`); if(t) t.click(); }
     if(!state.hunt) _preHunt={countries:[...state.countries], filters:snapshotFilters(), sortKey:state.sortKey, sortAsc:state.sortAsc};
-    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'?'view_score':key==='your_picks'?'added':'_gem'); state.sortAsc=false;
+    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'?'view_score':key==='your_picks'?'added':key==='central_america'?'ca_rank':'_gem'); state.sortAsc=false;
     state.countries.clear(); ALL_COUNTRIES.forEach(c=>state.countries.add(c));
     document.querySelectorAll('#stats .chip[data-cf]').forEach(ch=>ch.classList.add('on'));
     huntRow.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.hunt===key));

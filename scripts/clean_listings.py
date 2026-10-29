@@ -317,7 +317,7 @@ _CC = {'Thailand':'TH','Japan':'JP','Canada':'CA','USA':'US','Portugal':'PT',
        'New Zealand':'NZ','Argentina':'AR','Turkey':'TR','Austria':'AT',
        'Switzerland':'CH','French Polynesia':'PF','Fiji':'FJ','Georgia':'GE',
        'New Caledonia':'NC','Vanuatu':'VU','Australia':'AU','Grenada':'GD',
-       'Malaysia':'MY','Brazil':'BR','France':'FR','United Kingdom':'GB','Costa Rica':'CR','South Africa':'ZA'}
+       'Malaysia':'MY','Brazil':'BR','France':'FR','United Kingdom':'GB','Costa Rica':'CR','South Africa':'ZA','Panama':'PA','Nicaragua':'NI','Belize':'BZ','El Salvador':'SV','Guatemala':'GT','Honduras':'HN'}
 _B32 = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'   # Crockford-ish: no I L O U
 def _plot_code(url, cf):
     n = int(_hl.blake2b((url or '').encode(), digest_size=8).hexdigest(), 16)
