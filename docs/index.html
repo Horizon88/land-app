@@ -244,7 +244,7 @@
 
   /* ---------- phone layout (≤700px): compact bar, swipe rows, list-or-map, listing cards ---------- */
   .mbar{display:none}
-  .m-thumb{display:none}
+  .m-thumb,.m-thumbw{display:none}
   @media(max-width:700px){
     body{height:100dvh;grid-template-columns:minmax(0,1fr);overflow-x:hidden}
     body>*{min-width:0;max-width:100vw}
@@ -294,6 +294,11 @@
     #tbl tbody td:nth-child(14) a{display:inline-block;padding:6px 12px;border:1px solid var(--border);border-radius:8px}
     #tbl tbody td:nth-child(15) .arch-btn{min-width:36px;min-height:32px}
     #tbl tbody td[colspan]{display:block;flex:1 1 100%}
+    .m-thumbw{display:block;position:relative;cursor:zoom-in}
+    .m-count{position:absolute;right:8px;bottom:14px;background:rgba(0,0,0,.65);color:#fff;font-size:12px;padding:3px 8px;border-radius:12px}
+    #lightbox .lb-nav{display:none!important}
+    #lightbox img{max-width:100vw;max-height:80vh;border-radius:0}
+    #lightbox .lb-count{bottom:24px;font-size:14px}
     .m-thumb{display:block;width:100%;height:170px;object-fit:cover;border-radius:10px;margin-bottom:6px;background:#1b2530}
   }
 </style>
@@ -1245,7 +1250,10 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
   // Every hunt hides ⛔ deal-killers. Order = gem score.
   const le=(v,x)=>v!=null && v<=x;
   const homeScale=r=>r.tp!=='house' || ((r.living_m2||r.m2||0)<=600 && (r.beds||0)<=10);
+  const SOUTHCOAST=/\/MA\/(?:north-|south-)?(?:westport|dartmouth|new-bedford|fairhaven|acushnet|mattapoisett|marion|rochester|(?:east-)?wareham|onset|fall-river|swansea|somerset|(?:east-)?freetown)\/|-(?:westport|dartmouth|new-bedford|fairhaven|acushnet|mattapoisett|marion|rochester|wareham|fall-river|swansea|somerset|freetown)-ma-/i;
   const HUNTS = {
+    southcoast: { label:'⚓ SouthCoast MA water view', desc:'Massachusetts SouthCoast (Westport → Wareham, Fall River, New Bedford, Buzzards Bay towns): only homes and land with a water view (on the water, water visible in the terrain viewshed, or view score ≥40). Best view first.',
+      match:r=>SOUTHCOAST.test(r.u||'') && (r.v==='sea_visible' || r.v==='waterfront' || (r.view_score||0)>=40) },
     jp_ski_home: { label:'🎿 Japan ski homes', desc:'Houses ≤5 km from a Japanese ski lift (Hakuba, Niseko, Nozawa, Furano…), built 1981+ (modern quake code) where known',
       match:r=>r.cf==='Japan' && r.tp==='house' && homeScale(r) && le(r.ski_km,5) && (!r.year_built || r.year_built>=1981) },
     jp_ski_land: { label:'🎿 Japan ski land', desc:'Land ≤3 km from a Japanese ski lift',
@@ -1285,7 +1293,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     if(state.gems) leaveGems();
     if(state.region){ const t=document.querySelector(`#stats .chip[data-rt="${state.region}"]`); if(t) t.click(); }
     if(!state.hunt) _preHunt={countries:[...state.countries], filters:snapshotFilters(), sortKey:state.sortKey, sortAsc:state.sortAsc};
-    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'?'view_score':key==='your_picks'?'added':key==='central_america'?'ca_rank':'_gem'); state.sortAsc=false;
+    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'||key==='southcoast'?'view_score':key==='your_picks'?'added':key==='central_america'?'ca_rank':'_gem'); state.sortAsc=false;
     state.countries.clear(); ALL_COUNTRIES.forEach(c=>state.countries.add(c));
     document.querySelectorAll('#stats .chip[data-cf]').forEach(ch=>ch.classList.add('on'));
     huntRow.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.hunt===key));
@@ -1580,7 +1588,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       return `<tr class="${cls}" data-u="${r.u}">
         <td class="r ${ratingClass((state.gems||state.hunt)?r._gem:r.r)}">${(state.gems||state.hunt)?`${r._gem!=null?`<span title="gem score (0-100, comparable across countries)">✨${r._gem}</span>`:'—'}`:r.r}${flagBadge}${nomBadge}</td>
         <td><span class="dot" style="background:${color}"></span>${r.cf.replace('British Columbia','BC').replace('New Zealand','NZ')}</td>
-        <td>${r.rg}</td><td>${(()=>{ const ph=photosOf(r)[0]; return ph?`<img class="m-thumb" src="${ph}" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.remove()">`:''; })()}${r.code?`<code style="font-size:10px;opacity:.65;margin-right:5px">${r.code}</code>`:''}${r.a}${rowNotes(r)}</td>
+        <td>${r.rg}</td><td>${(()=>{ const ps=photosOf(r), ph=ps[0]; return ph?`<span class="m-thumbw" data-imgs="${encodeURIComponent(JSON.stringify(ps))}"><img class="m-thumb" src="${ph}" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="this.parentNode.remove()">${ps.length>1?`<span class="m-count">⇅ ${ps.length} photos</span>`:''}</span>`:''; })()}${r.code?`<code style="font-size:10px;opacity:.65;margin-right:5px">${r.code}</code>`:''}${r.a}${rowNotes(r)}</td>
         <td>${r.tp==='abandoned_ski'?'':r.tp==='apartment'?`${r.layout||(r.beds?r.beds+' rm':'')}${(r.layout||r.beds)?' · ':''}${r.living_m2||r.m2} m²${r.walk_min!=null?` · 🚉${r.walk_min}′`:''}`:r.tp==='house'?`${r.beds?r.beds+'bd · ':''}${r.sqft_living?r.sqft_living.toLocaleString()+' sf':(r.living_m2||r.m2||'')+' m²'}`:(isTH&&r.rai!=null?r.rai+' rai':(r.ac??''))}</td>
         <td>${r.tp==='abandoned_ski'?'':r.tp==='apartment'?(r.upm?'$'+Math.round(r.upm).toLocaleString()+'/m²':''):r.tp==='house'?(r.usd_per_sqft?'$'+r.usd_per_sqft+'/sf':(r.upm?'$'+Math.round(r.upm).toLocaleString()+'/m²':'')):(isTH&&r.baht_rai?'฿'+Math.round(r.baht_rai).toLocaleString():(r.ac?'$'+Math.round(r.usd/r.ac).toLocaleString():''))}</td>
         <td>${r.tp==='abandoned_ski'?'':(r.upm??'')}</td>
@@ -3644,7 +3652,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
   // ---- photo lightbox ----
   const lb=document.getElementById('lightbox'), lbImg=lb.querySelector('img'), lbCount=lb.querySelector('.lb-count');
   let lbList=[], lbI=0;
-  function lbShow(){ lbImg.src=lbList[lbI]; lbCount.textContent=lbList.length>1?`${lbI+1} / ${lbList.length}`:'';
+  function lbShow(){ lbImg.src=lbList[lbI]; lbCount.textContent=lbList.length>1?`${lbI+1} / ${lbList.length}`+(matchMedia('(max-width:700px)').matches?' · swipe ↑ next, ↓ back':''):'';
     lb.querySelectorAll('.lb-nav').forEach(b=>b.style.display=lbList.length>1?'':'none'); }
   function openLightbox(list, i){ if(!list||!list.length) return; lbList=list; lbI=i||0; lb.classList.add('show'); lbShow(); }
   function closeLightbox(){ lb.classList.remove('show'); lbImg.removeAttribute('src'); }
@@ -3659,6 +3667,22 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     else if(e.key==='ArrowRight'){ e.stopImmediatePropagation(); lbI=(lbI+1)%lbList.length; lbShow(); }
     else if(e.key==='ArrowLeft'){ e.stopImmediatePropagation(); lbI=(lbI-1+lbList.length)%lbList.length; lbShow(); }
   }, true);
+  document.addEventListener('click', e=>{
+    const tw=e.target.closest && e.target.closest('.m-thumbw');
+    if(tw){ e.stopPropagation(); let l=[]; try{ l=JSON.parse(decodeURIComponent(tw.dataset.imgs||'')); }catch(err){} openLightbox(l,0); return; }
+  }, true);
+  // phone: swipe up = next photo, swipe down = previous (left/right work too)
+  { let x0=null, y0=null;
+    lb.addEventListener('touchstart', e=>{ const t=e.touches[0]; x0=t.clientX; y0=t.clientY; }, {passive:true});
+    lb.addEventListener('touchmove', e=>{ e.preventDefault(); }, {passive:false});
+    lb.addEventListener('touchend', e=>{
+      if(x0==null) return; const t=e.changedTouches[0], dx=t.clientX-x0, dy=t.clientY-y0; x0=y0=null;
+      if(Math.max(Math.abs(dx),Math.abs(dy))<40 || lbList.length<2) return;
+      const step=Math.abs(dy)>=Math.abs(dx) ? (dy<0?1:-1) : (dx<0?1:-1);
+      lbI=(lbI+step+lbList.length)%lbList.length; lbShow();
+      lbImg.animate&&lbImg.animate([{transform:`translateY(${step*40}px)`,opacity:.3},{transform:'none',opacity:1}],{duration:180});
+    });
+  }
   document.addEventListener('click', e=>{
     const im=e.target.closest && e.target.closest('.photo-strip img'); if(!im) return;
     const strip=im.closest('.photo-strip'); let list=[];
