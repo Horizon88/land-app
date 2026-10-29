@@ -1,0 +1,17 @@
+name = "land-deal-club"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+workers_dev = true
+
+# npx wrangler kv namespace create CLUB   -> paste the id below
+[[kv_namespaces]]
+binding = "CLUB"
+id = "REPLACE_WITH_KV_ID"
+
+[vars]
+CLUB_NAME = "Land Deal Club"
+PAYMENT_LINK = "https://buy.stripe.com/REPLACE"
+FROM_EMAIL = "Land Deal Club <login@REPLACE-your-domain.com>"
+
+# Secrets (npx wrangler secret put NAME):
+# STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SESSION_SECRET, ADMIN_TOKEN, RESEND_API_KEY
