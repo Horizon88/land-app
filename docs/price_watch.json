@@ -89,6 +89,20 @@
     }
    ],
    "context": "SUUMO; agent Izu Taiyo Home Atami (0120-860679)."
+  },
+  "https://www.coldwellbankerhomes.com/il/harvard/17519-lincoln-rd/pid_72594852/": {
+   "code": "US-H6VH5P",
+   "label": "17519 Lincoln Rd, Harvard IL",
+   "added": "2026-10-30",
+   "last_checked": "2026-10-30",
+   "history": [
+    {
+     "date": "2026-07-15",
+     "price": 2999000,
+     "event": "Listed (other pages show earlier asks of $3.995M and $4.5M)"
+    }
+   ],
+   "context": "Taxes $39,399 (2025); 2024 shows $7,083"
   }
  }
 }

@@ -1171,5 +1171,47 @@
         "elev_m": 227,
         "prom_m": -142,
         "view_score": 21
+    },
+    {
+        "code": "US-H6VH5P",
+        "tp": "house",
+        "cf": "USA",
+        "rg": "Illinois",
+        "a": "Harvard, McHenry County",
+        "name": "English manor estate: 8 French limestone fireplaces, 60 ft domed hall, ponds and streams on 10 acres",
+        "t": "single-family · 3 bd · 10,939 sf · built 2001",
+        "ac": 10,
+        "m2": 40469,
+        "plot_m2": 40469,
+        "living_m2": 1016,
+        "beds": 3,
+        "year_built": 2001,
+        "usd": 2999000,
+        "cur": "USD",
+        "lp": "2999000",
+        "upm": 74.11,
+        "lat": 42.41235,
+        "lon": -88.538091,
+        "v": "",
+        "imgs": [
+            "https://m1.cbhomes.com/p/155/12708589/B8E01f813d954d3/pds23tp.webp"
+        ],
+        "u": "https://www.coldwellbankerhomes.com/il/harvard/17519-lincoln-rd/pid_72594852/",
+        "r": 60,
+        "rb": "src:instagram+user",
+        "user_added": true,
+        "added": "2026-10-30",
+        "perks": [
+            "🏰 8 French limestone fireplaces, English beams, French clay roof tiles",
+            "💧 ponds and streams",
+            "🍇 terraced hill for a vineyard or orchard",
+            "➕ 43 + 52 adjoining acres also for sale (105 acres total)"
+        ],
+        "warn": [
+            "💸 property tax $39,399 (2025) and likely to rise after a sale (Illinois ~2.4% of value)",
+            "sold as-is; 7,800 sf lower level unfinished",
+            "no water or mountain view"
+        ],
+        "source": "Instagram @ig_mansions · Coldwell Banker MLS 12708589 (agent Jane Lee)"
     }
 ]
