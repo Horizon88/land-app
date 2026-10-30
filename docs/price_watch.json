@@ -103,6 +103,20 @@
     }
    ],
    "context": "Taxes $39,399 (2025); 2024 shows $7,083"
+  },
+  "https://www.belizerealestate.bz/property/water-caye-a-landmark-private-island-investment-with-global-potential-in-belize/": {
+   "code": "BZ-G9Z2N6",
+   "label": "Water Caye private island, Belize",
+   "added": "2026-10-30",
+   "last_checked": "2026-10-30",
+   "history": [
+    {
+     "date": "2026-10-30",
+     "price": 12000000,
+     "event": "Asking (an older sheet offered ~500 acres for $8M)"
+    }
+   ],
+   "context": "577.7 acres, Vista Real Estate BILIS1385"
   }
  }
 }

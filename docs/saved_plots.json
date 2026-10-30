@@ -1213,5 +1213,52 @@
             "no water or mountain view"
         ],
         "source": "Instagram @ig_mansions · Coldwell Banker MLS 12708589 (agent Jane Lee)"
+    },
+    {
+        "code": "BZ-G9Z2N6",
+        "tp": "land",
+        "cf": "Belize",
+        "rg": "Belize District",
+        "a": "Water Caye, Drowned Cayes",
+        "name": "Water Caye: 577-acre private island 11 miles southeast of Belize City, 4.4 miles of water frontage",
+        "t": "private island · undeveloped",
+        "ac": 577.7,
+        "m2": 2337860,
+        "plot_m2": 2337860,
+        "usd": 12000000,
+        "cur": "USD",
+        "lp": "12000000",
+        "upm": 5.13,
+        "lat": 17.381527,
+        "lon": -88.064927,
+        "v": "waterfront",
+        "imgs": [
+            "https://www.belizerealestate.bz/wp-content/uploads/2025/05/Water20Caye20Private20Island20For20Sale20in20Belize20Vista20Real20Estate2001.jpg",
+            "https://www.belizerealestate.bz/wp-content/uploads/2025/05/Water20Caye20Private20Island20For20Sale20in20Belize20Vista20Real20Estate2002.jpg",
+            "https://www.belizerealestate.bz/wp-content/uploads/2025/05/Water20Caye20Private20Island20For20Sale20in20Belize20Vista20Real20Estate2003.jpg",
+            "https://www.belizerealestate.bz/wp-content/uploads/2025/05/Water20Caye20Private20Island20For20Sale20in20Belize20Vista20Real20Estate2004.jpg",
+            "https://www.belizerealestate.bz/wp-content/uploads/2025/05/Water20Caye20Private20Island20For20Sale20in20Belize20Vista20Real20Estate2005.jpg",
+            "https://www.belizerealestate.bz/wp-content/uploads/2025/05/Water20Caye20Private20Island20For20Sale20in20Belize20Vista20Real20Estate2006.jpg",
+            "https://www.belizerealestate.bz/wp-content/uploads/2025/05/Water20Caye20Private20Island20For20Sale20in20Belize20Vista20Real20Estate2007.jpg",
+            "https://www.belizerealestate.bz/wp-content/uploads/2025/05/Water20Caye20Private20Island20For20Sale20in20Belize20Vista20Real20Estate2008.jpg"
+        ],
+        "u": "https://www.belizerealestate.bz/property/water-caye-a-landmark-private-island-investment-with-global-potential-in-belize/",
+        "r": 55,
+        "rb": "src:instagram+user",
+        "user_added": true,
+        "added": "2026-10-30",
+        "perks": [
+            "🏝 whole private island, 577.7 acres (~$20.8k/acre)",
+            "🌊 4.4 miles of water frontage and natural canals",
+            "🛥 20 min by boat to Belize City, ~1 h to the international airport"
+        ],
+        "warn": [
+            "Drowned Cayes are low mangrove islands: expect little dry ground, fill needed to build, and a mangrove-clearing permit",
+            "2,800 ft from the deep-water shipping channel and pitched as a cruise port: busy channel, not a quiet hideaway",
+            "Caribbean side, so no Pacific sunsets; hurricane belt",
+            "acreage differs between listings (511 / 550 / 577)"
+        ],
+        "foreign_note": "Belize: foreigners can own freehold land like citizens; transfer tax ~8% for non-citizens.",
+        "source": "Instagram @privateislandsinc · Vista Real Estate BILIS1385 (Hugo Moguel, +501 610-1404, findyours@vistabelize.com)"
     }
 ]
