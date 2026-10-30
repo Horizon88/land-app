@@ -1,8 +1,14 @@
 {
  "schema": "decisions_v1",
- "updated": "2026-10-28",
+ "updated": "2026-10-30",
  "note": "Permanent keep/skip/maybe decisions from Plot Swipe and promoted stars. The app loads this on every visit: keeps are stars, skips are archived.",
  "keep": {},
  "maybe": {},
- "skip": {}
+ "skip": {
+  "https://www.belizerealestate.bz/property/water-caye-a-landmark-private-island-investment-with-global-potential-in-belize/": {
+   "code": "BZ-G9Z2N6",
+   "ts": 1793367562416,
+   "reason": "mostly mangrove, next to the shipping channel"
+  }
+ }
 }
