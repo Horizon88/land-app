@@ -1260,5 +1260,61 @@
         ],
         "foreign_note": "Belize: foreigners can own freehold land like citizens; transfer tax ~8% for non-citizens.",
         "source": "Instagram @privateislandsinc · Vista Real Estate BILIS1385 (Hugo Moguel, +501 610-1404, findyours@vistabelize.com)"
+    },
+    {
+        "code": "US-BP1VPZ",
+        "tp": "house",
+        "cf": "USA",
+        "rg": "Wyoming",
+        "a": "Pelton Creek, near Woods Landing (Albany County)",
+        "name": "Pelton Creek Ranch: 68 acres bordered on 3 sides by Medicine Bow National Forest, a mile of private trout stream, off-grid 2019 home",
+        "t": "ranch · 3 bd · 2 ba · 2,900 sf · built 2019",
+        "ac": 68,
+        "m2": 275186,
+        "plot_m2": 275186,
+        "living_m2": 269,
+        "beds": 3,
+        "year_built": 2019,
+        "usd": 2100000,
+        "cur": "USD",
+        "lp": "2100000",
+        "upm": 7.63,
+        "lat": 41.03,
+        "lon": -106.22,
+        "loc_approx": true,
+        "v": "",
+        "imgs": [
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_overview.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_home_overview.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_exterior_home.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_deck.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_main.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_fireplace.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_kitchen.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_loft.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_field.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_driveway.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_garage.jpg",
+            "https://www.ranchland.com/files/104/2/3832/Pelton_Ranch_home_trees.jpg"
+        ],
+        "u": "https://www.ranchland.com/type/fishing-properties/pelton-creek-ranch-3832",
+        "r": 60,
+        "rb": "src:instagram+user",
+        "user_added": true,
+        "added": "2026-10-31",
+        "perks": [
+            "🌲 national forest on 3 sides: no neighbours",
+            "🎣 ~1 mile of private fishing stream",
+            "🦌 elk, mule deer, moose",
+            "❄️ snowmobile and OHV trails from the door",
+            "🏠 2019 home, 40×60 insulated shop, horse facilities",
+            "🌾 taxed as agricultural land"
+        ],
+        "warn": [
+            "off-grid solar: check battery/backup and winter road plowing (45 mi to Laramie)",
+            "no ski lift nearby: Snowy Range ski area ~1 h, Steamboat 82 mi",
+            "map pin approximate (Pelton Creek area)"
+        ],
+        "source": "Instagram @ranchesofthewest · Mason & Morse Ranch Co. listing 3832 (James Rinehart, 307-760-3800)"
     }
 ]

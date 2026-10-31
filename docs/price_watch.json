@@ -103,6 +103,20 @@
     }
    ],
    "context": "Taxes $39,399 (2025); 2024 shows $7,083"
+  },
+  "https://www.ranchland.com/type/fishing-properties/pelton-creek-ranch-3832": {
+   "code": "US-BP1VPZ",
+   "label": "Pelton Creek Ranch, WY",
+   "added": "2026-10-31",
+   "last_checked": "2026-10-31",
+   "history": [
+    {
+     "date": "2026-04-25",
+     "price": 2100000,
+     "event": "Listed"
+    }
+   ],
+   "context": "68 acres, Mason & Morse 3832"
   }
  }
 }
