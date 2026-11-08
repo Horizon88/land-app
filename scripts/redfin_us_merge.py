@@ -15,6 +15,11 @@ PATH = os.path.join(ROOT, "docs", "listings.json")
 REST = os.path.join(ROOT, "data", "raw", "redfin_us_rest.json.gz")
 SRC = "src:redfin-us"
 
+def SPECIAL(r):
+    """Keep oceanfront (≤1.5 km) and ski-town (≤5 km from a lift) rows."""
+    c, s = r.get("coast_km"), r.get("ski_km")
+    return (c is not None and c <= 1.5) or (s is not None and s <= 5)
+
 def main():
     raw = json.load(open(RAW))
     existing = json.load(open(PATH))
@@ -73,8 +78,8 @@ def main():
     keep, rest = [], []
     for r in d:
         if SRC in (r.get("rb") or ""):
-            c, s = r.get("coast_km"), r.get("ski_km")
-            special = (c is not None and c <= 1.5) or (s is not None and s <= 5)
+            c = r.get("coast_km")
+            special = SPECIAL(r)
             (keep if special else rest).append(r)
             if special and c is not None and c <= 0.15: r["v"] = "waterfront"
         else:

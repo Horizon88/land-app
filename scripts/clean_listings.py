@@ -177,7 +177,9 @@ for r in d:
         if r.get('upm') != new_upm:
             r['upm'] = new_upm
             fixed['upm_recomputed'] += 1
-        new_ac = round(m2 / 4046.86, 3)
+        # a house's m2 is its living area: acres come from the lot (plot_m2), never the floor
+        lot = r.get('plot_m2') if r.get('tp') == 'house' else m2
+        new_ac = round(lot / 4046.86, 3) if lot else r.get('ac')
         if r.get('ac') != new_ac:
             r['ac'] = new_ac
             fixed['ac_recomputed'] += 1
