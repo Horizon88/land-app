@@ -1273,6 +1273,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     ak_mt: { label:'🏔 Alaska & Montana', desc:'Alaska and Montana: 5+ acres (bare land or with a house), on the water (≤300 m from the sea), a water view (view score ≥40), or ≤3 km from a ski lift',
       match:r=>{ const st=r.state||((r.rg||'').match(/[- ](AK|MT)$/)||[])[1]; return (st==='AK'||st==='MT') && r.tp!=='apartment' &&
         ((r.ac||0)>=5 || le(r.coast_km,0.3) || (r.view_score||0)>=40 || le(r.ski_km,3)); } },
+    ak_state: { label:'🏛 Alaska state land', desc:'Parcels sold directly by the State of Alaska (DNR). Over-the-counter parcels are open to anyone at the appraised price, first come first served; auction parcels are Alaska residents only. Re-run scripts/alaska_state_land.py when DNR adds parcels.',
+      match:r=>(r.rb||'').includes('src:ak-dnr') },
     best_view: { label:'🌅 Best views', desc:'Measured from terrain: how much open water is visible from the plot (viewshed over elevation data), plus view words in the listing and photo reviews. Score ≥60.',
       match:r=>(r.view_score||0)>=60 },
     your_picks: { label:'📌 Your picks', desc:'Listings you sent in yourself (links, Instagram finds), newest first',
