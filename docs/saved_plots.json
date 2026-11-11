@@ -1316,5 +1316,56 @@
             "map pin approximate (Pelton Creek area)"
         ],
         "source": "Instagram @ranchesofthewest · Mason & Morse Ranch Co. listing 3832 (James Rinehart, 307-760-3800)"
+    },
+    {
+        "code": "GB-DCYXF3",
+        "tp": "house",
+        "cf": "UK",
+        "rg": "Scotland",
+        "a": "Glengorm, Isle of Mull",
+        "name": "Glengorm Castle estate: 1860 baronial castle on 3,702 acres of Mull coast, with a pier, 17 cottages and a Highland cattle herd",
+        "t": "castle + estate · 18 bedrooms · Category B listed · 1860",
+        "ac": 3702,
+        "m2": 14981500,
+        "plot_m2": 14981500,
+        "beds": 18,
+        "year_built": 1860,
+        "usd": 12000000,
+        "cur": "GBP",
+        "lp": "9000000",
+        "upm": 0.801,
+        "lat": 56.6337,
+        "lon": -6.1903,
+        "v": "sea_view",
+        "imgs": [
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_23_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_24_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_25_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_26_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_27_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_28_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_30_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_31_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_32_l_gal.jpg",
+            "https://assets.savills.com/properties/GBEDRUEDR240042/EDR240042_33_l_gal.jpg"
+        ],
+        "u": "https://search.savills.com/property-detail/gbedruedr240042",
+        "r": 60,
+        "rb": "src:instagram+user",
+        "user_added": true,
+        "added": "2026-11-11",
+        "perks": [
+            "🌊 miles of Atlantic shoreline: bays, headlands, a pier, mooring and boathouse",
+            "🏰 castle split into 4 apartments (3 run as holiday lets)",
+            "🏡 17 more houses on the estate (rentals and holiday lets)",
+            "🐄 historic Highland cattle herd, three lochs",
+            "⚓ 5 miles from Tobermory"
+        ],
+        "warn": [
+            "UNDER OFFER on Savills (Nov 2026): may already be sold",
+            "offers over £9M (~$12M); Scotland's land tax (LBTT) adds ~12% (+8% if it's an extra home)",
+            "a working estate business with tenants and staff, and a listed building with costly upkeep"
+        ],
+        "source": "Instagram @mega_mansions · Savills Edinburgh EDR240042"
     }
 ]
