@@ -48,6 +48,10 @@ jobs:
         run: python3 scripts/alaska_state_land.py
         continue-on-error: true
 
+      - name: A5 Real Estate ranches (Utah / Idaho)
+        run: python3 scripts/a5_ranches.py
+        continue-on-error: true
+
       - name: Sea views for new listings
         run: python3 scripts/viewshed.py --missing docs/listings.json
         continue-on-error: true

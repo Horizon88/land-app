@@ -11058,5 +11058,97 @@
   "coast_km": null,
   "ski_km": null,
   "ski_r": ""
+ },
+ {
+  "cf": "USA",
+  "state": "NV",
+  "rg": "Nevada ranches (A5)",
+  "a": "Tooele County, UT | White Pine County, N",
+  "tp": "land",
+  "t": "ranch / farm",
+  "ac": 77500.0,
+  "m2": 313631650,
+  "usd": 10500000,
+  "upm": 0.033,
+  "cur": "USD",
+  "lp": "10500000",
+  "lat": 39.52982,
+  "lon": -114.88996,
+  "loc_approx": true,
+  "v": "",
+  "imgs": [
+   "https://www.a5realestate.com/File/Image/m/500/500/1f10d7b4-56c1-47d5-a5e7-5d2dc2a98d21",
+   "https://www.a5realestate.com/File/Image/m/898/898/25abc4ac-e81a-4917-8ac2-ea80ab968129",
+   "https://www.a5realestate.com/File/Image/m/898/898/b68e161a-df94-4746-b3a5-273ff51b04a5",
+   "https://www.a5realestate.com/File/Image/m/898/898/fec6e52d-7fc4-48c3-9865-7eb44b1564d2",
+   "https://www.a5realestate.com/File/Image/m/898/898/98a39e9d-053c-48ee-ac2a-013a979a7945",
+   "https://www.a5realestate.com/File/Image/m/898/898/c9cd8717-45c2-4fd5-9390-97accea2e2bd",
+   "https://www.a5realestate.com/File/Image/m/898/898/79658275-c023-4e73-89df-b3b20ef94735",
+   "https://www.a5realestate.com/File/Image/m/898/898/e9fc9c09-63c3-4bfe-83b5-543ddfccd4b1",
+   "https://www.a5realestate.com/File/Image/m/898/898/9e1b4086-708f-43d1-acf2-e513ad2fde26",
+   "https://www.a5realestate.com/File/Image/m/898/898/4501ab36-f522-42aa-9276-43a963aa5001"
+  ],
+  "u": "https://www.a5realestate.com/Deep-Creek-Ranches",
+  "name": "Deep Creek Ranch: $10,500,000 | \u00b177,500 Total Acres",
+  "desc": "This massive cattle ranching operation has 1,200 irrigated acres with 10 pivots, 2 homes, 3 guest cabins, agricultural buildings, feedlot, scales, and 4 large BLM grazing permits. The ranch also offers trophy hunting for elk and mule deer.",
+  "perks": [
+   "\ud83d\udc0e 77,500 acres",
+   "\ud83e\udd8c hunting"
+  ],
+  "warn": [
+   "map pin is the town / county centre, not the ranch"
+  ],
+  "r": 50,
+  "rb": "src:a5",
+  "source": "A5 Real Estate (a5realestate.com)",
+  "coast_km": null,
+  "ski_km": null,
+  "ski_r": ""
+ },
+ {
+  "cf": "USA",
+  "state": "UT",
+  "rg": "Utah ranches (A5)",
+  "a": "Sanpete, Sevier, & Millard County, Utah",
+  "tp": "land",
+  "t": "ranch / farm",
+  "ac": 150000.0,
+  "m2": 607029000,
+  "usd": 14500000,
+  "upm": 0.024,
+  "cur": "USD",
+  "lp": "14500000",
+  "lat": 39.36063,
+  "lon": -111.57678,
+  "loc_approx": true,
+  "v": "",
+  "imgs": [
+   "https://www.a5realestate.com/File/Image/m/500/500/be72fd3c-2fcf-4f13-942e-6a3b57e8f2cc",
+   "https://www.a5realestate.com/File/Image/m/898/898/be72fd3c-2fcf-4f13-942e-6a3b57e8f2cc",
+   "https://www.a5realestate.com/File/Image/m/898/898/7c4e702b-d76f-475c-bf66-04e4b4d76993",
+   "https://www.a5realestate.com/File/Image/m/898/898/9efca0c9-1cd5-4db2-9763-1238cb7179c3",
+   "https://www.a5realestate.com/File/Image/m/898/898/951e3be3-4f37-456e-a237-de8faf3196bf",
+   "https://www.a5realestate.com/File/Image/m/898/898/40c11bbd-fad4-47d7-b347-1c653935441f",
+   "https://www.a5realestate.com/File/Image/m/898/898/83db2e0b-e26b-4ea8-8cc8-637c8cf4134d",
+   "https://www.a5realestate.com/File/Image/m/898/898/3060affb-8496-4091-9ade-7befef04d073",
+   "https://www.a5realestate.com/File/Image/m/898/898/22d44362-92b6-46ef-809b-8c888d52fbfd",
+   "https://www.a5realestate.com/File/Image/m/898/898/a2e88603-709f-4f8b-bd1a-aacb42eb6ba3"
+  ],
+  "u": "https://www.a5realestate.com/Broken-Arrow-Ranch",
+  "name": "Broken Arrow Ranch: $14,500,000 | 150K+ Acres UNDER CONTRACT",
+  "desc": "This balanced livestock operation includes 4,897 deeded acres, and a mix of 18 separate USFS, BLM, and SITLA grazing permits that control over 110,000 acres of grazing, and provide 1,715 cattle AUMs and 56,763 sheep AUMs to the operation.",
+  "perks": [
+   "\ud83d\udc0e 150,000 acres"
+  ],
+  "warn": [
+   "UNDER CONTRACT: a backup offer at most",
+   "map pin is the town / county centre, not the ranch"
+  ],
+  "r": 50,
+  "rb": "src:a5",
+  "source": "A5 Real Estate (a5realestate.com)",
+  "coast_km": null,
+  "ski_km": null,
+  "ski_r": ""
  }
 ]
