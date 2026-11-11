@@ -190,6 +190,10 @@ def main():
         })
         print(f"  {pid}: {acres:g} ac ${usd:,} {'OTC' if otc else 'auction'} @ {ll}", file=sys.stderr)
     d = [r for r in json.load(open(PATH)) if not (r.get("rb") or "").startswith(SRC + "+")]
+    # once an auction's leftovers are on the live list, its brochure rows are history:
+    # parcels not on the list sold at auction (or were withdrawn)
+    live_auctions = {r["u"].rsplit("/", 1)[-1].split("-")[0] for r in rows}
+    d = [r for r in d if not any(f"{SRC}-brochure+auction{a}" in (r.get("rb") or "") for a in live_auctions)]
     json.dump(d + rows, open(PATH, "w"), separators=(",", ":"), ensure_ascii=False)
     print(f"Alaska state land: {len(rows)} parcels from {len(cards)} on the DNR list", file=sys.stderr)
     if rows:

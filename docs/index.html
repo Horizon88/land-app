@@ -263,10 +263,10 @@
     #huntRow::-webkit-scrollbar{display:none}
     #huntRow .chip{flex:0 0 auto}
     #plotCheckChip,#deedLogChip,#importChip,#addLinkChip,#syncChip,#regChip,#msiChip,#forestChip,#hideChip,
-    header>a.chip[href="countries.html"],#wlChip{display:none!important}
+    header>a.chip[href="countries.html"],header>a.chip[href*="digest.md"],#wlChip{display:none!important}
     body.m-more #plotCheckChip,body.m-more #deedLogChip,body.m-more #importChip,body.m-more #addLinkChip,
     body.m-more #syncChip,body.m-more #msiChip,body.m-more #forestChip,body.m-more #hideChip,
-    body.m-more header>a.chip[href="countries.html"]{display:inline-flex!important}
+    body.m-more header>a.chip[href="countries.html"],body.m-more header>a.chip[href*="digest.md"]{display:inline-flex!important}
     .controls{display:none!important}
     body.m-filters .controls{display:flex!important;flex-wrap:wrap;white-space:normal;max-height:45vh;overflow-y:auto}
     footer{display:none}
@@ -312,6 +312,7 @@
     <button id="mMore" aria-pressed="false">⋯ More</button>
   </div>
   <a href="countries.html" class="chip" style="text-decoration:none;color:var(--txt)" title="Countries ranked by price per acre, quality of life, weather and tax">🌍 Country ranking</a>
+  <a href="https://github.com/Horizon88/land-app/blob/main/docs/digest.md" target="_blank" rel="noopener" class="chip" style="text-decoration:none;color:var(--txt)" title="Today's digest: new listings and price cuts in each hunt (updated daily)">📰 Digest</a>
   <div class="stats" id="stats"></div>
   <span class="chip" id="slChip" style="display:none;background:#2a3340;color:#ffd166;border-color:#ffd166;cursor:pointer" title="Open shortlist">★ 0</span>
   <span class="chip" id="wlChip" style="display:none;background:#2a3340;color:#4fa3ff;border-color:#4fa3ff;cursor:pointer" title="Open watchlist (cool but pricey — waiting for a drop)">👁 0</span>

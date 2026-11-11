@@ -15,6 +15,10 @@ PATH = os.path.join(ROOT, "docs", "listings.json")
 REST = os.path.join(ROOT, "data", "raw", "redfin_us_rest.json.gz")
 SRC = "src:redfin-us"
 
+# computed by later pipeline steps; copied from the previous crawl so they needn't be recomputed
+CARRY = ("view_deg", "view_near_km", "elev_m", "prom_m", "view_score", "first_seen", "price_drops", "total_drop_pct",
+         "distress", "distress_breakdown", "code", "perks", "warn")
+
 def SPECIAL(r):
     """Keep oceanfront (≤1.5 km) and ski-town (≤5 km from a lift) rows."""
     c, s = r.get("coast_km"), r.get("ski_km")
@@ -24,6 +28,7 @@ def main():
     raw = json.load(open(RAW))
     existing = json.load(open(PATH))
     have = {e.get("u") for e in existing if SRC not in (e.get("rb") or "")}
+    prev = {e.get("u"): e for e in existing if SRC in (e.get("rb") or "")}   # keep computed fields on re-crawl
     existing = [e for e in existing if SRC not in (e.get("rb") or "")]      # replace the previous US crawl
     upa, ppsf = defaultdict(list), defaultdict(list)
     for r in raw:
@@ -71,6 +76,11 @@ def main():
                          "usd_per_sqft": round(usd / sqft),
                          "name": f"{beds or '?'}bd {r.get('address', '')}, {r.get('city', '')} {r.get('state', '')}"[:180],
                          "rb": "+".join(rb)})
+    for r in rows:
+        p = prev.get(r["u"])
+        if p:
+            for k in CARRY:
+                if k in p and k not in r: r[k] = p[k]
     json.dump(existing + rows, open(PATH, "w"), separators=(",", ":"))
     print(f"merged {len(rows)} US rows {dict(Counter(r['tp'] for r in rows))}; computing distances...", file=sys.stderr)
     subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "global_distances.py"), PATH], check=True)

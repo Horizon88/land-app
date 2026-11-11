@@ -207,7 +207,7 @@ def main(files):
             c = r.get("coast_km")
             return (c is not None and c <= 8) or r.get("cf") == "Austria" or \
                    (r.get("ski_km") is not None and r["ski_km"] <= 10) or r.get("user_added")
-        rows = [r for r in d if cand(r)]
+        rows = [r for r in d if cand(r) and not (MISSING and r.get("view_deg") is not None)]
         if RESCORE:    # recompute view_score from stored viewshed fields (after score() tweaks / new reviews)
             for r in rows:
                 v = {k: r.get(k) for k in ("view_deg", "view_near_km", "elev_m", "prom_m")} if r.get("view_deg") is not None else None
@@ -244,6 +244,7 @@ def main(files):
                   f"{r.get('view_deg')}° water · near {r.get('view_near_km')} km · +{r.get('prom_m')} m", file=sys.stderr)
 
 RESCORE = "--rescore" in sys.argv
+MISSING = "--missing" in sys.argv    # only rows that have no viewshed yet (daily refresh)
 if __name__ == "__main__":
-    sys.argv = [a for a in sys.argv if a != "--rescore"]
+    sys.argv = [a for a in sys.argv if a not in ("--rescore", "--missing")]
     main(sys.argv[1:] or [os.path.join(ROOT, "docs", "saved_plots.json"), os.path.join(ROOT, "docs", "listings.json")])

@@ -12,6 +12,7 @@ hand-made resort lists. This replaces both, for all countries:
 Usage: python3 scripts/global_distances.py [files...]   (defaults to listings + saved plots)
 Downloads are cached in $GEO_CACHE (default /tmp/geo_cache).
 """
+import subprocess
 import json, math, os, sys, urllib.request
 from collections import Counter, defaultdict
 import numpy as np
@@ -29,7 +30,7 @@ def fetch(url, name):
     p = os.path.join(CACHE, name)
     if not os.path.exists(p):
         print("downloading", url, file=sys.stderr)
-        urllib.request.urlretrieve(url, p)
+        subprocess.run(["curl", "-sSL", "--fail", "-A", "Mozilla/5.0 (land-app)", "-o", p, url], check=True)
     return p
 
 def xyz(lat, lon):

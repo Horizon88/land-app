@@ -23,7 +23,7 @@ Idempotent: safe to re-run. Prints a summary of what changed.
 import json, re, sys
 from collections import Counter
 
-PATH = '/home/user/land-app/docs/listings.json'
+PATH = __import__('os').path.join(__import__('os').path.dirname(__import__('os').path.abspath(__file__)), '..', 'docs', 'listings.json')
 
 # lat_min, lat_max, lon_min, lon_max  (wrap=True → box crosses the antimeridian)
 BOUNDS = {

@@ -1,0 +1,76 @@
+name: Daily refresh + digest
+
+# Every day: re-crawl the US sources (Redfin coast/ski regions, Alaska + Montana,
+# Alaska state land), compute sea views for new listings, update the price
+# history (new listings, price cuts, days on market), re-check price-watched
+# listings, then write docs/digest.md and open a GitHub issue with what's new or
+# cheaper in each hunt (you get it by email if you watch the repo).
+#
+# Turned on 2026-11-11 at the owner's request (the other scheduled jobs stay paused).
+# To pause: comment out the schedule block below.
+
+on:
+  schedule:
+    - cron: "23 11 * * *"    # 11:23 UTC daily
+  workflow_dispatch: {}
+
+concurrency:
+  group: daily-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install numpy pillow scipy
+
+      - name: Redfin US coast + ski regions
+        run: python3 scripts/redfin_us_scrape.py && python3 scripts/redfin_us_merge.py
+        continue-on-error: true
+
+      - name: Redfin Alaska + Montana
+        run: python3 scripts/redfin_akmt_scrape.py && python3 scripts/redfin_akmt_merge.py
+        continue-on-error: true
+
+      - name: Alaska state land (over-the-counter list)
+        run: python3 scripts/alaska_state_land.py
+        continue-on-error: true
+
+      - name: Sea views for new listings
+        run: python3 scripts/viewshed.py --missing docs/listings.json
+        continue-on-error: true
+
+      - name: Clean, price history, price watch
+        run: |
+          python3 scripts/clean_listings.py
+          python3 scripts/snapshot_history.py
+          python3 scripts/price_watch.py || true
+
+      - name: Digest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python3 scripts/digest.py
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/ data/
+          if ! git diff --staged --quiet; then
+            git commit -m "daily refresh $(date -u +%Y-%m-%d)"
+            git pull --rebase origin ${{ github.ref_name }} || true
+            git push origin HEAD:${{ github.ref_name }}
+          fi
