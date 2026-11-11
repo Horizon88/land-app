@@ -85,7 +85,8 @@ def line(r, cut=None):
     if (r.get("days_on_market") or 0) >= 180: extra.append(f"{r['days_on_market']} days listed")
     price = money(r)
     if cut: price = f"~~${cut['from']:,.0f}~~ → **${cut['to']:,.0f}** (−{cut['pct']}%)"
-    return (f"- `{r.get('code', '')}` {where} — {price} · {size(r)}"
+    code = r.get("code", "")
+    return (f"- [`{code}`]({APP}#{code}) {where} — {price} · {size(r)}"
             + (f" · {' · '.join(extra)}" if extra else "") + f" · [listing]({r['u']})")
 
 def skipped_urls():

@@ -3145,6 +3145,11 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
   document.getElementById('bmFb').href = bmFbCode;
 
   // Auto-open Import if URL has #import=<encoded text>
+  // #code=US-0910FW (links from Recon / the digest) opens that listing
+  if(/^#(code=)?[A-Z]{2}-[0-9A-Z]{6}$/.test(location.hash)){
+    const code=location.hash.replace(/^#(code=)?/,''), row=DATA.find(r=>r.code===code);
+    if(row){ setTimeout(()=>{ if(row.lat!=null) map.setView([row.lat,row.lon],13); openDetail(row); },300); }
+  }
   if(location.hash.startsWith('#import=')){
     const txt = decodeURIComponent(location.hash.slice('#import='.length));
     // Pick DOL panel by default, populate + open
