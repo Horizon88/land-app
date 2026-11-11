@@ -1250,6 +1250,12 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
   // Every hunt hides ⛔ deal-killers. Order = gem score.
   const le=(v,x)=>v!=null && v<=x;
   const homeScale=r=>r.tp!=='house' || ((r.living_m2||r.m2||0)<=600 && (r.beds||0)<=10);
+  // freshness: the newest first_seen in the data is "today" for the last refresh
+  const LATEST=DATA.reduce((m,r)=>r.first_seen&&r.first_seen>m?r.first_seen:m,'');
+  const daysBefore=(iso,n)=>{ const d=new Date(iso+'T00:00:00Z'); d.setUTCDate(d.getUTCDate()-n); return d.toISOString().slice(0,10); };
+  const NEW_SINCE=LATEST?daysBefore(LATEST,7):'9999', CUT_SINCE=LATEST?daysBefore(LATEST,30):'9999';
+  const isNew=r=>!!r.first_seen && r.first_seen>NEW_SINCE;
+  const isCut=r=>!!(r.price_drops&&r.price_drops.length&&r.price_drops[r.price_drops.length-1].date>CUT_SINCE);
   const SOUTHCOAST=/\/MA\/(?:north-|south-)?(?:westport|dartmouth|new-bedford|fairhaven|acushnet|mattapoisett|marion|rochester|(?:east-)?wareham|onset|fall-river|swansea|somerset|(?:east-)?freetown)\/|-(?:westport|dartmouth|new-bedford|fairhaven|acushnet|mattapoisett|marion|rochester|wareham|fall-river|swansea|somerset|freetown)-ma-/i;
   const HUNTS = {
     southcoast: { label:'⚓ SouthCoast MA water view', desc:'Massachusetts SouthCoast (Westport → Wareham, Fall River, New Bedford, Buzzards Bay towns): only homes and land with a water view (on the water, water visible in the terrain viewshed, or view score ≥40). Best view first.',
@@ -1275,6 +1281,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
         ((r.ac||0)>=5 || le(r.coast_km,0.3) || (r.view_score||0)>=40 || le(r.ski_km,3)); } },
     ak_state: { label:'🏛 Alaska state land', desc:'Parcels sold directly by the State of Alaska (DNR). Over-the-counter parcels are open to anyone at the appraised price, first come first served; auction parcels are Alaska residents only. Re-run scripts/alaska_state_land.py when DNR adds parcels.',
       match:r=>(r.rb||'').includes('src:ak-dnr') },
+    motivated: { label:'🤝 Motivated sellers', desc:'Sellers likely to negotiate: price cut 5%+ since we first saw it, or on the market 6 months or more (MLS days on market where known). Sorted by forced-sale score.',
+      match:r=>r.tp!=='apartment' && ((r.total_drop_pct||0)>=5 || (r.days_on_market||0)>=180) },
     best_view: { label:'🌅 Best views', desc:'Measured from terrain: how much open water is visible from the plot (viewshed over elevation data), plus view words in the listing and photo reviews. Score ≥60.',
       match:r=>(r.view_score||0)>=60 },
     your_picks: { label:'📌 Your picks', desc:'Listings you sent in yourself (links, Instagram finds), newest first',
@@ -1298,13 +1306,24 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     if(state.gems) leaveGems();
     if(state.region){ const t=document.querySelector(`#stats .chip[data-rt="${state.region}"]`); if(t) t.click(); }
     if(!state.hunt) _preHunt={countries:[...state.countries], filters:snapshotFilters(), sortKey:state.sortKey, sortAsc:state.sortAsc};
-    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'||key==='southcoast'?'view_score':key==='your_picks'?'added':key==='central_america'?'ca_rank':'_gem'); state.sortAsc=false;
+    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'||key==='southcoast'?'view_score':key==='your_picks'?'added':key==='central_america'?'ca_rank':key==='motivated'?'distress':'_gem'); state.sortAsc=false;
     state.countries.clear(); ALL_COUNTRIES.forEach(c=>state.countries.add(c));
     document.querySelectorAll('#stats .chip[data-cf]').forEach(ch=>ch.classList.add('on'));
     huntRow.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.hunt===key));
     const pts=DATA.filter(r=>HUNTS[key].match(r) && r.lat);
     if(pts.length){ try{ map.fitBounds(L.latLngBounds(pts.map(r=>[r.lat,r.lon])).pad(0.1)); }catch(e){} }
   }
+  // 🆕 / 📉 narrow whatever is on screen (a hunt, a country) to what changed lately
+  [['new','🆕 New this week',isNew,'#7ce38b',`Listed or first seen since ${NEW_SINCE} (last refresh ${LATEST})`],
+   ['cut','📉 Price cuts',isCut,'#ffb86c',`Asking price cut since ${CUT_SINCE}`]].forEach(([k,lab,fn,col,tip])=>{
+    const n=DATA.filter(fn).length; if(!n) return;
+    const c=document.createElement('span'); c.className='chip'; c.dataset.fresh=k;
+    c.style.cssText=`border-color:${col};color:${col};font-weight:700`; c.textContent=`${lab} ${n.toLocaleString()}`;
+    c.title=tip+' · combines with hunts and country chips · click again to clear';
+    c.onclick=()=>{ state.fresh=state.fresh===k?null:k;
+      huntRow.querySelectorAll('.chip[data-fresh]').forEach(x=>x.classList.toggle('on',x.dataset.fresh===state.fresh)); render(); };
+    huntRow.appendChild(c);
+  });
   Object.entries(HUNTS).forEach(([key,h])=>{
     const n=DATA.filter(r=>h.match(r) && !(r.deal&&r.deal.length)).length;
     if(!n) return;
@@ -1412,6 +1431,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       if(!state.countries.has(r.cf)) return false;
       if(state.region && !REGION_TABS[state.region].match(r)) return false;
       if(state.hunt && (!HUNTS[state.hunt].match(r) || (r.deal&&r.deal.length))) return false;
+      if(state.fresh==='new' && !isNew(r)) return false;
+      if(state.fresh==='cut' && !isCut(r)) return false;
       if(r.r < state.minR) return false;
       if(r.upm > state.maxU) return false;
       if(state.maxUsd != null && (r.usd||0) > state.maxUsd) return false;
@@ -1571,6 +1592,9 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     let h='';
     const pws=pwSummary(r.u);
     if(pws) h+=`<div class="gem-why" style="color:#9fd4ff">📈 price watch: ${pws.first.price!==pws.last.price?`${fmtM(pws.first.price,pws.cur)} → `:''}<b>${fmtM(pws.last.price,pws.cur)}</b>${pws.pct?` (${pws.pct>0?'+':''}${pws.pct.toFixed(1)}%)`:''}${pws.cuts?` · ${pws.cuts} cut${pws.cuts>1?'s':''}`:''}${pws.off?' · <b>off market</b>':''}</div>`;
+    if(isNew(r)) h+=`<div class="gem-why" style="color:#7ce38b">🆕 new ${r.first_seen}</div>`;
+    if(r.price_drops&&r.price_drops.length){ const d=r.price_drops[r.price_drops.length-1];
+      h+=`<div class="gem-why" style="color:#ffb86c">📉 price cut ${d.date}: −${d.pct}%${r.total_drop_pct&&r.total_drop_pct!==d.pct?` (−${r.total_drop_pct}% total)`:''}${r.total_drop_pct>=50?' · verify: may be a different lot or a listing error':''}</div>`; }
     if(r.loc_approx) h+=`<div class="note-warn" title="This listing is pinned to the town centre, not the property">📍 approximate location (town centre)</div>`;
     if(r.deal&&r.deal.length) h+=`<div class="note-deal">⛔ ${r.deal.join(' · ')}</div>`;
     const good = ((state.gems||state.hunt) && (r._why||[]).length) ? [...r._why, ...(r._taste?[r._taste]:[])] : (r.perks||[]);

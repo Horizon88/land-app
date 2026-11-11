@@ -39,7 +39,7 @@ def main():
         if dom and dom >= 180: score += 6; rb.append("stale>6mo+6")
         base = {"cf": "USA", "rg": reg, "a": (r.get("city") or "")[:40], "usd": usd, "v": "", "el": "",
                 "lat": r["lat"], "lon": r["lng"], "cur": "USD", "lp": str(usd), "imgs": [], "u": r["url"],
-                "days_on_market": int(dom) if dom else None, "state": r.get("state")}
+                "days_on_market": int(dom) if dom else None, "dom_src": int(dom) if dom else None, "state": r.get("state")}
         if r["kind"] == "land":
             ac = r.get("acres")
             if not ac or ac < 0.05: continue
