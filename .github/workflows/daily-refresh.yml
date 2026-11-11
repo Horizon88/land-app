@@ -68,6 +68,9 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python3 scripts/digest.py
 
+      - name: Feed for Snowbunker Recon (listings + tax notes)
+        run: python3 scripts/recon_feed.py
+
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"

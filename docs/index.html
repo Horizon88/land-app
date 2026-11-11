@@ -263,10 +263,10 @@
     #huntRow::-webkit-scrollbar{display:none}
     #huntRow .chip{flex:0 0 auto}
     #plotCheckChip,#deedLogChip,#importChip,#addLinkChip,#syncChip,#regChip,#msiChip,#forestChip,#hideChip,
-    header>a.chip[href="countries.html"],header>a.chip[href*="digest.md"],#wlChip{display:none!important}
+    header>a.chip[href="countries.html"],header>a.chip[href*="digest.md"],header>a.chip[href*="snowrecon"],#wlChip{display:none!important}
     body.m-more #plotCheckChip,body.m-more #deedLogChip,body.m-more #importChip,body.m-more #addLinkChip,
     body.m-more #syncChip,body.m-more #msiChip,body.m-more #forestChip,body.m-more #hideChip,
-    body.m-more header>a.chip[href="countries.html"],body.m-more header>a.chip[href*="digest.md"]{display:inline-flex!important}
+    body.m-more header>a.chip[href="countries.html"],body.m-more header>a.chip[href*="digest.md"],body.m-more header>a.chip[href*="snowrecon"]{display:inline-flex!important}
     .controls{display:none!important}
     body.m-filters .controls{display:flex!important;flex-wrap:wrap;white-space:normal;max-height:45vh;overflow-y:auto}
     footer{display:none}
@@ -312,6 +312,7 @@
     <button id="mMore" aria-pressed="false">⋯ More</button>
   </div>
   <a href="countries.html" class="chip" style="text-decoration:none;color:var(--txt)" title="Countries ranked by price per acre, quality of life, weather and tax">🌍 Country ranking</a>
+  <a href="https://raw.githack.com/Horizon88/snowrecon-public/main/index.html" target="_blank" rel="noopener" class="chip" style="text-decoration:none;color:var(--txt)" title="Snowbunker Recon: terrain, parcels and owner research, with these listings and the tax notes on its map">🗺 Recon map</a>
   <a href="https://github.com/Horizon88/land-app/blob/main/docs/digest.md" target="_blank" rel="noopener" class="chip" style="text-decoration:none;color:var(--txt)" title="Today's digest: new listings and price cuts in each hunt (updated daily)">📰 Digest</a>
   <div class="stats" id="stats"></div>
   <span class="chip" id="slChip" style="display:none;background:#2a3340;color:#ffd166;border-color:#ffd166;cursor:pointer" title="Open shortlist">★ 0</span>
@@ -1257,6 +1258,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
   const NEW_SINCE=LATEST?daysBefore(LATEST,7):'9999', CUT_SINCE=LATEST?daysBefore(LATEST,30):'9999';
   const isNew=r=>!!r.first_seen && r.first_seen>NEW_SINCE;
   const isCut=r=>!!(r.price_drops&&r.price_drops.length&&r.price_drops[r.price_drops.length-1].date>CUT_SINCE);
+  const RECON='https://raw.githack.com/Horizon88/snowrecon-public/main/index.html';
   const SOUTHCOAST=/\/MA\/(?:north-|south-)?(?:westport|dartmouth|new-bedford|fairhaven|acushnet|mattapoisett|marion|rochester|(?:east-)?wareham|onset|fall-river|swansea|somerset|(?:east-)?freetown)\/|-(?:westport|dartmouth|new-bedford|fairhaven|acushnet|mattapoisett|marion|rochester|wareham|fall-river|swansea|somerset|freetown)-ma-/i;
   const HUNTS = {
     southcoast: { label:'⚓ SouthCoast MA water view', desc:'Massachusetts SouthCoast (Westport → Wareham, Fall River, New Bedford, Buzzards Bay towns): only homes and land with a water view (on the water, water visible in the terrain viewshed, or view score ≥40). Best view first.',
@@ -1896,6 +1898,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
         <button class="btn" id="detailPackage" style="${pkg[r.u]?'border-color:#c084fc;color:#c084fc':''}" title="Combine adjacent plots into one deal package to see total price/size">🧩 ${pkg[r.u]?'In package':'Add to package'}</button>
         <button class="btn" id="detailXref" style="${r.xref_url?'border-color:#7ce38b;color:#7ce38b':''}" title="Attach a for-sale listing / Facebook post + asking price to this plot">🔗 ${r.xref_url?'Linked listing':'Cross-reference'}</button>
         ${shortlist[r.u]?`<button class="btn" id="detailFindSimilar">Find similar →</button>`:''}
+        ${r.lat!=null?`<a class="btn" href="${RECON}?lat=${r.lat}&lng=${r.lon}&z=15&listing=${encodeURIComponent(r.u)}" target="_blank" rel="noopener" title="Open this spot in Snowbunker Recon: terrain, slope, parcels${r.cf==='Japan'?' (地番 / chiban for the registry)':r.state==='MT'?' and Montana owner records':''}">🗺 Recon${r.cf==='Japan'||r.state==='MT'?': parcel & owner':''}</a>`:''}
         <a class="btn primary" href="${r.u}" target="_blank" rel="noopener">Open listing →</a>
       </div>`;
     document.getElementById('detailClose').onclick=()=>detailBg.classList.remove('show');
