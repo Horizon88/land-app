@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Plot Swipe</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+body{padding-top:env(safe-area-inset-top,0px)}
+body{margin:0}
+/* One-screen card stack: header (tabs), the deck in the middle, action buttons at the thumb. */
+:root{
+  --bg:#eef3f2; --surface:#ffffff; --ink:#0f1f22; --muted:#55686b; --line:#d3dfdd;
+  --accent:#0f766e;            /* sea-glass teal */
+  --keep:#15803d; --skip:#b42318; --maybe:#b45309;
+  --chip:#e3eceb; --shade:rgba(5,18,20,.82);
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"Instrument Sans", "Helvetica Neue", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0b1517; --surface:#132225; --ink:#e7f0ee; --muted:#93a8a6; --line:#24383b;
+  --accent:#2dd4bf; --keep:#4ade80; --skip:#f87171; --maybe:#fbbf24; --chip:#1a2d30; --shade:rgba(3,10,11,.86); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0b1517; --surface:#132225; --ink:#e7f0ee; --muted:#93a8a6; --line:#24383b;
+  --accent:#2dd4bf; --keep:#4ade80; --skip:#f87171; --maybe:#fbbf24; --chip:#1a2d30; --shade:rgba(3,10,11,.86); color-scheme:dark }
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.4 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;overflow:hidden}
+.top{display:flex;align-items:center;gap:10px;padding-block:10px 6px;flex-wrap:wrap}
+.brand{font:800 20px/1 var(--display);letter-spacing:-.01em;margin-right:auto}
+.brand small{display:block;font:500 11px/1.3 var(--body);color:var(--muted);letter-spacing:.02em;margin-top:3px}
+.tabs{display:flex;gap:4px;background:var(--chip);border-radius:999px;padding:3px}
+.tabs button{font:600 13px var(--body);color:var(--muted);background:none;border:0;border-radius:999px;padding:6px 11px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.tabs .n{font-variant-numeric:tabular-nums;opacity:.75;margin-left:3px}
+.filters{display:flex;gap:6px;overflow-x:auto;padding-block:4px 8px;scrollbar-width:none}
+.filters button{flex:0 0 auto;font:500 12px var(--body);border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:4px 10px;cursor:pointer}
+.filters button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);font-weight:600}
+.notice{font-size:12px;color:var(--maybe);padding-block:2px 6px}
+main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
+.stage{position:relative;flex:1;min-height:0;width:100%;max-width:440px;margin-inline:auto}
+.card{position:absolute;inset:0;border-radius:18px;overflow:hidden;background:#1b2b2e;box-shadow:0 10px 30px rgba(0,0,0,.25);
+  touch-action:none;user-select:none;cursor:grab;will-change:transform}
+.card.behind{transform:scale(.96) translateY(10px);filter:brightness(.8)}
+.card img.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.card .sat{position:absolute;top:12px;left:12px;font:600 11px var(--body);color:#fff;background:rgba(0,0,0,.55);padding:3px 8px;border-radius:999px}
+.card .both{position:absolute;top:44px;left:12px;font:700 12px var(--body);color:#fff;background:#d6336c;padding:4px 10px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.card .mine{position:absolute;top:44px;right:12px;font:600 11px var(--body);color:#1a1a1a;background:#ffd166;padding:3px 8px;border-radius:999px}
+.who{font-size:12px;opacity:.75;margin-top:2px}
+.card .code{position:absolute;top:12px;right:12px;font:600 11px ui-monospace,Menlo,monospace;color:#fff;background:rgba(0,0,0,.55);padding:3px 8px;border-radius:999px}
+.card .info{position:absolute;inset:auto 0 0 0;padding:70px 16px 16px;background:linear-gradient(transparent,var(--shade) 42%);color:#f2f7f6}
+.card .price{font:800 28px/1 var(--display);letter-spacing:-.01em}
+.card .place{font:600 15px var(--body);margin-top:4px}
+.card .facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.card .facts span{font:500 12px var(--body);background:rgba(255,255,255,.14);border-radius:999px;padding:3px 9px;font-variant-numeric:tabular-nums}
+.card .more{margin-top:9px;font-size:13px;line-height:1.45;color:#d8e4e2;max-height:0;overflow:hidden;transition:max-height .25s}
+.card.open .more{max-height:260px;overflow:auto}
+.card .more a{color:#7ee7d8;font-weight:600}
+.card .warn{color:#fcd34d}
+.stamp{position:absolute;top:28px;font:800 34px/1 var(--display);letter-spacing:.04em;padding:6px 14px;border:4px solid currentColor;border-radius:10px;opacity:0;pointer-events:none;background:rgba(0,0,0,.25)}
+.stamp.keep{left:18px;color:#4ade80;transform:rotate(-14deg)}
+.stamp.skip{right:18px;color:#f87171;transform:rotate(14deg)}
+.stamp.maybe{left:50%;top:auto;bottom:45%;transform:translateX(-50%);color:#fbbf24}
+.actions{display:flex;justify-content:center;align-items:center;gap:18px;padding-block:12px calc(10px + env(safe-area-inset-bottom,0px))}
+.actions button{border-radius:999px;border:2px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;font:700 14px var(--body)}
+.actions .big{width:62px;height:62px;font-size:26px}
+.actions .small{width:46px;height:46px;font-size:18px;color:var(--muted)}
+.actions .skip{color:var(--skip);border-color:color-mix(in srgb,var(--skip) 45%,var(--line))}
+.actions .keep{color:var(--keep);border-color:color-mix(in srgb,var(--keep) 45%,var(--line))}
+.actions .maybe{color:var(--maybe);border-color:color-mix(in srgb,var(--maybe) 45%,var(--line))}
+.actions button:focus-visible,.tabs button:focus-visible,.filters button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.empty{margin:auto;text-align:center;color:var(--muted);max-width:30ch;padding:24px}
+.empty b{display:block;font:800 22px var(--display);color:var(--ink);margin-bottom:6px}
+.list{width:100%;max-width:640px;overflow-y:auto;flex:1;min-height:0;display:grid;gap:8px;align-content:start;padding-bottom:16px}
+.row{display:grid;grid-template-columns:84px 1fr auto;gap:12px;align-items:center;background:var(--chip);border-radius:12px;padding:8px}
+.row img{width:84px;height:64px;object-fit:cover;border-radius:8px}
+.row .t{min-width:0}
+.row .t b{display:block;font:700 16px var(--display)}
+.row .t span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .t a{color:var(--accent);font-size:12px;font-weight:600}
+.row .who{display:flex;gap:4px}
+.row .who img{width:22px;height:22px;border-radius:50%}
+.row select{font:500 12px var(--body);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:3px}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);font:600 13px var(--body);padding:8px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){ .card{transition:none!important} .card .more{transition:none} }
+
+.linkbtn{font:600 12px var(--body);background:none;border:0;color:var(--accent);padding:0;cursor:pointer;text-decoration:underline}
+.send{flex:1;min-height:0;overflow-y:auto;width:100%;max-width:560px;margin-inline:auto;padding-bottom:20px}
+.send form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px}
+.send label{font:600 11px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.send input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px;width:100%;box-sizing:border-box}
+.send form button,.rolebtns button{font:700 15px var(--body);border:0;border-radius:10px;padding:12px;background:var(--accent);color:var(--bg);cursor:pointer}
+.sendmsg{margin:0;font-size:13px;color:var(--muted);min-height:1.2em}
+.sent{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.sent li{background:var(--chip);border-radius:12px;padding:10px 12px;display:grid;gap:4px;min-width:0}
+.sent .empty-li{color:var(--muted)}
+.ltop{display:flex;gap:8px;align-items:center;min-width:0}
+.lurl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-size:14px}
+.pill{font:600 12px var(--body);padding:2px 9px;border-radius:999px;white-space:nowrap;background:var(--surface);color:var(--muted)}
+.pill.s-added,.pill.s-duplicate{color:var(--keep)} .pill.s-not_found{color:var(--skip)} .pill.s-working{color:var(--maybe)}
+.lnote,.lwhen{font-size:12px;color:var(--muted);overflow-wrap:anywhere} .lreply{font-size:13px;overflow-wrap:anywhere} .lreply a{color:var(--accent)}
+.role{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 88%,transparent);display:grid;place-items:center;z-index:50;padding:16px}
+.rolebox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;max-width:340px;display:grid;gap:10px}
+.rolebox b{font:800 22px var(--display)} .rolebox p{margin:0;color:var(--muted);font-size:14px}
+.rolebox input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.rolebtns{display:grid;gap:8px}
+</style>
+
+</head>
+<body>
+<div class="top">
+  <div class="brand">Plot Swipe<small id="sub">oceanfront, ski and view plots</small><div class="who"><span id="who"></span> <button id="switchRole" class="linkbtn">switch</button></div></div>
+  <nav class="tabs" aria-label="Views">
+    <button id="tSwipe" aria-pressed="true">Swipe</button>
+    <button id="tKeep" aria-pressed="false">Kept<span class="n" id="nKeep">0</span></button>
+    <button id="tMaybe" aria-pressed="false">Maybe<span class="n" id="nMaybe">0</span></button>
+    <button id="tMatch" aria-pressed="false">💞 Matches<span class="n" id="nMatch">0</span></button>
+    <button id="tSend" aria-pressed="false">＋ Send a link</button>
+  </nav>
+</div>
+<div class="filters" id="filters" aria-label="Country filter"></div>
+<div class="notice" id="notice" hidden></div>
+<main id="main">
+  <div class="stage" id="stage"></div>
+  <div class="actions" id="actions">
+    <button class="small" id="bUndo" title="Undo (Z)" aria-label="Undo">↺</button>
+    <button class="big skip" id="bSkip" title="Skip (←)" aria-label="Skip">✕</button>
+    <button class="small maybe" id="bMaybe" title="Maybe (↑)" aria-label="Maybe">?</button>
+    <button class="big keep" id="bKeep" title="Keep (→)" aria-label="Keep">★</button>
+    <button class="small" id="bInfo" title="Details (space)" aria-label="Details">i</button>
+  </div>
+  <div class="list" id="list" hidden></div>
+</main>
+<section class="send" id="send" hidden>
+  <form id="sendForm" novalidate>
+    <label for="sendUrl">Instagram post or listing link</label>
+    <input id="sendUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://www.instagram.com/p/…">
+    <label for="sendNote">What you like about it (optional)</label>
+    <input id="sendNote" type="text" placeholder="e.g. the view from the deck">
+    <button type="submit">Send to Claude</button>
+    <p id="sendMsg" class="sendmsg" role="status"></p>
+  </form>
+  <ul id="sent" class="sent"></ul>
+</section>
+<div class="role" id="role" hidden>
+  <div class="rolebox">
+    <b>Who's swiping?</b>
+    <p>Pick once on this phone. You each swipe on your own; plots you both keep show under 💞 Matches.</p>
+    <input id="roleName" type="text" placeholder="Your first name (optional)" autocomplete="given-name">
+    <div class="rolebtns"><button data-role="ed">I'm Ed</button><button data-role="partner">I'm Ed's partner</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(async function(){
+  const $=id=>document.getElementById(id);
+  let deck=[], me=null, db=null, user=null, canSave=false;
+  const mine={};            // code -> {d, ts}
+  const others={};          // uid -> {code -> d}
+  let tab='swipe', country='All', history=[];
+
+  const fmt=v=> v>=1e6 ? '$'+(v/1e6).toFixed(v>=1e7?0:2).replace(/\.?0+$/,'')+'M' : '$'+Math.round(v/1000)+'k';
+  const km=v=> v==null?null : v<1 ? Math.round(v*1000)+' m' : v.toFixed(1)+' km';
+  function toast(t){ const el=$('toast'); el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1400); }
+
+  try { deck=(await (await fetch('deck.json')).json()).cards; } catch(e){ $('stage').innerHTML='<div class="empty"><b>Deck missing</b>The card file did not load. Reload the page.</div>'; return; }
+  $('sub').textContent=`${deck.length} oceanfront, ski and view plots`;
+
+  // ---------- storage: no login. Votes and links go to an ntfy.sh topic (kept 12 h); the hourly
+  // job copies them into state.json in the repo, which every phone reads. Your own swipes are
+  // also kept on this phone so nothing is lost between syncs.
+  const TOPIC='https://ntfy.sh/landapp-9a88f8c4c71c';
+  const ROLES={ed:'Ed', partner:'Partner'};
+  let state={votes:{ed:{},partner:{}}, names:{}, inbox:[]};
+  const names={};
+  const ls={ get(k,d){ try{ const v=localStorage.getItem(k); return v==null?d:JSON.parse(v); }catch(e){ return d; } },
+             set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} } };
+  me=ls.get('plots_role',null);
+  const other=()=>me==='ed'?'partner':'ed';
+  const partnerName=u=>names[u]||ROLES[u]||'Your partner';
+  let pendingLinks=[];
+  function applyEvent(m){
+    if(m.k==='v' && ROLES[m.who] && m.code){
+      const cur=state.votes[m.who][m.code];
+      if(!cur || (cur.ts||0)<=m.ts){ if(m.d) state.votes[m.who][m.code]={d:m.d,ts:m.ts}; else delete state.votes[m.who][m.code]; }
+    } else if(m.k==='n' && ROLES[m.who] && m.name){ state.names[m.who]=m.name; }
+    else if(m.k==='l' && m.url && !state.inbox.some(x=>x.id===m.id)){ pendingLinks.push(m); }
+  }
+  function rebuild(){
+    Object.assign(names, state.names||{});
+    for(const k in mine) delete mine[k];
+    const local=ls.get('plots_votes_'+me,{});
+    const merged=Object.assign({}, state.votes[me]||{});
+    for(const [code,v] of Object.entries(local)){ if(!merged[code] || (merged[code].ts||0)<v.ts) merged[code]=v; }
+    for(const [code,v] of Object.entries(merged)) if(v && v.d) mine[code]=v;
+    const o={}; for(const [code,v] of Object.entries(state.votes[other()]||{})) if(v&&v.d) o[code]=v.d;
+    for(const k in others) delete others[k]; others[other()]=o;
+    $('who').textContent=`You're ${partnerName(me)} · swiping with ${partnerName(other())}`;
+  }
+  async function refresh(){
+    pendingLinks=[];
+    try { state=await (await fetch('state.json?'+Date.now(),{cache:'no-store'})).json(); } catch(e){}
+    state.votes=state.votes||{}; state.votes.ed=state.votes.ed||{}; state.votes.partner=state.votes.partner||{}; state.inbox=state.inbox||[]; state.names=state.names||{};
+    try {
+      const txt=await (await fetch(TOPIC+'/json?poll=1&since=12h',{cache:'no-store'})).text();
+      txt.split('\n').filter(Boolean).forEach(l=>{ try{ const e=JSON.parse(l); if(e.event==='message') applyEvent(JSON.parse(e.message)); }catch(err){} });
+    } catch(e){ const n=$('notice'); n.hidden=false; n.textContent='Offline: your swipes are kept on this phone and sent when you are back online.'; }
+    if(me){ rebuild(); render(); }
+  }
+  async function post(obj){
+    try { const r=await fetch(TOPIC,{method:'POST',body:JSON.stringify(obj)}); return r.ok; } catch(e){ return false; }
+  }
+  async function save(code, d){
+    const ts=Date.now(), local=ls.get('plots_votes_'+me,{});
+    local[code]={d:d||null,ts}; ls.set('plots_votes_'+me,local);
+    if(!(await post({k:'v',who:me,code,d:d||null,ts}))) toast('Saved on this phone; will send later');
+  }
+  async function loadNames(){}
+  function pickRole(){
+    const ov=$('role'); ov.hidden=false;
+    ov.querySelectorAll('[data-role]').forEach(b=>b.onclick=async()=>{
+      me=b.dataset.role; ls.set('plots_role',me);
+      const nm=$('roleName').value.trim(); if(nm){ names[me]=nm; state.names[me]=nm; post({k:'n',who:me,name:nm,ts:Date.now()}); }
+      ov.hidden=true; rebuild(); render();
+      // resend anything saved offline
+      const local=ls.get('plots_votes_'+me,{}); for(const [code,v] of Object.entries(local)) if(!(state.votes[me]||{})[code]) post({k:'v',who:me,code,d:v.d,ts:v.ts});
+    });
+  }
+  $('switchRole').onclick=()=>pickRole();
+  if(!me) pickRole();
+  await refresh();
+  setInterval(refresh, 90000);
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) refresh(); });
+
+  // ---------- send a link ----------
+  function renderSend(){
+    const ul=$('sent'); ul.textContent='';
+    const rows=[...pendingLinks.map(m=>({...m,status:'new'})), ...state.inbox].sort((x,y)=>(y.at||'').localeCompare(x.at||''));
+    if(!rows.length){ const li=document.createElement('li'); li.className='empty-li'; li.textContent='Nothing sent yet. Paste a link above and Claude finds the listing for you both.'; ul.append(li); return; }
+    const ST={new:'Waiting',working:'Claude is looking',added:'Added ✓',duplicate:'Already in the app',not_found:'Listing not found',skipped:'Skipped'};
+    rows.slice(0,60).forEach(r=>{
+      const li=document.createElement('li');
+      const a=document.createElement('a'); a.href=r.url; a.target='_blank'; a.rel='noopener'; a.className='lurl';
+      a.textContent=String(r.url).replace(/^https?:\/\/(www\.)?/,'').replace(/\?.*$/,'');
+      const p=document.createElement('span'); p.className='pill s-'+(r.status||'new'); p.textContent=ST[r.status]||ST.new;
+      const top=document.createElement('div'); top.className='ltop'; top.append(a,p); li.append(top);
+      if(r.note){ const n=document.createElement('div'); n.className='lnote'; n.textContent='“'+r.note+'”'; li.append(n); }
+      if(r.reply){ const n=document.createElement('div'); n.className='lreply'; n.textContent=r.reply;
+        if(r.app_url){ n.append(' '); const l=document.createElement('a'); l.href=r.app_url; l.target='_blank'; l.rel='noopener'; l.textContent='Open ↗'; n.append(l); } li.append(n); }
+      const w=document.createElement('div'); w.className='lwhen'; w.textContent=(r.who?partnerName(r.who)+' · ':'')+(r.at?new Date(r.at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''); li.append(w);
+      ul.append(li);
+    });
+  }
+  $('sendForm').addEventListener('submit', async ev=>{
+    ev.preventDefault();
+    const url=$('sendUrl').value.trim(), note=$('sendNote').value.trim(), msg=$('sendMsg');
+    if(!/^https?:\/\/\S+\.\S+/.test(url)){ msg.textContent='That doesn’t look like a link. In Instagram: ⋯ → Copy link, then paste it here.'; return; }
+    msg.textContent='Sending…';
+    const m={k:'l',id:'l'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),url,note,who:me,at:new Date().toISOString()};
+    if(await post(m)){ pendingLinks.unshift(m); $('sendUrl').value=''; $('sendNote').value=''; msg.textContent='Sent ✓ Claude checks every hour and replies here.'; renderSend(); }
+    else msg.textContent='Couldn’t send (no connection?). Try again in a moment.';
+  });
+
+  // ---------- filters ----------
+  const counts={}; deck.forEach(c=>counts[c.cf]=(counts[c.cf]||0)+1);
+  const countries=['All',...Object.keys(counts).sort((a,b)=>counts[b]-counts[a])];
+  $('filters').innerHTML=countries.map(c=>`<button data-c="${c}" aria-pressed="${c===country}">${c}${c==='All'?'':' · '+counts[c]}</button>`).join('');
+  $('filters').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; country=b.dataset.c;
+    [...$('filters').children].forEach(x=>x.setAttribute('aria-pressed', x.dataset.c===country)); render(); };
+
+  // ---------- views ----------
+  const keptBy=code=>Object.keys(others).filter(u=>u!==me && others[u][code]==='keep');
+  const queue=()=>{ const q=deck.filter(c=>!mine[c.code] && (country==='All'||c.cf===country));
+    const rank=c=>keptBy(c.code).length?0:c.pick?1:2; return q.map((c,i)=>[rank(c),i,c]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]).map(x=>x[2]); };
+  function cardHtml(c, behind){
+    const facts=[];
+    if(c.coast_km!=null && c.coast_km<=3) facts.push('🌊 '+km(c.coast_km)+' to sea');
+    if(c.ski_km!=null && c.ski_km<=5) facts.push('⛷ '+km(c.ski_km)+' to lift');
+    if(c.view!=null && c.view>=50) facts.push('🌅 view '+c.view);
+    if(c.tp==='house'){ if(c.beds) facts.push(c.beds+' bd'); if(c.living_m2) facts.push(c.living_m2+' m² inside'); }
+    if(c.ac) facts.push((c.ac>=1?c.ac.toFixed(c.ac>=10?0:1):c.ac.toFixed(2))+' ac');
+    if(c.year) facts.push('built '+c.year);
+    if(c.approx) facts.push('📍 approx. pin');
+    return `<div class="card${behind?' behind':''}" data-code="${c.code}">
+      <img class="photo" src="${c.img}" alt="" draggable="false">
+      ${c.sat?'<span class="sat">🛰 satellite view</span>':''}<span class="code">${c.code}</span>
+      ${keptBy(c.code).length?`<span class="both">💞 ${esc(keptBy(c.code).map(partnerName).join(' & '))} kept this</span>`:''}${c.pick?'<span class="mine">📌 your pick</span>':''}
+      <span class="stamp keep">KEEP</span><span class="stamp skip">SKIP</span><span class="stamp maybe">MAYBE</span>
+      <div class="info">
+        <div class="price">${c.usd?fmt(c.usd):'Auction / price on request'}</div>
+        <div class="place">${esc(c.a||c.rg)}${c.a&&c.rg&&c.a!==c.rg?', '+esc(c.rg):''} · ${esc(c.cf)}</div>
+        <div class="facts">${facts.map(f=>`<span>${f}</span>`).join('')}</div>
+        <div class="more">${esc(c.name)}<br>${c.perks.map(p=>'✓ '+esc(p)).join('<br>')}${c.warn.length?'<br>'+c.warn.map(w=>`<span class="warn">⚠ ${esc(w)}</span>`).join('<br>'):''}
+          <br><a href="${c.u}" target="_blank" rel="noopener">Open the listing ↗</a></div>
+      </div></div>`;
+  }
+  function esc(s){ return String(s||'').replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
+
+  function render(){
+    if(!me) return;
+    $('send').hidden = tab!=='send';
+    if(tab==='send'){ $('stage').hidden=true; $('actions').hidden=true; $('filters').hidden=true; $('list').hidden=true; renderSend(); return; }
+    const kept=deck.filter(c=>mine[c.code]?.d==='keep'), maybe=deck.filter(c=>mine[c.code]?.d==='maybe');
+    const partners=Object.keys(others).filter(u=>u!==me);
+    const matches=kept.filter(c=>partners.some(u=>others[u][c.code]==='keep'));
+    $('nKeep').textContent=kept.length; $('nMaybe').textContent=maybe.length; $('nMatch').textContent=matches.length;
+    const swipe=tab==='swipe';
+    $('stage').hidden=!swipe; $('actions').hidden=!swipe; $('filters').hidden=!swipe; $('list').hidden=swipe;
+    if(swipe){
+      const q=queue();
+      const top=$('stage').querySelector('.card:not(.behind)');
+      if(top && q[0] && top.dataset.code===q[0].code && !$('stage').querySelector('.gone')) return;   // already showing
+      $('stage').innerHTML = q.length ? (q[1]?cardHtml(q[1],true):'')+cardHtml(q[0],false)
+        : `<div class="empty"><b>${country==='All'?'All swiped':'Done with '+esc(country)}</b>Your picks are under Kept and Maybe${partners.length?', and Both kept shows what you and your partner agree on':''}.</div>`;
+      wire();
+    } else {
+      const rows = tab==='keep'?kept : tab==='maybe'?maybe : matches;
+      const ids=[me,...partners].filter(Boolean);
+      $('list').innerHTML = rows.length ? rows.map(c=>`<div class="row">
+        <img src="${c.img}" alt="">
+        <div class="t"><b>${c.usd?fmt(c.usd):'Auction'}</b><span>${esc(c.a||c.rg)} · ${esc(c.cf)} · ${c.code}</span><a href="${c.u}" target="_blank" rel="noopener">Listing ↗</a></div>
+        <select data-code="${c.code}" aria-label="Change decision for ${c.code}">
+          <option value="keep"${mine[c.code]?.d==='keep'?' selected':''}>★ Keep</option>
+          <option value="maybe"${mine[c.code]?.d==='maybe'?' selected':''}>? Maybe</option>
+          <option value="skip">✕ Skip</option><option value="">↺ Back to deck</option></select></div>`).join('')
+        : `<div class="empty"><b>${tab==='match'?'No matches yet':'Nothing here yet'}</b>${tab==='match'?'When you and your partner both keep a plot, it shows here. Share this page with them (Share → can use) so they can swipe too.':'Swipe right to keep, up for maybe.'}</div>`;
+      $('list').querySelectorAll('select').forEach(s=>s.onchange=()=>{ const code=s.dataset.code, d=s.value;
+        if(d) mine[code]={d,ts:Date.now()}; else delete mine[code]; save(code, d||null); render(); });
+    }
+  }
+
+  // ---------- swiping ----------
+  function decide(d){
+    const card=$('stage').querySelector('.card:not(.behind)'); if(!card) return;
+    const code=card.dataset.code;
+    const dx = d==='keep'?1 : d==='skip'?-1 : 0, dy = d==='maybe'?-1:0;
+    card.classList.add('gone');
+    card.style.transition='transform .28s ease-out, opacity .28s';
+    card.style.transform=`translate(${dx*120}vw, ${dy*110}vh) rotate(${dx*24}deg)`; card.style.opacity='0';
+    mine[code]={d, ts:Date.now()}; history.push(code); save(code, d);
+    const both=d==='keep'?keptBy(code):[];
+    toast(both.length?`💞 It's a match with ${both.map(partnerName).join(' & ')}!`:d==='keep'?'★ Kept':d==='skip'?'Skipped':'Saved to Maybe');
+    setTimeout(render, 220);
+  }
+  function undo(){ const code=history.pop(); if(!code) return; delete mine[code]; save(code, null); render(); toast('Undone'); }
+  function wire(){
+    const card=$('stage').querySelector('.card:not(.behind)'); if(!card) return;
+    let sx=0, sy=0, dx=0, dy=0, drag=false, moved=false;
+    const stamp=k=>card.querySelector('.stamp.'+k);
+    card.addEventListener('pointerdown',e=>{ drag=true; moved=false; sx=e.clientX; sy=e.clientY; card.setPointerCapture(e.pointerId); card.style.transition='none'; });
+    card.addEventListener('pointermove',e=>{ if(!drag) return; dx=e.clientX-sx; dy=e.clientY-sy; if(Math.abs(dx)+Math.abs(dy)>6) moved=true;
+      card.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/18}deg)`;
+      stamp('keep').style.opacity=Math.max(0,Math.min(1,dx/100)); stamp('skip').style.opacity=Math.max(0,Math.min(1,-dx/100));
+      stamp('maybe').style.opacity=Math.max(0,Math.min(1,(-dy-Math.abs(dx))/100)); });
+    const end=()=>{ if(!drag) return; drag=false;
+      if(dx>110) decide('keep'); else if(dx<-110) decide('skip'); else if(-dy>120 && Math.abs(dx)<90) decide('maybe');
+      else { card.style.transition='transform .2s'; card.style.transform=''; card.querySelectorAll('.stamp').forEach(s=>s.style.opacity=0);
+        if(!moved) card.classList.toggle('open'); }
+      dx=dy=0; };
+    card.addEventListener('pointerup',end); card.addEventListener('pointercancel',end);
+    card.querySelector('.more a')?.addEventListener('pointerdown',e=>e.stopPropagation());
+  }
+  $('bKeep').onclick=()=>decide('keep'); $('bSkip').onclick=()=>decide('skip'); $('bMaybe').onclick=()=>decide('maybe');
+  $('bUndo').onclick=undo; $('bInfo').onclick=()=>$('stage').querySelector('.card:not(.behind)')?.classList.toggle('open');
+  document.addEventListener('keydown',e=>{ if(tab!=='swipe'||e.target.closest('select')) return;
+    if(e.key==='ArrowRight') decide('keep'); else if(e.key==='ArrowLeft') decide('skip'); else if(e.key==='ArrowUp') decide('maybe');
+    else if(e.key==='z'||e.key==='Z') undo(); else if(e.key===' '){ e.preventDefault(); $('bInfo').click(); } });
+  const tabs={tSwipe:'swipe',tKeep:'keep',tMaybe:'maybe',tMatch:'match',tSend:'send'};
+  Object.entries(tabs).forEach(([id,t])=>$(id).onclick=()=>{ tab=t; Object.keys(tabs).forEach(k=>$(k).setAttribute('aria-pressed',k===id)); $('stage').innerHTML=''; render(); });
+  render();
+})();
+</script>
+
+</body>
+</html>
