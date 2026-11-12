@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-QUOTA = {"Japan": 75, "USA": 75, "Costa Rica": 25, "Canada": 15, "Thailand": 12, "Austria": 12}
+QUOTA = {"Japan": 75, "USA": 100, "Costa Rica": 25, "Canada": 15, "Thailand": 12, "Austria": 12}
 OTHER = 4                  # every other country
 
 def aerial(lat, lon, w_km=0.5, h_km=0.36):
@@ -30,8 +30,10 @@ def score(r):
 
 def special(r):
     c, s = r.get("coast_km"), r.get("ski_km")
+    big_wild = r.get("state") in ("AK", "MT") and (r.get("ac") or 0) >= 5 and (r.get("view_score") or 0) >= 40
     return ((c is not None and c <= 0.3) or (s is not None and s <= 1) or (r.get("view_score") or 0) >= 65
-            or r.get("v") in ("beachfront", "waterfront")) and r.get("tp") in ("land", "house", "villa", None)
+            or r.get("v") in ("beachfront", "waterfront") or len(r.get("ca_signals") or []) >= 2 or big_wild
+            or (r.get("rb") or "").startswith("src:a5")) and r.get("tp") in ("land", "house", "villa", None)
 
 def fetch(url):
     try:
@@ -47,17 +49,25 @@ def fetch(url):
 def main(out, n_cards):
     d = json.load(open(os.path.join(ROOT, "docs", "listings.json"))) + json.load(open(os.path.join(ROOT, "docs", "saved_plots.json")))
     arch = set(json.load(open(os.path.join(ROOT, "docs", "archived.json"))).get("archives", {}))
+    arch |= set((json.load(open(os.path.join(ROOT, "docs", "decisions.json"))).get("skip") or {}))   # skipped in the app or a swipe
     hidden = set(json.load(open(os.path.join(ROOT, "docs", "prefs.json"))).get("hidden_countries", []))
     pool = defaultdict(list)
+    # your own picks (Instagram finds, the scout, the inbox) and cards someone already swiped come first / stay
+    must = set(filter(None, os.environ.get("KEEP_CODES", "").split(",")))
+    first = []
     for r in d:
-        if r.get("cf") in hidden or not r.get("code") or r.get("u") in arch or r.get("deal") or r.get("lat") is None or not r.get("usd"): continue
+        if r.get("cf") in hidden or not r.get("code") or r.get("u") in arch or r.get("deal") or r.get("lat") is None: continue
+        if r.get("user_added") or r.get("code") in must:
+            if r["code"] not in [x["code"] for x in first]: first.append(r)
+            continue
+        if not r.get("usd"): continue
         if special(r): pool[r["cf"]].append(r)
     # guaranteed quota per country, then interleave so countries alternate (best first)
     queues = {}
     for cf, rows in pool.items():
         rows.sort(key=score, reverse=True)
         queues[cf] = rows[:QUOTA.get(cf, OTHER)]
-    picks, taken = [], defaultdict(int)
+    picks, taken = list(first), defaultdict(int)
     while len(picks) < n_cards and any(queues.values()):
         cf = max((c for c in queues if queues[c]), key=lambda c: score(queues[c][0]) - 6 * taken[c] * 75 / QUOTA.get(c, OTHER * 4))
         picks.append(queues[cf].pop(0)); taken[cf] += 1
@@ -73,7 +83,8 @@ def main(out, n_cards):
         open(os.path.join(out, "img", f"{r['code']}.jpg"), "wb").write(jpg)
         c, s = r.get("coast_km"), r.get("ski_km")
         return {"code": r["code"], "u": r["u"], "cf": r["cf"], "rg": r.get("rg") or "", "a": r.get("a") or "",
-                "tp": r.get("tp") or "land", "name": (r.get("name") or "")[:140], "usd": r["usd"],
+                "tp": r.get("tp") or "land", "name": (r.get("name") or "")[:140], "usd": r.get("usd"),
+                "pick": bool(r.get("user_added")),
                 "ac": r.get("ac"), "m2": r.get("m2"), "living_m2": r.get("living_m2"), "beds": r.get("beds"),
                 "year": r.get("year_built"), "coast_km": c, "ski_km": s, "ski_r": r.get("ski_r") or "",
                 "view": r.get("view_score"), "view_deg": r.get("view_deg"), "v": r.get("v") or "",
