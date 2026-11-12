@@ -64,7 +64,7 @@ def main():
     for url, w in pw["watches"].items():
         code, html = fetch(url)
         hist = w.setdefault("history", [])
-        last = hist[-1]["price"] if hist else None
+        last = hist[-1].get("price") if hist else None
         if code in ("404", "410"):
             if not hist or hist[-1].get("event") != "Off market":
                 hist.append({"date": today, "price": last, "event": "Off market"}); changes += 1
