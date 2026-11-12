@@ -895,6 +895,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
   function pwSummary(u){
     const w=PRICE_WATCH[u]; if(!w||!w.history||!w.history.length) return null;
     const h=w.history.filter(x=>x.price), first=h[0], last=h[h.length-1];
+    if(!h.length) return null;          // e.g. an auction with no price yet
     const cuts=h.filter(x=>/cut/i.test(x.event)).length;
     const pct = first&&last&&first.price ? (last.price-first.price)/first.price*100 : 0;
     return {cur:w.cur, first, last, cuts, pct, off: w.history[w.history.length-1].event==='Off market', checked:w.last_checked};
@@ -1576,7 +1577,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       } else {
         m.bindPopup(`<div class="lp-r" style="color:${color}">★ ${r.r}</div>
           <div><b>${r.cf}</b> — ${r.rg} ${r.a}</div>
-          <div>${r.ac} acres (${r.m2.toLocaleString()} m²)${r.area_est?' <i>· size est.</i>':''} · ${r.v||'-'}</div>
+          <div>${r.ac!=null?`${r.ac} acres (${(r.m2||0).toLocaleString()} m²)`:'size not stated'}${r.area_est?' <i>· size est.</i>':''} · ${r.v||'-'}</div>
           <div>${fmtUsd(r.usd)}${r.upm!=null?` · <b>$${r.upm}/m²</b>`:''}</div>
           <div class="lp-k">${r.t||''} · ${r.rb||''}</div>
           ${flagHtml}
@@ -1848,7 +1849,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
           ${r.wiki_jp?`<div><div class="k">wikipedia (ja)</div><div class="v"><a href="${r.wiki_jp}" target="_blank" style="color:#4fa3ff">view article →</a></div></div>`:''}
         ` : `
           <div><div class="k">size</div><div class="v">${r.ac==null&&r.m2==null?'<span style="color:var(--txt-dim)">not set</span>':(r.tp==='penthouse'?(r.m2||0).toLocaleString()+' m²':r.ac+' acres ('+(r.m2||0).toLocaleString()+' m²)')}${r.area_est?' <span style="color:var(--txt-dim)">· estimated</span>':''}</div></div>
-          <div><div class="k">price</div><div class="v">${r.lp?Number(r.lp).toLocaleString()+' '+r.cur:''} ${r.cur!=='USD'?'· $'+r.usd.toLocaleString():''}</div></div>
+          <div><div class="k">price</div><div class="v">${r.lp?(isNaN(Number(r.lp))?r.lp:Number(r.lp).toLocaleString()+' '+r.cur):''} ${r.cur!=='USD'&&r.usd!=null?'· $'+r.usd.toLocaleString():''}</div></div>
           <div><div class="k">$/m²</div><div class="v">${r.upm!=null?'$'+r.upm:'—'}</div></div>
           <div><div class="k">$/acre</div><div class="v">$${r.ac?Math.round(r.usd/r.ac).toLocaleString():'-'}</div></div>
           ${r.cf==='Thailand' && r.ac ? `<div><div class="k">$/rai</div><div class="v">$${Math.round(r.usd/(r.ac/0.3954)).toLocaleString()}<span style="color:#9aa3b2"> · ${Math.round(r.ac/0.3954).toLocaleString()} rai · ฿${Math.round(r.usd*36).toLocaleString()} total</span></div></div>` : ''}
