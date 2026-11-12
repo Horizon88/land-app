@@ -1367,5 +1367,55 @@
             "a working estate business with tenants and staff, and a listed building with costly upkeep"
         ],
         "source": "Instagram @mega_mansions · Savills Edinburgh EDR240042"
+    },
+    {
+        "code": "NZ-YNEFYZ",
+        "tp": "house",
+        "cf": "New Zealand",
+        "rg": "Marlborough",
+        "a": "Blackwood Bay, Queen Charlotte Sound",
+        "name": "The Point, Blackwood Bay: waterfront home above a golden beach with 280° Sound views, cottage, boathouse share, jetty and moorings",
+        "t": "house + cottage · 5 bd · 3 ba · boat access",
+        "beds": 5,
+        "usd": null,
+        "cur": "NZD",
+        "lp": "auction",
+        "lat": -41.2187478,
+        "lon": 174.10275438,
+        "v": "waterfront",
+        "imgs": [
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_1.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_2.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_3.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_4.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_5.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_6.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_7.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_8.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_9.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_10.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_11.jpg",
+            "https://bayleys-cdn.bayleys.co.nz/listing-images/4137301/4137301_12.jpg"
+        ],
+        "u": "https://www.bayleys.co.nz/listings/residential/marlborough/marlborough/-blackwood-bay-queen-charlotte-sound-4137301",
+        "r": 60,
+        "rb": "src:instagram+user",
+        "user_added": true,
+        "added": "2026-11-12",
+        "perks": [
+            "🌊 elevated above its own golden beach, 280° views over Queen Charlotte Sound",
+            "⛵ half share of a 2-storey boathouse, 40 m jetty (4-5 boats), pontoon, ramp and 2 deep-water moorings",
+            "🏡 3-bed main house + separate 2-bed cottage with ensuite (proven Airbnb income)",
+            "🌅 summer sunsets till ~9pm; 15 min by boat to Waikawa marina",
+            "🎣 some of the Sounds' best fishing"
+        ],
+        "warn": [
+            "AUCTION 27 Nov 2026, 12pm, 33 Seymour St, Blenheim: no price guide",
+            "⛔ New Zealand bans most foreign buyers of existing homes (Overseas Investment Act) unless you're an NZ/Australian citizen or hold NZ residence; check eligibility before bidding",
+            "owning a home here can make you NZ tax-resident (permanent place of abode test, worldwide income taxed)",
+            "boat access only; land area not stated; the waterfront structures are shared"
+        ],
+        "foreign_note": "New Zealand: overseas persons generally can't buy residential land without Overseas Investment Office consent (NZ/Australian citizens and NZ residence-class visa holders are exempt). No stamp duty; no general capital gains tax (bright-line test applies to quick resales).",
+        "source": "Instagram @oneroofnz · Bayleys Marlborough #4137301 (agent Jeremy Ryan, 021 485 565) · @thepoint_blackwoodbay"
     }
 ]

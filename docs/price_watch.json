@@ -117,6 +117,21 @@
     }
    ],
    "context": "68 acres, Mason & Morse 3832"
+  },
+  "https://www.bayleys.co.nz/listings/residential/marlborough/marlborough/-blackwood-bay-queen-charlotte-sound-4137301": {
+   "code": "NZ-YNEFYZ",
+   "label": "The Point, Blackwood Bay NZ",
+   "added": "2026-11-12",
+   "last_checked": "2026-11-12",
+   "cur": "NZD",
+   "history": [
+    {
+     "date": "2026-11-11",
+     "price": null,
+     "event": "Listed for auction (27 Nov)"
+    }
+   ],
+   "context": "Auction 27 Nov, Bayleys #4137301"
   }
  }
 }
