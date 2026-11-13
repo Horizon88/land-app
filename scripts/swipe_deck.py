@@ -11,8 +11,9 @@ from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-QUOTA = {"Japan": 75, "USA": 100, "Costa Rica": 25, "Canada": 15, "Thailand": 12, "Austria": 12}
+QUOTA = {"Japan": 75, "USA": 90, "Alaska": 70, "Costa Rica": 25, "Canada": 15, "Thailand": 12, "Austria": 12}
 OTHER = 4                  # every other country
+BOOST = {}
 
 def aerial(lat, lon, w_km=0.5, h_km=0.36):
     dx = w_km / 2 / (111.32 * math.cos(math.radians(lat))); dy = h_km / 2 / 110.57
@@ -30,7 +31,8 @@ def score(r):
 
 def special(r):
     c, s = r.get("coast_km"), r.get("ski_km")
-    big_wild = r.get("state") in ("AK", "MT") and (r.get("ac") or 0) >= 5 and (r.get("view_score") or 0) >= 40
+    big_wild = (r.get("state") in ("AK", "MT") and (r.get("ac") or 0) >= 5 and (r.get("view_score") or 0) >= 40) or \
+               (r.get("state") == "AK" and (((r.get("ac") or 0) >= 5 and bool(r.get("imgs"))) or (c is not None and c <= 0.5)))
     return ((c is not None and c <= 0.3) or (s is not None and s <= 1) or (r.get("view_score") or 0) >= 65
             or r.get("v") in ("beachfront", "waterfront") or len(r.get("ca_signals") or []) >= 2 or big_wild
             or (r.get("rb") or "").startswith("src:a5")) and r.get("tp") in ("land", "house", "villa", None)
@@ -61,15 +63,16 @@ def main(out, n_cards):
             if r["code"] not in [x["code"] for x in first]: first.append(r)
             continue
         if not r.get("usd"): continue
-        if special(r): pool[r["cf"]].append(r)
+        if special(r): pool["Alaska" if r.get("state") == "AK" else r["cf"]].append(r)
     # guaranteed quota per country, then interleave so countries alternate (best first)
     queues = {}
     for cf, rows in pool.items():
         rows.sort(key=score, reverse=True)
         queues[cf] = rows[:QUOTA.get(cf, OTHER)]
     picks, taken = list(first), defaultdict(int)
+    picks += queues.pop("Alaska", [])                 # the user wants lots of Alaska: its whole quota goes in
     while len(picks) < n_cards and any(queues.values()):
-        cf = max((c for c in queues if queues[c]), key=lambda c: score(queues[c][0]) - 6 * taken[c] * 75 / QUOTA.get(c, OTHER * 4))
+        cf = max((c for c in queues if queues[c]), key=lambda c: score(queues[c][0]) + BOOST.get(c, 0) - 6 * taken[c] * 75 / QUOTA.get(c, OTHER * 4))
         picks.append(queues[cf].pop(0)); taken[cf] += 1
     os.makedirs(os.path.join(out, "img"), exist_ok=True)
 
