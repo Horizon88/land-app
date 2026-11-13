@@ -88,6 +88,12 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
 .toast.show{opacity:1}
 @media (prefers-reduced-motion:reduce){ .card{transition:none!important} .card .more{transition:none} }
 
+.tabs{overflow-x:auto;max-width:100%;scrollbar-width:none}
+.tabs button{flex:0 0 auto;white-space:nowrap}
+.paste-fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));top:calc(10px + env(safe-area-inset-top,0px));z-index:40;
+  font:700 14px var(--body);background:#d6336c;color:#fff;border:0;border-radius:999px;padding:10px 16px;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer}
+.paste-fab:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.top{padding-right:150px}
 .linkbtn{font:600 12px var(--body);background:none;border:0;color:var(--accent);padding:0;cursor:pointer;text-decoration:underline}
 .send{flex:1;min-height:0;overflow-y:auto;width:100%;max-width:560px;margin-inline:auto;padding-bottom:20px}
 .send form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px}
@@ -119,7 +125,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
     <button id="tKeep" aria-pressed="false">Kept<span class="n" id="nKeep">0</span></button>
     <button id="tMaybe" aria-pressed="false">Maybe<span class="n" id="nMaybe">0</span></button>
     <button id="tMatch" aria-pressed="false">💞 Matches<span class="n" id="nMatch">0</span></button>
-    <button id="tSend" aria-pressed="false">＋ Send a link</button>
+    <button id="tSend" aria-pressed="false">＋ Paste a plot</button>
   </nav>
 </div>
 <div class="filters" id="filters" aria-label="Country filter"></div>
@@ -150,10 +156,10 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
   <div class="rolebox">
     <b>Who's swiping?</b>
     <p>Pick once on this phone. You each swipe on your own; plots you both keep show under 💞 Matches.</p>
-    <input id="roleName" type="text" placeholder="Your first name (optional)" autocomplete="given-name">
-    <div class="rolebtns"><button data-role="ed">I'm Ed</button><button data-role="partner">I'm Ed's partner</button></div>
+    <div class="rolebtns"><button data-role="ed">I'm Ed</button><button data-role="partner">I'm Siri</button></div>
   </div>
 </div>
+<button class="paste-fab" id="pasteFab" type="button">＋ Paste a plot</button>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -175,7 +181,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
   // job copies them into state.json in the repo, which every phone reads. Your own swipes are
   // also kept on this phone so nothing is lost between syncs.
   const TOPIC='https://ntfy.sh/landapp-9a88f8c4c71c';
-  const ROLES={ed:'Ed', partner:'Partner'};
+  const ROLES={ed:'Ed', partner:'Siri'};
   let state={votes:{ed:{},partner:{}}, names:{}, inbox:[]};
   const names={};
   const ls={ get(k,d){ try{ const v=localStorage.getItem(k); return v==null?d:JSON.parse(v); }catch(e){ return d; } },
@@ -225,17 +231,13 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
     const ov=$('role'); ov.hidden=false;
     ov.querySelectorAll('[data-role]').forEach(b=>b.onclick=async()=>{
       me=b.dataset.role; ls.set('plots_role',me);
-      const nm=$('roleName').value.trim(); if(nm){ names[me]=nm; state.names[me]=nm; post({k:'n',who:me,name:nm,ts:Date.now()}); }
       ov.hidden=true; rebuild(); render();
       // resend anything saved offline
       const local=ls.get('plots_votes_'+me,{}); for(const [code,v] of Object.entries(local)) if(!(state.votes[me]||{})[code]) post({k:'v',who:me,code,d:v.d,ts:v.ts});
     });
   }
   $('switchRole').onclick=()=>pickRole();
-  if(!me) pickRole();
-  await refresh();
-  setInterval(refresh, 90000);
-  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) refresh(); });
+  $('pasteFab').onclick=()=>{ $('tSend').click(); setTimeout(()=>$('sendUrl').focus(),50); };
 
   // ---------- send a link ----------
   function renderSend(){
@@ -303,7 +305,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
 
   function render(){
     if(!me) return;
-    $('send').hidden = tab!=='send';
+    $('send').hidden = tab!=='send'; $('pasteFab').hidden = tab==='send';
     if(tab==='send'){ $('stage').hidden=true; $('actions').hidden=true; $('filters').hidden=true; $('list').hidden=true; renderSend(); return; }
     const kept=deck.filter(c=>mine[c.code]?.d==='keep'), maybe=deck.filter(c=>mine[c.code]?.d==='maybe');
     const partners=Object.keys(others).filter(u=>u!==me);
@@ -372,6 +374,11 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
     else if(e.key==='z'||e.key==='Z') undo(); else if(e.key===' '){ e.preventDefault(); $('bInfo').click(); } });
   const tabs={tSwipe:'swipe',tKeep:'keep',tMaybe:'maybe',tMatch:'match',tSend:'send'};
   Object.entries(tabs).forEach(([id,t])=>$(id).onclick=()=>{ tab=t; Object.keys(tabs).forEach(k=>$(k).setAttribute('aria-pressed',k===id)); $('stage').innerHTML=''; render(); });
+  // start only now: render() needs everything above (queue, keptBy, wire) to exist
+  if(!me) pickRole();
+  await refresh();
+  setInterval(refresh, 90000);
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) refresh(); });
   render();
 })();
 </script>
