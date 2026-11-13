@@ -89,7 +89,10 @@ def main(out, n_cards):
                 "year": r.get("year_built"), "coast_km": c, "ski_km": s, "ski_r": r.get("ski_r") or "",
                 "view": r.get("view_score"), "view_deg": r.get("view_deg"), "v": r.get("v") or "",
                 "approx": bool(r.get("loc_approx")), "sat": sat, "perks": (r.get("perks") or [])[:3],
-                "warn": (r.get("warn") or [])[:2], "img": f"img/{r['code']}.jpg"}
+                "warn": (r.get("warn") or [])[:2], "img": f"img/{r['code']}.jpg",
+                # more photos for the public family page (it can load them straight from the listing site)
+                "photos": [u for u in (r.get("imgs") or []) if isinstance(u, str) and u.startswith("http")][:10]
+                          + [aerial(r["lat"], r["lon"], 0.6, 0.43), aerial(r["lat"], r["lon"], 3, 2.16)]}
 
     with ThreadPoolExecutor(max_workers=10) as ex:
         cards = [c for c in ex.map(card, picks) if c]
