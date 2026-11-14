@@ -1285,6 +1285,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
         ((r.ac||0)>=5 || le(r.coast_km,0.3) || (r.view_score||0)>=40 || le(r.ski_km,3)); } },
     ak_state: { label:'🏛 Alaska state land', desc:'Parcels sold directly by the State of Alaska (DNR). Over-the-counter parcels are open to anyone at the appraised price, first come first served; auction parcels are Alaska residents only. Re-run scripts/alaska_state_land.py when DNR adds parcels.',
       match:r=>(r.rb||'').includes('src:ak-dnr') },
+    catski_ak: { label:'🚜 Cat-ski Alaska', desc:'Alaska parcels of 20+ acres with a skiable mountain: vertical inside the parcel, terrain within 3 km, share of 20-40° slopes and distance to a heavy-snow belt (Valdez, Turnagain, Hatcher Pass, Haines, Juneau…). From terrain data, so check access and avalanche terrain on the ground. Best first.',
+      match:r=>(r.cat_score||0)>=40 },
     motivated: { label:'🤝 Motivated sellers', desc:'Sellers likely to negotiate: price cut 5%+ since we first saw it, or on the market 6 months or more (MLS days on market where known). Sorted by forced-sale score.',
       match:r=>r.tp!=='apartment' && ((r.total_drop_pct||0)>=5 || (r.days_on_market||0)>=180) },
     best_view: { label:'🌅 Best views', desc:'Measured from terrain: how much open water is visible from the plot (viewshed over elevation data), plus view words in the listing and photo reviews. Score ≥60.',
@@ -1310,7 +1312,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     if(state.gems) leaveGems();
     if(state.region){ const t=document.querySelector(`#stats .chip[data-rt="${state.region}"]`); if(t) t.click(); }
     if(!state.hunt) _preHunt={countries:[...state.countries], filters:snapshotFilters(), sortKey:state.sortKey, sortAsc:state.sortAsc};
-    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'||key==='southcoast'?'view_score':key==='your_picks'?'added':key==='central_america'?'ca_rank':key==='motivated'?'distress':'_gem'); state.sortAsc=false;
+    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'||key==='southcoast'?'view_score':key==='your_picks'?'added':key==='central_america'?'ca_rank':key==='motivated'?'distress':key==='catski_ak'?'cat_score':'_gem'); state.sortAsc=false;
     state.countries.clear(); ALL_COUNTRIES.forEach(c=>state.countries.add(c));
     document.querySelectorAll('#stats .chip[data-cf]').forEach(ch=>ch.classList.add('on'));
     huntRow.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.hunt===key));
@@ -1596,6 +1598,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     let h='';
     const pws=pwSummary(r.u);
     if(pws) h+=`<div class="gem-why" style="color:#9fd4ff">📈 price watch: ${pws.first.price!==pws.last.price?`${fmtM(pws.first.price,pws.cur)} → `:''}<b>${fmtM(pws.last.price,pws.cur)}</b>${pws.pct?` (${pws.pct>0?'+':''}${pws.pct.toFixed(1)}%)`:''}${pws.cuts?` · ${pws.cuts} cut${pws.cuts>1?'s':''}`:''}${pws.off?' · <b>off market</b>':''}</div>`;
+    if(r.cat_score) h+=`<div class="gem-why" style="color:#a5d8ff">🚜 cat-ski ${r.cat_score}/100: ${r.cat_vert} m vertical on the land, +${r.cat_vert3} m within 3 km, ${Math.round((r.cat_ski||0)*100)}% at 20-40° · snow belt: ${r.cat_snow}</div>`;
     if(isNew(r)) h+=`<div class="gem-why" style="color:#7ce38b">🆕 new ${r.first_seen}</div>`;
     if(r.price_drops&&r.price_drops.length){ const d=r.price_drops[r.price_drops.length-1];
       h+=`<div class="gem-why" style="color:#ffb86c">📉 price cut ${d.date}: −${d.pct}%${r.total_drop_pct&&r.total_drop_pct!==d.pct?` (−${r.total_drop_pct}% total)`:''}${r.total_drop_pct>=50?' · verify: may be a different lot or a listing error':''}</div>`; }

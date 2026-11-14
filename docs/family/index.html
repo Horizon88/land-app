@@ -289,6 +289,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
     if(c.coast_km!=null && c.coast_km<=3) facts.push('🌊 '+km(c.coast_km)+' to sea');
     if(c.ski_km!=null && c.ski_km<=5) facts.push('⛷ '+km(c.ski_km)+' to lift');
     if(c.view!=null && c.view>=50) facts.push('🌅 view '+c.view);
+    if(c.cat>=40) facts.push(`🚜 cat-ski ${c.cat_vert} m vert (+${c.cat_vert3} m nearby)`);
     if(c.tp==='house'){ if(c.beds) facts.push(c.beds+' bd'); if(c.living_m2) facts.push(c.living_m2+' m² inside'); }
     if(c.ac) facts.push((c.ac>=1?c.ac.toFixed(c.ac>=10?0:1):c.ac.toFixed(2))+' ac');
     if(c.year) facts.push('built '+c.year);

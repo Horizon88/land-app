@@ -52,8 +52,16 @@ jobs:
         run: python3 scripts/a5_ranches.py
         continue-on-error: true
 
+      - name: LandWatch Alaska
+        run: python3 scripts/landwatch_ak.py
+        continue-on-error: true
+
       - name: Sea views for new listings
         run: python3 scripts/viewshed.py --missing docs/listings.json
+        continue-on-error: true
+
+      - name: Cat-ski scoring for Alaska parcels
+        run: python3 scripts/catski_ak.py docs/listings.json
         continue-on-error: true
 
       - name: Clean, price history, price watch

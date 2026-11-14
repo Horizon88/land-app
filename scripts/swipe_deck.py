@@ -27,12 +27,14 @@ def score(r):
     ski = 22 if (s is not None and s <= 0.3) else 14 if (s is not None and s <= 1) else 0
     tag = 10 if r.get("v") in ("beachfront", "waterfront") else 5 if r.get("v") == "sea_view" else 0
     photo = 8 if r.get("imgs") else 0
-    return v * 0.7 + max(sea, ski) + tag + photo - (12 if r.get("loc_approx") else 0)
+    cat = (r.get("cat_score") or 0) * 0.8           # Alaska cat-ski mountains (scripts/catski_ak.py)
+    return v * 0.7 + max(sea, ski, cat) + tag + photo - (12 if r.get("loc_approx") else 0)
 
 def special(r):
     c, s = r.get("coast_km"), r.get("ski_km")
     big_wild = (r.get("state") in ("AK", "MT") and (r.get("ac") or 0) >= 5 and (r.get("view_score") or 0) >= 40) or \
-               (r.get("state") == "AK" and (((r.get("ac") or 0) >= 5 and bool(r.get("imgs"))) or (c is not None and c <= 0.5)))
+               (r.get("state") == "AK" and (((r.get("ac") or 0) >= 5 and bool(r.get("imgs"))) or (c is not None and c <= 0.5)
+                                             or (r.get("cat_score") or 0) >= 40))
     return ((c is not None and c <= 0.3) or (s is not None and s <= 1) or (r.get("view_score") or 0) >= 65
             or r.get("v") in ("beachfront", "waterfront") or len(r.get("ca_signals") or []) >= 2 or big_wild
             or (r.get("rb") or "").startswith("src:a5")) and r.get("tp") in ("land", "house", "villa", None)
@@ -87,7 +89,7 @@ def main(out, n_cards):
         c, s = r.get("coast_km"), r.get("ski_km")
         return {"code": r["code"], "u": r["u"], "cf": r["cf"], "rg": r.get("rg") or "", "a": r.get("a") or "",
                 "tp": r.get("tp") or "land", "name": (r.get("name") or "")[:140], "usd": r.get("usd"),
-                "pick": bool(r.get("user_added")),
+                "pick": bool(r.get("user_added")), "cat": r.get("cat_score"), "cat_vert": r.get("cat_vert"), "cat_vert3": r.get("cat_vert3"),
                 "ac": r.get("ac"), "m2": r.get("m2"), "living_m2": r.get("living_m2"), "beds": r.get("beds"),
                 "year": r.get("year_built"), "coast_km": c, "ski_km": s, "ski_r": r.get("ski_r") or "",
                 "view": r.get("view_score"), "view_deg": r.get("view_deg"), "v": r.get("v") or "",
