@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 <style>
 body{padding-top:env(safe-area-inset-top,0px)}
 body{margin:0}
@@ -99,6 +100,28 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
 .card .dots i.on{background:#fff}
 .card .tapnext{position:absolute;top:50%;right:10px;transform:translateY(-50%);font:600 11px var(--body);color:#fff;background:rgba(0,0,0,.45);padding:4px 8px;border-radius:999px;pointer-events:none}
 .card .sat{top:16px} .card .code{top:16px}
+.rank{flex:1;min-height:0;overflow-y:auto;width:100%;max-width:640px;margin-inline:auto;padding-bottom:20px}
+.rankhelp{margin:4px 0;color:var(--muted);font-size:13px} .ranktop{margin:0 0 8px;font:700 15px var(--display)}
+.ranklist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.rrow{display:grid;grid-template-columns:28px 22px 84px 1fr 34px;gap:10px;align-items:center;background:var(--chip);border-radius:12px;padding:8px}
+.rrow .grip{font-size:20px;color:var(--muted);cursor:grab;touch-action:none;text-align:center;user-select:none}
+.rrow .rnum{font:800 18px var(--display);font-variant-numeric:tabular-nums}
+.rrow img{width:84px;height:64px;object-fit:cover;border-radius:8px;cursor:zoom-in}
+.rrow .t{min-width:0} .rrow .t b{display:block;font:700 16px var(--display)}
+.rrow .t span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rrow .their{color:var(--accent)!important}
+.rrow .mv{display:grid;gap:4px}
+.rrow .mv button{font:700 12px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 0;cursor:pointer}
+.sortable-ghost{opacity:.4}
+.gallery{position:fixed;inset:0;background:#000;z-index:60;display:flex;flex-direction:column}
+.galstage{flex:1;min-height:0;position:relative;display:grid;place-items:center;touch-action:pan-y}
+.galstage img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.galsat{position:absolute;top:12px;left:12px;font:600 11px var(--body);color:#fff;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:999px}
+.galclose{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));right:12px;z-index:2;font:700 20px var(--body);color:#fff;background:rgba(255,255,255,.15);border:0;border-radius:999px;width:42px;height:42px;cursor:pointer}
+.galnav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;font:700 34px var(--body);color:#fff;background:rgba(255,255,255,.12);border:0;border-radius:999px;width:46px;height:46px;cursor:pointer}
+.galnav.prev{left:8px} .galnav.next{right:8px}
+.galbar{color:#ddd;font:500 13px var(--body);padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:12px;flex-wrap:wrap;align-items:baseline}
+.galbar b{color:#fff;font:800 18px var(--display)} .galbar a{color:#7ee7d8;font-weight:600}
 .linkbtn{font:600 12px var(--body);background:none;border:0;color:var(--accent);padding:0;cursor:pointer;text-decoration:underline}
 .send{flex:1;min-height:0;overflow-y:auto;width:100%;max-width:560px;margin-inline:auto;padding-bottom:20px}
 .send form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px}
@@ -130,6 +153,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
     <button id="tKeep" aria-pressed="false">Kept<span class="n" id="nKeep">0</span></button>
     <button id="tMaybe" aria-pressed="false">Maybe<span class="n" id="nMaybe">0</span></button>
     <button id="tMatch" aria-pressed="false">💞 Matches<span class="n" id="nMatch">0</span></button>
+    <button id="tRank" aria-pressed="false">🏆 Rank</button>
     <button id="tSend" aria-pressed="false">＋ Paste a plot</button>
   </nav>
 </div>
@@ -163,6 +187,17 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
     <p>Pick once on this phone. You each swipe on your own; plots you both keep show under 💞 Matches.</p>
     <div class="rolebtns"><button data-role="ed">I'm Ed</button><button data-role="partner">I'm Siri</button></div>
   </div>
+</div>
+<section class="rank" id="rank" hidden>
+  <p class="rankhelp">Plots you both kept. Drag ☰ to put them in your order. Each row shows where your partner put it and your combined rank.</p>
+  <p class="ranktop" id="rankTop"></p>
+  <ol class="ranklist" id="rankList"></ol>
+</section>
+<div class="gallery" id="gallery" hidden>
+  <button class="galclose" id="galClose" aria-label="Close gallery">✕</button>
+  <div class="galstage" id="galStage"><img id="galImg" alt=""><span class="galsat" id="galSat" hidden>🛰 satellite view</span></div>
+  <button class="galnav prev" id="galPrev" aria-label="Previous photo">‹</button><button class="galnav next" id="galNext" aria-label="Next photo">›</button>
+  <div class="galbar"><span id="galN"></span><span id="galCap"></span></div>
 </div>
 <button class="paste-fab" id="pasteFab" type="button">＋ Paste a plot</button>
 <div class="toast" id="toast" role="status"></div>
@@ -201,6 +236,8 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
       if(!cur || (cur.ts||0)<=m.ts){ if(m.d) state.votes[m.who][m.code]={d:m.d,ts:m.ts}; else delete state.votes[m.who][m.code]; }
     } else if(m.k==='n' && ROLES[m.who] && m.name){ state.names[m.who]=m.name; }
     else if(m.k==='l' && m.url && !state.inbox.some(x=>x.id===m.id)){ pendingLinks.push(m); }
+    else if(m.k==='r' && ROLES[m.who] && Array.isArray(m.order)){ state.ranks=state.ranks||{}; const cur=state.ranks[m.who];
+      if(!cur || (cur.ts||0)<=m.ts) state.ranks[m.who]={order:m.order.slice(0,300),ts:m.ts}; }
   }
   function rebuild(){
     Object.assign(names, state.names||{});
@@ -283,7 +320,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
   // ---------- views ----------
   const keptBy=code=>Object.keys(others).filter(u=>u!==me && others[u][code]==='keep');
   const queue=()=>{ const q=deck.filter(c=>!mine[c.code] && (country==='All'||c.cf===country));
-    const rank=c=>keptBy(c.code).length?0:c.pick?1:2; return q.map((c,i)=>[rank(c),i,c]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]).map(x=>x[2]); };
+    const rank=c=>c.pick?0:1; return q.map((c,i)=>[rank(c),i,c]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]).map(x=>x[2]); };
   function cardHtml(c, behind){
     const facts=[];
     if(c.coast_km!=null && c.coast_km<=3) facts.push('🌊 '+km(c.coast_km)+' to sea');
@@ -296,9 +333,9 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
     if(c.approx) facts.push('📍 approx. pin');
     return `<div class="card${behind?' behind':''}" data-code="${c.code}">
       <img class="photo" src="${c.img}" alt="" draggable="false">
-      ${photoList(c).length>1?`<div class="dots">${photoList(c).map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div><span class="tapnext">tap photo ›</span>`:''}
+      ${photoList(c).length>1?`<div class="dots">${photoList(c).map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div><span class="tapnext">tap for ${photoList(c).length} photos</span>`:''}
       ${c.sat?'<span class="sat">🛰 satellite view</span>':''}<span class="code">${c.code}</span>
-      ${keptBy(c.code).length?`<span class="both">💞 ${esc(keptBy(c.code).map(partnerName).join(' & '))} kept this</span>`:''}${c.pick?'<span class="mine">📌 your pick</span>':''}
+      ${c.pick?'<span class="mine">📌 your pick</span>':''}
       <span class="stamp keep">KEEP</span><span class="stamp skip">SKIP</span><span class="stamp maybe">MAYBE</span>
       <div class="info">
         <div class="price">${c.usd?fmt(c.usd):'Auction / price on request'}</div>
@@ -328,11 +365,13 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
   function render(){
     if(!me) return;
     $('send').hidden = tab!=='send'; $('pasteFab').hidden = tab==='send';
+    $('rank').hidden = tab!=='rank'; $('main').hidden = tab==='rank' || tab==='send';
     if(tab==='send'){ $('stage').hidden=true; $('actions').hidden=true; $('filters').hidden=true; $('list').hidden=true; renderSend(); return; }
     const kept=deck.filter(c=>mine[c.code]?.d==='keep'), maybe=deck.filter(c=>mine[c.code]?.d==='maybe');
     const partners=Object.keys(others).filter(u=>u!==me);
     const matches=kept.filter(c=>partners.some(u=>others[u][c.code]==='keep'));
     $('nKeep').textContent=kept.length; $('nMaybe').textContent=maybe.length; $('nMatch').textContent=matches.length;
+    if(tab==='rank'){ $('stage').hidden=true; $('actions').hidden=true; $('filters').hidden=true; $('list').hidden=true; $('send').hidden=true; renderRank(matches); return; }
     const swipe=tab==='swipe';
     $('stage').hidden=!swipe; $('actions').hidden=!swipe; $('filters').hidden=!swipe; $('list').hidden=swipe;
     if(swipe){
@@ -355,6 +394,68 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
         : `<div class="empty"><b>${tab==='match'?'No matches yet':'Nothing here yet'}</b>${tab==='match'?'When you and your partner both keep a plot, it shows here. Share this page with them (Share → can use) so they can swipe too.':'Swipe right to keep, up for maybe.'}</div>`;
       $('list').querySelectorAll('select').forEach(s=>s.onchange=()=>{ const code=s.dataset.code, d=s.value;
         if(d) mine[code]={d,ts:Date.now()}; else delete mine[code]; save(code, d||null); render(); });
+    }
+  }
+
+  // ---------- gallery ----------
+  let gal={list:[],i:0,code:null};
+  function openGallery(code, i){
+    const c=deck.find(x=>x.code===code); if(!c) return;
+    gal={list:photoList(c), i:i||0, code};
+    $('galCap').innerHTML=`<b>${c.usd?fmt(c.usd):'Auction'}</b> · ${esc(c.a||c.rg)}, ${esc(c.cf)}${c.ac?` · ${c.ac>=10?Math.round(c.ac):c.ac} ac`:''} · <a href="${c.u}" target="_blank" rel="noopener">Listing ↗</a>`;
+    $('gallery').hidden=false; galShow();
+  }
+  function galShow(){
+    const img=$('galImg'); img.dataset.tries=0;
+    img.onerror=()=>{ if(+img.dataset.tries>=gal.list.length) return; img.dataset.tries=+img.dataset.tries+1; gal.i=(gal.i+1)%gal.list.length; img.src=gal.list[gal.i]; $('galN').textContent=`${gal.i+1} / ${gal.list.length}`; };
+    img.src=gal.list[gal.i]; $('galN').textContent=`${gal.i+1} / ${gal.list.length}`;
+    $('galSat').hidden=!/arcgisonline/.test(gal.list[gal.i]);
+  }
+  const galStep=k=>{ if(gal.list.length<2) return; gal.i=(gal.i+k+gal.list.length)%gal.list.length; galShow(); };
+  $('galPrev').onclick=e=>{ e.stopPropagation(); galStep(-1); };
+  $('galNext').onclick=e=>{ e.stopPropagation(); galStep(1); };
+  $('galClose').onclick=()=>{ $('gallery').hidden=true; };
+  { let gx=null; const g=$('galStage');
+    g.addEventListener('pointerdown',e=>{ gx=e.clientX; });
+    g.addEventListener('pointerup',e=>{ if(gx==null) return; const d=e.clientX-gx; gx=null;
+      if(Math.abs(d)>40) galStep(d<0?1:-1); else galStep(e.clientX>window.innerWidth/3?1:-1); }); }
+  document.addEventListener('keydown',e=>{ if($('gallery').hidden) return; e.stopImmediatePropagation();
+    if(e.key==='Escape') $('gallery').hidden=true; else if(e.key==='ArrowRight') galStep(1); else if(e.key==='ArrowLeft') galStep(-1); }, true);
+
+  // ---------- ranking the matches (drag to order; each of you has an order, plus a combined one) ----------
+  const myOrder=()=>{ const r=(state.ranks||{})[me]; const loc=ls.get('plots_rank_'+me,null);
+    return (loc && (!r || loc.ts>=(r.ts||0)) ? loc.order : r ? r.order : []) || []; };
+  function orderedMatches(matches, order){
+    const pos=Object.fromEntries(order.map((c,i)=>[c,i]));
+    return [...matches].sort((a,b)=>(pos[a.code]??1e9)-(pos[b.code]??1e9));
+  }
+  function renderRank(matches){
+    const L=$('rankList'); L.textContent='';
+    if(!matches.length){ L.innerHTML='<div class="empty"><b>No matches yet</b>Plots you both keep show up here to put in order.</div>'; return; }
+    const mine_=orderedMatches(matches, myOrder());
+    const theirs=((state.ranks||{})[other()]||{}).order||[];
+    const tpos=Object.fromEntries(theirs.map((c,i)=>[c,i]));
+    // combined: average of the two positions (a plot one of you hasn't ranked counts as last)
+    const comb=[...matches].map(c=>{ const a=mine_.indexOf(c), b=tpos[c.code]??matches.length; return [c,(a+b)/2]; }).sort((x,y)=>x[1]-y[1]).map(x=>x[0].code);
+    mine_.forEach((c,i)=>{
+      const li=document.createElement('li'); li.className='rrow'; li.dataset.code=c.code;
+      li.innerHTML=`<span class="grip" aria-hidden="true">☰</span><span class="rnum">${i+1}</span><img src="${c.img}" alt="">
+        <div class="t"><b>${c.usd?fmt(c.usd):'Auction'}</b><span>${esc(c.a||c.rg)} · ${esc(c.cf)}${c.ac?` · ${c.ac>=10?Math.round(c.ac):c.ac} ac`:''}</span>
+        <span class="their">${tpos[c.code]!=null?`${esc(partnerName(other()))}: #${tpos[c.code]+1}`:`${esc(partnerName(other()))} hasn't ranked it yet`} · together: #${comb.indexOf(c.code)+1}</span></div>
+        <span class="mv"><button data-mv="-1" aria-label="Move up">▲</button><button data-mv="1" aria-label="Move down">▼</button></span>`;
+      li.querySelector('img').onclick=()=>openGallery(c.code,0);
+      li.querySelectorAll('[data-mv]').forEach(btn=>btn.onclick=()=>{
+        const order=mine_.map(x=>x.code), k=+btn.dataset.mv, j=i+k; if(j<0||j>=order.length) return;
+        [order[i],order[j]]=[order[j],order[i]]; const ts=Date.now();
+        ls.set('plots_rank_'+me,{order,ts}); post({k:'r',who:me,order,ts}); renderRank(matches); });
+      L.append(li);
+    });
+    $('rankTop').textContent = comb.length ? `Together your #1 is ${(deck.find(x=>x.code===comb[0])||{}).a||comb[0]}` : '';
+    if(window.Sortable && !L._sortable){
+      L._sortable=Sortable.create(L,{handle:'.grip',animation:150,onEnd:()=>{
+        const order=[...L.querySelectorAll('.rrow')].map(x=>x.dataset.code), ts=Date.now();
+        ls.set('plots_rank_'+me,{order,ts}); post({k:'r',who:me,order,ts}); renderRank(matches);
+      }});
     }
   }
 
@@ -385,9 +486,8 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
       if(dx>110) decide('keep'); else if(dx<-110) decide('skip'); else if(-dy>120 && Math.abs(dx)<90) decide('maybe');
       else { card.style.transition='transform .2s'; card.style.transform=''; card.querySelectorAll('.stamp').forEach(s=>s.style.opacity=0);
         if(!moved){
-          // tap the photo: left third = previous, right two-thirds = next; tap the text = details
-          const r=card.getBoundingClientRect(), x=(sx-r.left)/r.width, y=(sy-r.top)/r.height;
-          if(y<0.62 && !card.classList.contains('open')) showPhoto(card, x<0.33?-1:1); else card.classList.toggle('open');
+          // a tap opens the photo gallery (the i button shows the details)
+          openGallery(card.dataset.code, +card.dataset.pi||0);
         } }
       dx=dy=0; };
     card.addEventListener('pointerup',end); card.addEventListener('pointercancel',end);
@@ -398,7 +498,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
   document.addEventListener('keydown',e=>{ if(tab!=='swipe'||e.target.closest('select')) return;
     if(e.key==='ArrowRight') decide('keep'); else if(e.key==='ArrowLeft') decide('skip'); else if(e.key==='ArrowUp') decide('maybe');
     else if(e.key==='z'||e.key==='Z') undo(); else if(e.key===' '){ e.preventDefault(); $('bInfo').click(); } });
-  const tabs={tSwipe:'swipe',tKeep:'keep',tMaybe:'maybe',tMatch:'match',tSend:'send'};
+  const tabs={tSwipe:'swipe',tKeep:'keep',tMaybe:'maybe',tMatch:'match',tRank:'rank',tSend:'send'};
   Object.entries(tabs).forEach(([id,t])=>$(id).onclick=()=>{ tab=t; Object.keys(tabs).forEach(k=>$(k).setAttribute('aria-pressed',k===id)); $('stage').innerHTML=''; render(); });
   // start only now: render() needs everything above (queue, keptBy, wire) to exist
   if(!me) pickRole();

@@ -37,6 +37,11 @@ def main():
                 if m.get("d") in ("keep", "skip", "maybe"): st["votes"][who][m["code"]] = {"d": m["d"], "ts": m.get("ts", 0)}
                 else: st["votes"][who].pop(m["code"], None)
                 n_votes += 1
+        elif m.get("k") == "r" and who in ROLES and isinstance(m.get("order"), list):
+            st.setdefault("ranks", {})
+            cur = st["ranks"].get(who)
+            if not cur or cur.get("ts", 0) <= m.get("ts", 0):
+                st["ranks"][who] = {"order": [str(c)[:20] for c in m["order"][:300]], "ts": m.get("ts", 0)}
         elif m.get("k") == "n" and who in ROLES and m.get("name"):
             st["names"][who] = str(m["name"])[:40]
         elif m.get("k") == "l" and m.get("id") and m.get("url") and m["id"] not in have:
