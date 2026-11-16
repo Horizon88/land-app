@@ -89,7 +89,7 @@ def main(out, n_cards):
         c, s = r.get("coast_km"), r.get("ski_km")
         return {"code": r["code"], "u": r["u"], "cf": r["cf"], "rg": r.get("rg") or "", "a": r.get("a") or "",
                 "tp": r.get("tp") or "land", "name": (r.get("name") or "")[:140], "usd": r.get("usd"),
-                "pick": bool(r.get("user_added")), "cat": r.get("cat_score"), "cat_vert": r.get("cat_vert"), "cat_vert3": r.get("cat_vert3"),
+                "pick": bool(r.get("user_added")), "lat": round(r["lat"], 5), "lon": round(r["lon"], 5), "cat": r.get("cat_score"), "cat_vert": r.get("cat_vert"), "cat_vert3": r.get("cat_vert3"),
                 "ac": r.get("ac"), "m2": r.get("m2"), "living_m2": r.get("living_m2"), "beds": r.get("beds"),
                 "year": r.get("year_built"), "coast_km": c, "ski_km": s, "ski_r": r.get("ski_r") or "",
                 "view": r.get("view_score"), "view_deg": r.get("view_deg"), "v": r.get("v") or "",

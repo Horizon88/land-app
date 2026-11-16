@@ -253,6 +253,7 @@
   .mbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
   .mbar button{font:600 12px -apple-system,BlinkMacSystemFont,system-ui,sans-serif;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--panel2);color:var(--txt);cursor:pointer}
   .mbar button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+  .pinbtn{background:none;border:1px solid var(--border);border-radius:8px;padding:3px 7px;margin-right:6px;cursor:pointer;font-size:14px}
   .mbar button .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#ffd166;margin-left:5px;vertical-align:middle}
   #mMap{display:none}
   body:not(.m-countries) #stats{display:none!important}
@@ -1630,6 +1631,18 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     const rv=REVIEWS[r.u]; if(rv) h+=`<div class="note-rev">🧐 ${rv.thumb==='up'?'👍 ':rv.thumb==='down'?'👎 ':''}${rv.verdict}</div>`;
     return h;
   }
+  // 📍: jump to a listing on the map (switches a phone to map view) with a popup to get back
+  function showOnMap(r){
+    if(!r || r.lat==null) return;
+    if(window.matchMedia('(max-width:700px)').matches && !document.body.classList.contains('m-map')){
+      document.body.classList.add('m-map'); const mb=document.getElementById('mMap'); if(mb){ mb.setAttribute('aria-pressed','true'); mb.textContent='☰ List'; }
+    }
+    setTimeout(()=>{ map.invalidateSize(); map.flyTo([r.lat,r.lon],14,{duration:.6});
+      const gm=`https://www.google.com/maps/search/?api=1&query=${r.lat},${r.lon}`;
+      L.popup({maxWidth:260}).setLatLng([r.lat,r.lon]).setContent(`<div style="font-size:13px;line-height:1.4"><b>${fmtUsd(r.usd)}</b> · ${(r.a||r.rg||'').replace(/</g,'&lt;')}<br>${r.loc_approx?'<i>📍 approximate pin</i><br>':''}<a href="#" data-popdetail="1">Details</a> · <a href="${gm}" target="_blank" rel="noopener">Google Maps ↗</a></div>`).openOn(map);
+      setTimeout(()=>{ const a=document.querySelector('[data-popdetail]'); if(a) a.onclick=ev=>{ ev.preventDefault(); openDetail(r); }; },700);
+    },80);
+  }
   function renderTable(all){
     // gems keep their curated (interleaved) order unless you sort by a column
     const rows = (state.gems && state.sortKey==='_gem') ? all : sortRows(all).slice(0, 600);
@@ -1654,7 +1667,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
         <td>${r.coast_km!=null && r.coast_km < 500 ? r.coast_km : ''}</td>
         <td style="color:${(r.distress||0)>=60?'#ff8080':(r.distress||0)>=40?'#ffb86c':'#ffd166'}">${r.distress?'🔥'+r.distress:''}</td>
         <td style="color:${(r.days_on_market||0)>=365?'#ff8080':(r.days_on_market||0)>=90?'#ffb86c':'var(--txt-dim)'}">${r.days_on_market||''}${r.total_drop_pct?` <span style="color:#ff8080">−${r.total_drop_pct}%</span>`:''}</td>
-        <td><a href="${r.u}" target="_blank">→</a></td>
+        <td>${r.lat!=null?`<button class="pinbtn" data-pin="${encodeURIComponent(r.u)}" title="Show on the map" aria-label="Show on the map">📍</button>`:''}<a href="${r.u}" target="_blank">→</a></td>
         <td>${isArchived ? `<button class="arch-btn" data-unarch="${encodeURIComponent(r.u)}" title="restore">↺</button>` : `<button class="arch-btn" data-arch="${encodeURIComponent(r.u)}" title="archive">✕</button>`}</td>
       </tr>`;
     }).join('');
@@ -1686,6 +1699,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
         if(r) openDetail(r);
       };
     });
+    tbody.querySelectorAll('[data-pin]').forEach(b=>{ b.onclick=e=>{ e.stopPropagation(); showOnMap(DATA.find(x=>x.u===decodeURIComponent(b.dataset.pin))); }; });
     tbody.querySelectorAll('[data-arch]').forEach(b=>{
       b.onclick=(e)=>{e.stopPropagation(); openArchive(decodeURIComponent(b.dataset.arch));};
     });
@@ -1922,10 +1936,12 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
         <button class="btn" id="detailPackage" style="${pkg[r.u]?'border-color:#c084fc;color:#c084fc':''}" title="Combine adjacent plots into one deal package to see total price/size">🧩 ${pkg[r.u]?'In package':'Add to package'}</button>
         <button class="btn" id="detailXref" style="${r.xref_url?'border-color:#7ce38b;color:#7ce38b':''}" title="Attach a for-sale listing / Facebook post + asking price to this plot">🔗 ${r.xref_url?'Linked listing':'Cross-reference'}</button>
         ${shortlist[r.u]?`<button class="btn" id="detailFindSimilar">Find similar →</button>`:''}
+        ${r.lat!=null?`<button class="btn" id="detailPin">📍 On the map</button><a class="btn" href="https://www.google.com/maps/search/?api=1&query=${r.lat},${r.lon}" target="_blank" rel="noopener">Google Maps ↗</a>`:''}
         ${r.lat!=null?`<a class="btn" href="${RECON}?lat=${r.lat}&lng=${r.lon}&z=15&listing=${encodeURIComponent(r.u)}" target="_blank" rel="noopener" title="Open this spot in Snowbunker Recon: terrain, slope, parcels${r.cf==='Japan'?' (地番 / chiban for the registry)':r.state==='MT'?' and Montana owner records':''}">🗺 Recon${r.cf==='Japan'||r.state==='MT'?': parcel & owner':''}</a>`:''}
         <a class="btn primary" href="${r.u}" target="_blank" rel="noopener">Open listing →</a>
       </div>`;
     document.getElementById('detailClose').onclick=()=>detailBg.classList.remove('show');
+    const dp=document.getElementById('detailPin'); if(dp) dp.onclick=()=>{ detailBg.classList.remove('show'); showOnMap(r); };
     const ab=document.getElementById('detailArch'); if(ab) ab.onclick=()=>{ detailBg.classList.remove('show'); openArchive(r.u); };
     const ub=document.getElementById('detailUnarch'); if(ub) ub.onclick=()=>{ unarchiveUrl(r.u); detailBg.classList.remove('show'); render(); };
     const pkb=document.getElementById('detailPackage'); if(pkb) pkb.onclick=()=>{ if(pkg[r.u]) delete pkg[r.u]; else pkg[r.u]=true; savePkg(pkg); openDetail(r); renderPackage(); };

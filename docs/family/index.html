@@ -111,6 +111,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
 .rrow .t span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rrow .their{color:var(--accent)!important}
 .rrow .mv{display:grid;gap:4px}
+.rrow .mapln{text-align:center;text-decoration:none;font-size:16px}
 .rrow .mv button{font:700 12px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 0;cursor:pointer}
 .sortable-ghost{opacity:.4}
 .gallery{position:fixed;inset:0;background:#000;z-index:60;display:flex;flex-direction:column}
@@ -351,7 +352,7 @@ body.top-hidden .top-toggle{color:var(--accent);border-color:var(--accent)}
         <div class="place">${esc(c.a||c.rg)}${c.a&&c.rg&&c.a!==c.rg?', '+esc(c.rg):''} · ${esc(c.cf)}</div>
         <div class="facts">${facts.map(f=>`<span>${f}</span>`).join('')}</div>
         <div class="more">${esc(c.name)}<br>${c.perks.map(p=>'✓ '+esc(p)).join('<br>')}${c.warn.length?'<br>'+c.warn.map(w=>`<span class="warn">⚠ ${esc(w)}</span>`).join('<br>'):''}
-          <br><a href="${c.u}" target="_blank" rel="noopener">Open the listing ↗</a></div>
+          <br><a href="${c.u}" target="_blank" rel="noopener">Open the listing ↗</a>${c.lat!=null?` · <a href="https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lon}" target="_blank" rel="noopener">📍 Map ↗</a>`:''}</div>
       </div></div>`;
   }
   // all photos for a card: the bundled first photo, the listing's other photos, then two satellite views
@@ -411,7 +412,7 @@ body.top-hidden .top-toggle{color:var(--accent);border-color:var(--accent)}
   function openGallery(code, i){
     const c=deck.find(x=>x.code===code); if(!c) return;
     gal={list:photoList(c), i:i||0, code};
-    $('galCap').innerHTML=`<b>${c.usd?fmt(c.usd):'Auction'}</b> · ${esc(c.a||c.rg)}, ${esc(c.cf)}${c.ac?` · ${c.ac>=10?Math.round(c.ac):c.ac} ac`:''} · <a href="${c.u}" target="_blank" rel="noopener">Listing ↗</a>`;
+    $('galCap').innerHTML=`<b>${c.usd?fmt(c.usd):'Auction'}</b> · ${esc(c.a||c.rg)}, ${esc(c.cf)}${c.ac?` · ${c.ac>=10?Math.round(c.ac):c.ac} ac`:''} · <a href="${c.u}" target="_blank" rel="noopener">Listing ↗</a>${c.lat!=null?` · <a href="https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lon}" target="_blank" rel="noopener">📍 Map ↗</a>`:''}`;
     $('gallery').hidden=false; galShow();
   }
   function galShow(){
@@ -451,7 +452,7 @@ body.top-hidden .top-toggle{color:var(--accent);border-color:var(--accent)}
       li.innerHTML=`<span class="grip" aria-hidden="true">☰</span><span class="rnum">${i+1}</span><img src="${c.img}" alt="">
         <div class="t"><b>${c.usd?fmt(c.usd):'Auction'}</b><span>${esc(c.a||c.rg)} · ${esc(c.cf)}${c.ac?` · ${c.ac>=10?Math.round(c.ac):c.ac} ac`:''}</span>
         <span class="their">${tpos[c.code]!=null?`${esc(partnerName(other()))}: #${tpos[c.code]+1}`:`${esc(partnerName(other()))} hasn't ranked it yet`} · together: #${comb.indexOf(c.code)+1}</span></div>
-        <span class="mv"><button data-mv="-1" aria-label="Move up">▲</button><button data-mv="1" aria-label="Move down">▼</button></span>`;
+        <span class="mv">${c.lat!=null?`<a class="mapln" href="https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lon}" target="_blank" rel="noopener" aria-label="Map">📍</a>`:''}<button data-mv="-1" aria-label="Move up">▲</button><button data-mv="1" aria-label="Move down">▼</button></span>`;
       li.querySelector('img').onclick=()=>openGallery(c.code,0);
       li.querySelectorAll('[data-mv]').forEach(btn=>btn.onclick=()=>{
         const order=mine_.map(x=>x.code), k=+btn.dataset.mv, j=i+k; if(j<0||j>=order.length) return;
