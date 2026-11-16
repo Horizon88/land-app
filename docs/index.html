@@ -35,6 +35,12 @@
   #winnersStrip .wh b{color:#ffd166;font-size:13px;letter-spacing:.02em}
   #winnersStrip .wh .draftAll{margin-left:auto;background:#10202a;color:#8fd0e8;border:1px solid #2a5a70;border-radius:6px;padding:4px 11px;font-size:12px;cursor:pointer}
   #winnersStrip .wrow{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+  #winnersStrip.folded .wrow{display:none}
+  #winnersStrip.folded .wh{margin-bottom:0}
+  #winnersStrip .wfold{background:none;border:0;color:#ffd166;font:inherit;font-size:13px;font-weight:700;cursor:pointer;padding:0;display:flex;align-items:center;gap:6px}
+  #topToggle{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:max(8px,env(safe-area-inset-right,0px));z-index:1200;
+    background:rgba(16,24,32,.88);color:var(--txt);border:1px solid var(--border);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  body.top-hidden header, body.top-hidden .controls, body.top-hidden #winnersStrip, body.top-hidden #regPanel, body.top-hidden #huntRow{display:none!important}
   .wcard{flex:0 0 auto;width:210px;background:var(--panel2);border:1px solid var(--border);border-left:3px solid #ffd166;border-radius:8px;padding:8px 10px;cursor:pointer;transition:border-color .15s}
   .wcard:hover{border-color:#ffd166}
   .wcard .wt{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -304,6 +310,7 @@
 </style>
 </head>
 <body>
+<button id="topToggle" type="button" aria-pressed="false" title="Hide or show the top of the page (title, chips, filters, winners)">▴ Hide top</button>
 <header>
   <h1>🌊 Coastal Land & 🏙 BKK Penthouses</h1>
   <div class="mbar" role="toolbar" aria-label="Phone controls">
@@ -2104,8 +2111,10 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     let hidden=false; try{ hidden=localStorage.getItem('winners_hidden')==='1'; }catch(e){}
     if(!rows.length || hidden){ strip.style.display='none'; strip.innerHTML=''; return; }
     strip.style.display='';
-    strip.innerHTML=`<div class="wh"><b>★ Winners — ${rows.length}</b>
-      <span style="font-size:11px;color:var(--txt-dim)">your starred plots (open the ★ chip to bring back)</span>
+    let folded=true; try{ folded=localStorage.getItem('winners_folded')!=='0'; }catch(e){}
+    strip.classList.toggle('folded', folded);
+    strip.innerHTML=`<div class="wh"><button class="wfold" id="winnersFold" aria-expanded="${!folded}"><span>${folded?'▸':'▾'}</span> ★ Winners · ${rows.length}</button>
+      <span style="font-size:11px;color:var(--txt-dim)">${folded?'tap to show your starred plots':'your starred plots'}</span>
       <button class="draftAll" id="draftAllBtn">📤 Draft all offers</button>
       <button class="wx" id="winnersHide" title="Hide this strip" style="font-size:16px;color:var(--txt-dim);background:none;border:none;cursor:pointer;padding:0 4px">✕</button></div>
       <div class="wrow">${rows.map(r=>{ const om=offerMessage(r); const tags=(shortlist[r.u].tags||[]);
@@ -2119,6 +2128,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     strip.querySelectorAll('[data-wdetail]').forEach(el=>el.onclick=(e)=>{ if(e.target.classList.contains('wx'))return; const u=decodeURIComponent(el.dataset.wdetail); const r=DATA.find(x=>x.u===u); if(r) openDetail(r); });
     strip.querySelectorAll('[data-wremove]').forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); unstar(decodeURIComponent(el.dataset.wremove)); refreshShortlistChip(); });
     document.getElementById('draftAllBtn').onclick=()=>window.__draftAllOffers();
+    document.getElementById('winnersFold').onclick=()=>{ try{ localStorage.setItem('winners_folded', folded?'0':'1'); }catch(e){} renderWinners(); };
     document.getElementById('winnersHide').onclick=()=>{ try{ localStorage.setItem('winners_hidden','1'); }catch(e){} renderWinners(); };
   }
   // ---- plot package: combined price / size / commitment for adjacent parcels ----
@@ -3803,6 +3813,11 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
   // Open on ✨ Gems (the curated cross-country feed). Clicking ✨ Gems again
   // drops back to the previous default view: Thailand.
   // phone bar: Filters / Map-List / More
+  { const b=document.getElementById('topToggle');
+    const set=on=>{ document.body.classList.toggle('top-hidden',on); b.setAttribute('aria-pressed',on); b.textContent=on?'▾ Show top':'▴ Hide top';
+      try{ localStorage.setItem('top_hidden',on?'1':'0'); }catch(e){} setTimeout(()=>{ try{ map.invalidateSize(); }catch(e){} },60); };
+    let start=false; try{ start=localStorage.getItem('top_hidden')==='1'; }catch(e){}
+    set(start); b.onclick=()=>set(!document.body.classList.contains('top-hidden')); }
   { const tg=(id,cls,lab)=>{ const b=document.getElementById(id); if(!b) return; b.onclick=()=>{ const on=document.body.classList.toggle(cls); b.setAttribute('aria-pressed',on);
         if(lab) b.textContent=on?lab[1]:lab[0]; if(cls==='m-map'&&on) setTimeout(()=>map.invalidateSize(),50); }; };
     tg('mFilters','m-filters'); tg('mMap','m-map',['🗺 Map','☰ List']); tg('mMore','m-more'); }
