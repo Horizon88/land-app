@@ -249,7 +249,17 @@
   }
 
   /* ---------- phone layout (≤700px): compact bar, swipe rows, list-or-map, listing cards ---------- */
-  .mbar{display:none}
+  /* Compact by default: every section folds behind the toggle row (.mbar); choices are remembered */
+  .mbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .mbar button{font:600 12px -apple-system,BlinkMacSystemFont,system-ui,sans-serif;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--panel2);color:var(--txt);cursor:pointer}
+  .mbar button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+  .mbar button .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#ffd166;margin-left:5px;vertical-align:middle}
+  #mMap{display:none}
+  body:not(.m-countries) #stats{display:none!important}
+  body:not(.m-hunts) #huntRow{display:none!important}
+  body:not(.m-filters) .controls{display:none!important}
+  body:not(.m-more) :is(#plotCheckChip,#deedLogChip,#importChip,#addLinkChip,#syncChip,#regChip,#msiChip,#forestChip,#hideChip,#wlChip,#slChip,header>a.chip){display:none!important}
+  header h1{font-size:15px;margin:0}
   .m-thumb,.m-thumbw{display:none}
   @media(max-width:700px){
     body{height:100dvh;grid-template-columns:minmax(0,1fr);overflow-x:hidden}
@@ -259,8 +269,9 @@
     main,.panel,#tbl,#tbl tbody,#tbl tbody tr,#tbl tbody td{min-width:0;max-width:100%}
     #tbl tbody td:nth-child(4) *{white-space:normal;overflow-wrap:anywhere}
     header h1{font-size:14px;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .mbar{display:flex;gap:6px;width:100%}
-    .mbar button{flex:1;font:600 13px -apple-system,BlinkMacSystemFont,system-ui,sans-serif;padding:9px 6px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--txt)}
+    #mMap{display:inline-block}
+    .mbar{display:flex;gap:6px;width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+    .mbar button{flex:0 0 auto;font:600 13px -apple-system,BlinkMacSystemFont,system-ui,sans-serif;padding:9px 6px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--txt)}
     .mbar button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
     #stats{flex-wrap:nowrap!important;overflow-x:auto;width:100%;padding-bottom:2px;scrollbar-width:none;display:flex}
     #stats::-webkit-scrollbar{display:none}
@@ -315,8 +326,10 @@
   <h1>🌊 Coastal Land & 🏙 BKK Penthouses</h1>
   <div class="mbar" role="toolbar" aria-label="Phone controls">
     <button id="mFilters" aria-pressed="false">⚙ Filters</button>
+    <button id="mCountries" aria-pressed="false">🌍 Countries</button>
+    <button id="mHunts" aria-pressed="false">🎯 Hunts</button>
+    <button id="mMore" aria-pressed="false">🧰 Tools</button>
     <button id="mMap" aria-pressed="false">🗺 Map</button>
-    <button id="mMore" aria-pressed="false">⋯ More</button>
   </div>
   <a href="countries.html" class="chip" style="text-decoration:none;color:var(--txt)" title="Countries ranked by price per acre, quality of life, weather and tax">🌍 Country ranking</a>
   <a href="https://raw.githack.com/Horizon88/snowrecon-public/main/index.html" target="_blank" rel="noopener" class="chip" style="text-decoration:none;color:var(--txt)" title="Snowbunker Recon: terrain, parcels and owner research, with these listings and the tax notes on its map">🗺 Recon map</a>
@@ -3820,7 +3833,19 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     set(start); b.onclick=()=>set(!document.body.classList.contains('top-hidden')); }
   { const tg=(id,cls,lab)=>{ const b=document.getElementById(id); if(!b) return; b.onclick=()=>{ const on=document.body.classList.toggle(cls); b.setAttribute('aria-pressed',on);
         if(lab) b.textContent=on?lab[1]:lab[0]; if(cls==='m-map'&&on) setTimeout(()=>map.invalidateSize(),50); }; };
-    tg('mFilters','m-filters'); tg('mMap','m-map',['🗺 Map','☰ List']); tg('mMore','m-more'); }
+    tg('mFilters','m-filters'); tg('mMap','m-map',['🗺 Map','☰ List']); tg('mMore','m-more');
+    tg('mCountries','m-countries'); tg('mHunts','m-hunts');
+    // remember which sections are open
+    const KEEP=['m-filters','m-more','m-countries','m-hunts'];
+    try{ (JSON.parse(localStorage.getItem('open_sections')||'[]')).forEach(c=>{ if(KEEP.includes(c)){ document.body.classList.add(c);
+      const id={'m-filters':'mFilters','m-more':'mMore','m-countries':'mCountries','m-hunts':'mHunts'}[c]; document.getElementById(id)?.setAttribute('aria-pressed','true'); } }); }catch(e){}
+    document.querySelector('.mbar').addEventListener('click',()=>setTimeout(()=>{ try{ localStorage.setItem('open_sections',JSON.stringify(KEEP.filter(c=>document.body.classList.contains(c)))); }catch(e){} },0));
+    // a dot on a folded section's button when something in it is switched on
+    const dots=()=>{ const set=(id,on)=>{ const b=document.getElementById(id); if(!b) return; let d=b.querySelector('.dot'); if(on&&!d){ d=document.createElement('span'); d.className='dot'; b.append(d);} if(!on&&d) d.remove(); };
+      set('mHunts', !!state.hunt || !!state.fresh);
+      set('mCountries', state.countries && typeof ALL_COUNTRIES!=='undefined' && state.countries.size && state.countries.size<ALL_COUNTRIES.length);
+      try{ set('mFilters', activeFilters().length>0); }catch(e){} };
+    setInterval(dots, 1200); }
   enterGems();
   render();
 })();
