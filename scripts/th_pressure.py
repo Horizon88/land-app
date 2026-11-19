@@ -108,8 +108,8 @@ def main():
         if n: why.append((min(15, 5 * len(n)), f"{len(n)} crackdown news item{'s' if len(n) > 1 else ''} for {area_of(r).title()} in 60 days"))
         c = comp.get(r.get("u")) or {}
         st = (c.get("status") or "").lower()
-        if re.search(r"liquidat|dissol|เลิก|ชำระบัญชี", st): why.append((25, f"seller company {c.get('status')}"))
-        elif st and not re.search(r"active|operating|ยังดำเนินกิจการ|คงอยู่", st): why.append((15, f"seller company status: {c.get('status')}"))
+        if re.search(r"liquidat|dissol|เลิก|ชำระบัญชี|ร้าง", st): why.append((25, f"seller company {c.get('status')} (closing / struck off)"))
+        elif st and not re.search(r"active|operating|ยังดำเนินกิจการ|คงอยู่|ฟื้นฟู", st): why.append((15, f"seller company status: {c.get('status')}"))
         f = c.get("foreign_pct")
         if f is not None and 39 <= f < 50: why.append((10, f"seller company {f:g}% foreign-held (classic 49/51 split)"))
         if c.get("loss_years", 0) >= 2: why.append((8, f"seller company: no profit for {c['loss_years']} years"))
