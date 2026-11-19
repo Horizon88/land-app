@@ -1,0 +1,3 @@
+{
+ "_how": "One entry per listing URL, for the seller company and the title deed. Fill from the free DBD website (datawarehouse.dbd.go.th / datawarehouse2.dbd.go.th, opened from a normal home or phone connection) and from a copy of the title deed (both sides) from the agent. scripts/th_pressure.py turns these into points. Fields: juristic_id (13 digits), name, status (as DBD shows it), foreign_pct (foreign share of capital, from 'investment by nationality'), loss_years (years in a row with a loss or no revenue), accounts_missing (true if the last year's accounts aren't filed), deed_mortgage (true if the back of the deed shows a bank mortgage), deed_seizure (true if it shows a seizure / freeze order, อายัด), checked (date), notes."
+}

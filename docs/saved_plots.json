@@ -57,7 +57,9 @@
         "view_near_km": 0.53,
         "elev_m": 37,
         "prom_m": -8,
-        "view_score": 66
+        "view_score": 66,
+        "pressure": 0,
+        "pressure_why": []
     },
     {
         "tp": "land",
@@ -97,7 +99,11 @@
         "view_near_km": 0.45,
         "elev_m": 20,
         "prom_m": -6,
-        "view_score": 48
+        "view_score": 48,
+        "pressure": 6,
+        "pressure_why": [
+            "4% of the area's price per m²"
+        ]
     },
     {
         "tp": "land",
@@ -137,7 +143,11 @@
         "view_near_km": 0.23,
         "elev_m": 67,
         "prom_m": 57,
-        "view_score": 66
+        "view_score": 66,
+        "pressure": 6,
+        "pressure_why": [
+            "8% of the area's price per m²"
+        ]
     },
     {
         "tp": "land",
@@ -175,7 +185,11 @@
         "view_near_km": 0.45,
         "elev_m": 58,
         "prom_m": 47,
-        "view_score": 60
+        "view_score": 60,
+        "pressure": 6,
+        "pressure_why": [
+            "7% of the area's price per m²"
+        ]
     },
     {
         "tp": "land",
@@ -213,7 +227,11 @@
         "view_near_km": 0.53,
         "elev_m": 67,
         "prom_m": 53,
-        "view_score": 54
+        "view_score": 54,
+        "pressure": 6,
+        "pressure_why": [
+            "3% of the area's price per m²"
+        ]
     },
     {
         "tp": "land",
@@ -251,7 +269,11 @@
         "view_near_km": 0.68,
         "elev_m": 110,
         "prom_m": 91,
-        "view_score": 57
+        "view_score": 57,
+        "pressure": 6,
+        "pressure_why": [
+            "3% of the area's price per m²"
+        ]
     },
     {
         "tp": "villa",
@@ -292,7 +314,9 @@
         "view_near_km": 0.08,
         "elev_m": 0,
         "prom_m": 0,
-        "view_score": 75
+        "view_score": 75,
+        "pressure": 0,
+        "pressure_why": []
     },
     {
         "tp": "house",
