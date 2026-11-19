@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-QUOTA = {"Japan": 75, "USA": 90, "Alaska": 70, "Costa Rica": 25, "Canada": 15, "Thailand": 12, "Austria": 12}
+QUOTA = {"Japan": 65, "USA": 90, "Alaska": 70, "Okinawa": 30, "Costa Rica": 25, "Canada": 15, "Thailand": 12, "Austria": 12}
 OTHER = 4                  # every other country
 BOOST = {}
 
@@ -65,7 +65,7 @@ def main(out, n_cards):
             if r["code"] not in [x["code"] for x in first]: first.append(r)
             continue
         if not r.get("usd"): continue
-        if special(r): pool["Alaska" if r.get("state") == "AK" else r["cf"]].append(r)
+        if special(r): pool["Alaska" if r.get("state") == "AK" else "Okinawa" if r.get("rg") == "Okinawa" else r["cf"]].append(r)
     # guaranteed quota per country, then interleave so countries alternate (best first)
     queues = {}
     for cf, rows in pool.items():
@@ -73,6 +73,7 @@ def main(out, n_cards):
         queues[cf] = rows[:QUOTA.get(cf, OTHER)]
     picks, taken = list(first), defaultdict(int)
     picks += queues.pop("Alaska", [])                 # the user wants lots of Alaska: its whole quota goes in
+    picks += queues.pop("Okinawa", [])                # and a batch of Okinawa sea views
     while len(picks) < n_cards and any(queues.values()):
         cf = max((c for c in queues if queues[c]), key=lambda c: score(queues[c][0]) + BOOST.get(c, 0) - 6 * taken[c] * 75 / QUOTA.get(c, OTHER * 4))
         picks.append(queues[cf].pop(0)); taken[cf] += 1

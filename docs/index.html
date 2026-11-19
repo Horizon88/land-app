@@ -1291,6 +1291,8 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
       match:r=>r.cf==='Japan' && (r.tp||'land')==='land' && le(r.ski_km,3) },
     jp_sea: { label:'🌊 Japan by the sea', desc:'Land and houses ≤1 km from the coast, or a sea view in the listing',
       match:r=>r.cf==='Japan' && r.tp!=='apartment' && r.tp!=='abandoned_ski' && (le(r.coast_km,1) || (r.perks||[]).some(p=>/sea view|Fuji/.test(p))) },
+    okinawa: { label:'🌺 Okinawa by the sea', desc:'Okinawa land and houses within 1 km of the sea or with a sea view (view score 40+): main island, Miyako, Ishigaki, Iriomote and the outer islands. Japan lets foreigners own land outright. Best view first.',
+      match:r=>r.cf==='Japan' && r.rg==='Okinawa' && r.tp!=='apartment' && (le(r.coast_km,1) || (r.view_score||0)>=40) },
     jp_onsen: { label:'♨️ Onsen', desc:'Japanese listings with hot-spring rights mentioned',
       match:r=>r.cf==='Japan' && (r.perks||[]).some(p=>/onsen/.test(p)) },
     tokyo_value: { label:'🗼 Tokyo value flats', desc:'Tokyo apartments ≤5 min walk from a station, ≥40 m², built 2000+, cheaper than most in the same ward',
@@ -1337,7 +1339,7 @@ Land Parcel Coordinate 8.17128157,98.74988900" style="width:100%;margin-top:8px;
     if(state.gems) leaveGems();
     if(state.region){ const t=document.querySelector(`#stats .chip[data-rt="${state.region}"]`); if(t) t.click(); }
     if(!state.hunt) _preHunt={countries:[...state.countries], filters:snapshotFilters(), sortKey:state.sortKey, sortAsc:state.sortAsc};
-    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'||key==='southcoast'?'view_score':key==='your_picks'?'added':key==='central_america'?'ca_rank':key==='motivated'?'distress':key==='catski_ak'?'cat_score':(key==='th_pressure'||key==='samui_pressure')?'pressure':'_gem'); state.sortAsc=false;
+    resetFilters(); state.hunt=key; state.sortKey=(key==='best_view'||key==='southcoast'||key==='okinawa'?'view_score':key==='your_picks'?'added':key==='central_america'?'ca_rank':key==='motivated'?'distress':key==='catski_ak'?'cat_score':(key==='th_pressure'||key==='samui_pressure')?'pressure':'_gem'); state.sortAsc=false;
     state.countries.clear(); ALL_COUNTRIES.forEach(c=>state.countries.add(c));
     document.querySelectorAll('#stats .chip[data-cf]').forEach(ch=>ch.classList.add('on'));
     huntRow.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.hunt===key));

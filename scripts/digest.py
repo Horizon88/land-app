@@ -58,6 +58,10 @@ HUNTS = [
      lambda r: r.get("cf") == "Japan" and r.get("tp") not in ("apartment", "abandoned_ski") and
                (le(r.get("coast_km"), 1) or any(re.search(r"sea view|Fuji", p) for p in r.get("perks") or [])),
      lambda r: r.get("view_score") or 0),
+    ("okinawa", "🌺 Okinawa by the sea",
+     lambda r: r.get("cf") == "Japan" and r.get("rg") == "Okinawa" and r.get("tp") != "apartment"
+               and (le(r.get("coast_km"), 1) or (r.get("view_score") or 0) >= 40),
+     lambda r: r.get("view_score") or 0),
     ("central_america", "🌊💧 Central America 2 of 3",
      lambda r: len(r.get("ca_signals") or []) >= 2, lambda r: len(r["ca_signals"]) * 100 + (r.get("view_score") or 0)),
     ("best_view", "🌅 Best views (anywhere)", lambda r: (r.get("view_score") or 0) >= 60, lambda r: r.get("view_score") or 0),
