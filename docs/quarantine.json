@@ -11152,5 +11152,61 @@
   "coast_km": null,
   "ski_km": null,
   "ski_r": ""
+ },
+ {
+  "cf": "Costa Rica",
+  "rg": "Guanacaste",
+  "a": "Playas Del Coco",
+  "tp": "land",
+  "t": "land",
+  "ac": 23475.44,
+  "m2": 95001819,
+  "plot_m2": 95001819,
+  "beds": null,
+  "usd": 8500000,
+  "upm": 0.089,
+  "cur": "USD",
+  "lp": "8500000",
+  "lat": 10.53595,
+  "lon": -85.68471,
+  "v": "sea_view",
+  "imgs": [
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0C3o000013BpeD/3ek8szsfi/midres/original%20%289%29.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0C3o000013BpeD/ov8rugfwa/midres/original%20%284%29.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0C3o000013BpeD/cdv0hurga/midres/original%20%281%29.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0C3o000013BpeD/5ykym78kk/midres/original%20%282%29.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0C3o000013BpeD/o8vpos4d1/midres/original%20%283%29.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0C3o000013BpeD/ly4d4kh06/midres/original%20%286%29.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0C3o000013BpeD/f3rmtsgp6/midres/original.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0C3o000013BpeD/s002e9vpg/midres/original%20%285%29.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0CRN00005swjzf/d5bwd354g/midres/10.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0CRN00005pHNZs/4bbty2j9s/midres/P6850-255ec42c372b89d1bb1af0e23f8bd48d.jpg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0CRN00004xVLai/armllofji/midres/WhatsApp%20Image%202025-09-06%20at%2014.12.17%20%281%29.jpeg",
+   "https://s3.amazonaws.com/propertybase-clients/00Dd0000000donbEAA/a0CRN00000dOLMK/lscvynzn0/midres/DSC_0864.jpg"
+  ],
+  "u": "https://www.coldwellbankercostarica.com/property/land-for-sale-in-playas-del-coco/6989",
+  "name": "New Horizon - Incredible development with ocean views",
+  "desc": "Location: Playas Del Coco, Guanacaste This fantastic chance for development is called New Horizons. Just minutes from the beach, this property offers easy access to snorkeling, swimming, paddleboarding, and much more. In addition to providing absolute tranquility, the property boasts exceptional accessibility. The vibrant center of Playas del Coco, with its upscale restaurants, boutiques, and medical services, is only five minutes away. This property is close to Playa del Coco's main road entrance. Within a 5- to 15-minute \u2026Read More",
+  "perks": [
+   "\ud83c\udf33 23,475 acres",
+   "\ud83c\udf0a Pacific Ocean view (5 km to the coast)"
+  ],
+  "r": 65,
+  "rb": "src:coldwell-cr+signals:big/pacific",
+  "foreign_note": "Costa Rica: foreigners can own titled land. The first 200 m from high tide is the Maritime-Terrestrial Zone (public strip + concessions; foreigners max 49% of a concession).",
+  "source": "Coldwell Banker Costa Rica",
+  "ca_signals": [
+   "big",
+   "pacific"
+  ],
+  "pacific_km": 4.6,
+  "coast_km": 2.23,
+  "ski_km": null,
+  "ski_r": "",
+  "view_deg": 25,
+  "view_near_km": 2.78,
+  "elev_m": 40,
+  "prom_m": -94,
+  "view_score": 30
  }
 ]
